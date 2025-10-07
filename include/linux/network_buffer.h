@@ -19,6 +19,8 @@
 
 /* Hypervisor notification API */
 void notify_network_buffer_addr(phys_addr_t start, phys_addr_t end);
+bool network_buffer_is_available(void);
+void *network_buffer_alloc(size_t size);
 
 /* Network buffer management */
 struct network_buffer_info {

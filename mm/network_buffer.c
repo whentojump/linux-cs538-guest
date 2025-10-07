@@ -49,6 +49,49 @@ void notify_network_buffer_addr(phys_addr_t start, phys_addr_t end)
 	/* This could be a hypercall, MMIO write, or other mechanism */
 }
 
+/* Check if network buffer is available */
+bool network_buffer_is_available(void)
+{
+	return network_buffer.initialized;
+}
+
+/* Allocate memory from the network buffer */
+// TODO: currently parameter size cannot exceed chunk size (4M)
+void *network_buffer_alloc(size_t size)
+{
+	struct network_buffer_chunk *chunk;
+	void *ptr = NULL;
+
+	if (!network_buffer.initialized) {
+		pr_warn("Network Buffer: Buffer not initialized\n");
+		return NULL;
+	}
+
+	if (size > network_buffer.size) {
+		pr_warn("Network Buffer: Requested size %zu exceeds buffer size %zu\n",
+			size, network_buffer.size);
+		return NULL;
+	}
+
+	/* Find the first chunk that can accommodate the allocation */
+	spin_lock(&network_buffer_lock);
+	list_for_each_entry(chunk, &network_buffer_chunks, list) {
+		if (size <= chunk->size) {
+			ptr = chunk->virt_addr;
+			break;
+		}
+	}
+	spin_unlock(&network_buffer_lock);
+
+	if (!ptr) {
+		pr_warn("Network Buffer: No suitable chunk found for %zu bytes\n", size);
+		return NULL;
+	}
+
+	pr_debug("Network Buffer: Allocated %zu bytes at %p\n", size, ptr);
+	return ptr;
+}
+
 /* Early boot initialization when memblock is available */
 static int __init network_buffer_early_init(void)
 {
