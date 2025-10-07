@@ -28,6 +28,7 @@
 #include <linux/dma-mapping.h>
 #include <linux/netdev_features.h>
 #include <net/flow_dissector.h>
+#include <linux/network_buffer.h>
 #include <linux/in6.h>
 #include <linux/if_packet.h>
 #include <linux/llist.h>
@@ -939,7 +940,8 @@ struct sk_buff {
 				peeked:1,
 				head_frag:1,
 				pfmemalloc:1,
-				pp_recycle:1; /* page_pool recycle indicator */
+				pp_recycle:1, /* page_pool recycle indicator */
+				network_buffer_allocated:1; /* allocated from dedicated network buffer */
 #ifdef CONFIG_SKB_EXTENSIONS
 	__u8			active_extensions;
 #endif
