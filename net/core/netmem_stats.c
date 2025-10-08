@@ -70,6 +70,30 @@ void netmem_stats_cleanup(void)
 		stats->per_cpu_stats = NULL;
 	}
 
+	/* Reset atomic counters */
+	atomic64_set(&stats->total_allocations, 0);
+	atomic64_set(&stats->total_deallocations, 0);
+	atomic64_set(&stats->total_bytes_allocated, 0);
+	atomic64_set(&stats->total_bytes_deallocated, 0);
+	atomic64_set(&stats->active_allocations, 0);
+	atomic64_set(&stats->active_bytes, 0);
+	atomic64_set(&stats->small_allocs, 0);
+	atomic64_set(&stats->medium_allocs, 0);
+	atomic64_set(&stats->large_allocs, 0);
+	atomic64_set(&stats->interrupt_allocs, 0);
+	atomic64_set(&stats->process_allocs, 0);
+	atomic64_set(&stats->napi_allocs, 0);
+	atomic64_set(&stats->pressure_allocs, 0);
+	atomic64_set(&stats->failed_allocs, 0);
+
+	/* Re-initialize per-CPU statistics */
+	stats->per_cpu_stats = alloc_percpu(struct netmem_per_cpu_stats);
+
+	if (!stats->per_cpu_stats) {
+		pr_err("Failed to allocate per-CPU network memory statistics\n");
+		return;
+	}
+
 	pr_info("Network memory statistics cleaned up\n");
 }
 
@@ -181,44 +205,40 @@ void netmem_stats_show(struct seq_file *seq)
 
 	spin_unlock_irqrestore(&stats->stats_lock, flags);
 
-	seq_printf(seq, "Network Memory Statistics:\n");
-	seq_printf(seq, "========================\n\n");
-
 	seq_printf(seq, "Total Allocations: %llu\n", total_alloc);
 	seq_printf(seq, "Total Deallocations: %llu\n", total_dealloc);
 	seq_printf(seq, "Active Allocations: %llu\n", active_alloc);
 	seq_printf(seq, "Active Bytes: %llu\n", active_bytes);
-	seq_printf(seq, "\n");
 
-	seq_printf(seq, "Size Distribution:\n");
-	seq_printf(seq, "  Small (<=1KB): %llu\n", small_alloc);
-	seq_printf(seq, "  Medium (1KB-4KB): %llu\n", medium_alloc);
-	seq_printf(seq, "  Large (>4KB): %llu\n", large_alloc);
-	seq_printf(seq, "\n");
+	// seq_printf(seq, "Size Distribution:\n");
+	// seq_printf(seq, "  Small (<=1KB): %llu\n", small_alloc);
+	// seq_printf(seq, "  Medium (1KB-4KB): %llu\n", medium_alloc);
+	// seq_printf(seq, "  Large (>4KB): %llu\n", large_alloc);
+	// seq_printf(seq, "\n");
 
-	seq_printf(seq, "Context Distribution:\n");
-	seq_printf(seq, "  Interrupt Context: %llu\n", interrupt_alloc);
-	seq_printf(seq, "  Process Context: %llu\n", process_alloc);
-	seq_printf(seq, "  Under Memory Pressure: %llu\n", pressure_alloc);
-	seq_printf(seq, "  Failed Allocations: %llu\n", failed_alloc);
-	seq_printf(seq, "\n");
+	// seq_printf(seq, "Context Distribution:\n");
+	// seq_printf(seq, "  Interrupt Context: %llu\n", interrupt_alloc);
+	// seq_printf(seq, "  Process Context: %llu\n", process_alloc);
+	// seq_printf(seq, "  Under Memory Pressure: %llu\n", pressure_alloc);
+	// seq_printf(seq, "  Failed Allocations: %llu\n", failed_alloc);
+	// seq_printf(seq, "\n");
 
 	/* Calculate percentages using integer arithmetic */
-	if (total_alloc > 0) {
-		seq_printf(seq, "Percentages:\n");
-		seq_printf(seq, "  Small: %llu%%\n",
-			   (small_alloc * 100) / total_alloc);
-		seq_printf(seq, "  Medium: %llu%%\n",
-			   (medium_alloc * 100) / total_alloc);
-		seq_printf(seq, "  Large: %llu%%\n",
-			   (large_alloc * 100) / total_alloc);
-		seq_printf(seq, "  Interrupt: %llu%%\n",
-			   (interrupt_alloc * 100) / total_alloc);
-		seq_printf(seq, "  Process: %llu%%\n",
-			   (process_alloc * 100) / total_alloc);
-		seq_printf(seq, "  Failed: %llu%%\n",
-			   (failed_alloc * 100) / total_alloc);
-	}
+	// if (total_alloc > 0) {
+	// 	seq_printf(seq, "Percentages:\n");
+	// 	seq_printf(seq, "  Small: %llu%%\n",
+	// 		   (small_alloc * 100) / total_alloc);
+	// 	seq_printf(seq, "  Medium: %llu%%\n",
+	// 		   (medium_alloc * 100) / total_alloc);
+	// 	seq_printf(seq, "  Large: %llu%%\n",
+	// 		   (large_alloc * 100) / total_alloc);
+	// 	seq_printf(seq, "  Interrupt: %llu%%\n",
+	// 		   (interrupt_alloc * 100) / total_alloc);
+	// 	seq_printf(seq, "  Process: %llu%%\n",
+	// 		   (process_alloc * 100) / total_alloc);
+	// 	seq_printf(seq, "  Failed: %llu%%\n",
+	// 		   (failed_alloc * 100) / total_alloc);
+	// }
 }
 
 /**
@@ -232,13 +252,11 @@ void netmem_stats_show(struct seq_file *seq)
 struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority)
 {
 	struct sk_buff *skb;
-	bool success = false;
 
 	/* Call the original allocation function */
 	skb = __alloc_skb(size, priority, 0, NUMA_NO_NODE);
 
 	if (skb) {
-		success = true;
 		/* Record successful allocation */
 		netmem_stats_alloc(size, priority, true);
 	} else {
@@ -248,26 +266,36 @@ struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority)
 
 	return skb;
 }
-// We may need this because its caller is an inline function?
+// Human (read "Wentao"): we may need this because its caller is an inline function?
 EXPORT_SYMBOL(__alloc_skb_profile);
 
 /* Proc filesystem interface */
-static int netmem_stats_proc_show(struct seq_file *seq, void *v)
+static int __netmem_stats_dump_proc_open(struct seq_file *seq, void *v)
 {
 	netmem_stats_show(seq);
 	return 0;
 }
 
-static int netmem_stats_proc_open(struct inode *inode, struct file *file)
+static int netmem_stats_dump_proc_open(struct inode *inode, struct file *file)
 {
-	return single_open(file, netmem_stats_proc_show, NULL);
+	return single_open(file, __netmem_stats_dump_proc_open, NULL);
 }
 
-static const struct proc_ops netmem_stats_proc_ops = {
-	.proc_open = netmem_stats_proc_open,
+static const struct proc_ops netmem_stats_dump_proc_ops = {
+	.proc_open = netmem_stats_dump_proc_open,
 	.proc_read = seq_read,
 	.proc_lseek = seq_lseek,
 	.proc_release = single_release,
+};
+
+static ssize_t netmem_stats_reset_proc_write(struct file * file, const char __user * ubuf, size_t cnt, loff_t * ppos)
+{
+	netmem_stats_cleanup();
+	return cnt;
+}
+
+static const struct proc_ops netmem_stats_reset_proc_ops = {
+    .proc_write = netmem_stats_reset_proc_write,
 };
 
 /* Module initialization and cleanup */
@@ -276,7 +304,9 @@ static int __init netmem_stats_init_module(void)
 	netmem_stats_init();
 
 	/* Create proc entry */
-	proc_create("netmem_stats", 0444, NULL, &netmem_stats_proc_ops);
+	proc_mkdir("netmem_stats", NULL);
+	proc_create("netmem_stats/dump", 0444, NULL, &netmem_stats_dump_proc_ops);
+	proc_create("netmem_stats/reset", 0200, NULL, &netmem_stats_reset_proc_ops);
 
 	pr_info("Network memory statistics module loaded\n");
 	return 0;
@@ -284,7 +314,7 @@ static int __init netmem_stats_init_module(void)
 
 static void __exit netmem_stats_cleanup_module(void)
 {
-	remove_proc_entry("netmem_stats", NULL);
+	remove_proc_subtree("netmem_stats", NULL);
 	netmem_stats_cleanup();
 
 	pr_info("Network memory statistics module unloaded\n");
