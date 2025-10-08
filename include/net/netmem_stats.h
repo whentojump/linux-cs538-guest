@@ -60,6 +60,9 @@ void netmem_stats_alloc(size_t size, gfp_t gfp_flags, bool success);
 void netmem_stats_free(size_t size);
 void netmem_stats_show(struct seq_file *seq);
 
+/* Custom deallocation function that replaces kfree_skb() */
+void kfree_skb_reason_profile(struct sk_buff *skb);
+
 /* Custom allocation function that replaces alloc_skb() */
 struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority);
 

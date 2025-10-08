@@ -1269,7 +1269,7 @@ kfree_skb_reason(struct sk_buff *skb, enum skb_drop_reason reason)
  */
 static inline void kfree_skb(struct sk_buff *skb)
 {
-	kfree_skb_reason(skb, SKB_DROP_REASON_NOT_SPECIFIED);
+	kfree_skb_reason_profile(skb);
 }
 
 void skb_release_head_state(struct sk_buff *skb);

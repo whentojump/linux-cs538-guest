@@ -269,6 +269,19 @@ struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority)
 // Human (read "Wentao"): we may need this because its caller is an inline function?
 EXPORT_SYMBOL(__alloc_skb_profile);
 
+void kfree_skb_reason_profile(struct sk_buff *skb)
+{
+	size_t size = 0;
+
+	if (skb) {
+		size = skb_end_offset(skb) + skb->data_len;
+		netmem_stats_free(size);
+	}
+	kfree_skb_reason(skb, SKB_DROP_REASON_NOT_SPECIFIED);
+}
+// Human (read "Wentao"): we may need this because its caller is an inline function?
+EXPORT_SYMBOL(kfree_skb_reason_profile);
+
 /* Proc filesystem interface */
 static int __netmem_stats_dump_proc_open(struct seq_file *seq, void *v)
 {
