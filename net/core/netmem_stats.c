@@ -205,10 +205,10 @@ void netmem_stats_show(struct seq_file *seq)
 
 	spin_unlock_irqrestore(&stats->stats_lock, flags);
 
-	seq_printf(seq, "Total Allocations: %llu\n", total_alloc);
-	seq_printf(seq, "Total Deallocations: %llu\n", total_dealloc);
-	seq_printf(seq, "Active Allocations: %llu\n", active_alloc);
-	seq_printf(seq, "Active Bytes: %llu\n", active_bytes);
+	seq_printf(seq, "Total Allocations: %lld\n", total_alloc);
+	seq_printf(seq, "Total Deallocations: %lld\n", total_dealloc);
+	seq_printf(seq, "Active Allocations: %lld\n", active_alloc);
+	seq_printf(seq, "Active Bytes: %lld\n", active_bytes);
 
 	// seq_printf(seq, "Size Distribution:\n");
 	// seq_printf(seq, "  Small (<=1KB): %llu\n", small_alloc);
