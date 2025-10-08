@@ -38,6 +38,7 @@
 #include <net/net_debug.h>
 #include <net/dropreason-core.h>
 #include <net/netmem.h>
+#include <net/netmem_stats.h>
 
 /**
  * DOC: skb checksums
@@ -1319,7 +1320,7 @@ struct sk_buff *slab_build_skb(void *data);
 static inline struct sk_buff *alloc_skb(unsigned int size,
 					gfp_t priority)
 {
-	return __alloc_skb(size, priority, 0, NUMA_NO_NODE);
+	return __alloc_skb_profile(size, priority);
 }
 
 struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
