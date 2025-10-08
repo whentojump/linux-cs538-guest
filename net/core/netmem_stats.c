@@ -248,6 +248,8 @@ struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority)
 
 	return skb;
 }
+// We may need this because its caller is an inline function?
+EXPORT_SYMBOL(__alloc_skb_profile);
 
 /* Proc filesystem interface */
 static int netmem_stats_proc_show(struct seq_file *seq, void *v)
