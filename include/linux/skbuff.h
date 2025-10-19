@@ -1269,7 +1269,7 @@ kfree_skb_reason(struct sk_buff *skb, enum skb_drop_reason reason)
  */
 static inline void kfree_skb(struct sk_buff *skb)
 {
-	kfree_skb_reason_profile(skb);
+	kfree_skb_reason(skb, SKB_DROP_REASON_NOT_SPECIFIED);
 }
 
 void skb_release_head_state(struct sk_buff *skb);
@@ -1320,7 +1320,7 @@ struct sk_buff *slab_build_skb(void *data);
 static inline struct sk_buff *alloc_skb(unsigned int size,
 					gfp_t priority)
 {
-	return __alloc_skb_profile(size, priority);
+	return __alloc_skb(size, priority, 0, NUMA_NO_NODE);
 }
 
 struct sk_buff *alloc_skb_with_frags(unsigned long header_len,

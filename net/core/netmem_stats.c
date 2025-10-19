@@ -246,46 +246,46 @@ void netmem_stats_show(struct seq_file *seq)
 	// }
 }
 
-/**
- * __alloc_skb_profile - Custom network buffer allocation function with statistics
- * @size: Size to allocate
- * @priority: Allocation mask
- *
- * This function replaces __alloc_skb() and provides network-specific
- * memory statistics collection.
- */
-struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority)
-{
-	struct sk_buff *skb;
+// /**
+//  * __alloc_skb_profile - Custom network buffer allocation function with statistics
+//  * @size: Size to allocate
+//  * @priority: Allocation mask
+//  *
+//  * This function replaces __alloc_skb() and provides network-specific
+//  * memory statistics collection.
+//  */
+// struct sk_buff *__alloc_skb_profile(unsigned int size, gfp_t priority)
+// {
+// 	struct sk_buff *skb;
+//
+// 	/* Call the original allocation function */
+// 	skb = __alloc_skb(size, priority, 0, NUMA_NO_NODE);
+//
+// 	if (skb) {
+// 		/* Record successful allocation */
+// 		netmem_stats_alloc(size, priority, true);
+// 	} else {
+// 		/* Record failed allocation */
+// 		netmem_stats_alloc(size, priority, false);
+// 	}
+//
+// 	return skb;
+// }
+// // Human (read "Wentao"): we may need this because its caller is an inline function?
+// EXPORT_SYMBOL(__alloc_skb_profile);
 
-	/* Call the original allocation function */
-	skb = __alloc_skb(size, priority, 0, NUMA_NO_NODE);
-
-	if (skb) {
-		/* Record successful allocation */
-		netmem_stats_alloc(size, priority, true);
-	} else {
-		/* Record failed allocation */
-		netmem_stats_alloc(size, priority, false);
-	}
-
-	return skb;
-}
-// Human (read "Wentao"): we may need this because its caller is an inline function?
-EXPORT_SYMBOL(__alloc_skb_profile);
-
-void kfree_skb_reason_profile(struct sk_buff *skb)
-{
-	size_t size = 0;
-
-	if (skb) {
-		size = skb_end_offset(skb) + skb->data_len;
-		netmem_stats_free(size);
-	}
-	kfree_skb_reason(skb, SKB_DROP_REASON_NOT_SPECIFIED);
-}
-// Human (read "Wentao"): we may need this because its caller is an inline function?
-EXPORT_SYMBOL(kfree_skb_reason_profile);
+// void kfree_skb_reason_profile(struct sk_buff *skb)
+// {
+// 	size_t size = 0;
+//
+// 	if (skb) {
+// 		size = skb_end_offset(skb) + skb->data_len;
+// 		netmem_stats_free(size);
+// 	}
+// 	kfree_skb_reason(skb, SKB_DROP_REASON_NOT_SPECIFIED);
+// }
+// // Human (read "Wentao"): we may need this because its caller is an inline function?
+// EXPORT_SYMBOL(kfree_skb_reason_profile);
 
 /* Proc filesystem interface */
 static int __netmem_stats_dump_proc_open(struct seq_file *seq, void *v)
