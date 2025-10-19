@@ -1151,6 +1151,7 @@ static void kfree_skbmem(struct sk_buff *skb)
 
 	switch (skb->fclone) {
 	case SKB_FCLONE_UNAVAILABLE:
+		netmem_stats_free(skb->truesize);
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 		return;
 
@@ -1172,6 +1173,7 @@ static void kfree_skbmem(struct sk_buff *skb)
 	if (!refcount_dec_and_test(&fclones->fclone_ref))
 		return;
 fastpath:
+	netmem_stats_free(skb->truesize);
 	kmem_cache_free(net_hotdata.skbuff_fclone_cache, fclones);
 }
 
@@ -1207,8 +1209,6 @@ static void skb_release_all(struct sk_buff *skb, enum skb_drop_reason reason)
 
 void __kfree_skb(struct sk_buff *skb)
 {
-	if (skb)
-		netmem_stats_free(skb->truesize);
 	skb_release_all(skb, SKB_DROP_REASON_NOT_SPECIFIED);
 	kfree_skbmem(skb);
 }
@@ -1269,6 +1269,7 @@ static void kfree_skb_add_bulk(struct sk_buff *skb,
 	}
 
 	skb_release_all(skb, reason);
+	netmem_stats_free(skb->truesize);
 	sa->skb_array[sa->skb_count++] = skb;
 
 	if (unlikely(sa->skb_count == KFREE_SKB_BULK_SIZE)) {
@@ -1468,6 +1469,7 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 	if (!kasan_mempool_poison_object(skb))
 		return;
 
+	netmem_stats_free(skb->truesize);
 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
 	nc->skb_cache[nc->skb_count++] = skb;
 
@@ -2096,7 +2098,13 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 		n->fclone = SKB_FCLONE_UNAVAILABLE;
 	}
 
-	return __skb_clone(n, skb);
+	n = __skb_clone(n, skb);
+
+	/* Track allocation only if we allocated new memory (not reusing fclone) */
+	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE)
+		netmem_stats_alloc(n->truesize);
+
+	return n;
 }
 EXPORT_SYMBOL(skb_clone);
 
@@ -5999,6 +6007,7 @@ void kfree_skb_partial(struct sk_buff *skb, bool head_stolen)
 {
 	if (head_stolen) {
 		skb_release_head_state(skb);
+		netmem_stats_free(skb->truesize);
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 	} else {
 		__kfree_skb(skb);

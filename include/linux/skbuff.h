@@ -1370,10 +1370,7 @@ static inline bool skb_fclone_busy(const struct sock *sk,
 static inline struct sk_buff *alloc_skb_fclone(unsigned int size,
 					       gfp_t priority)
 {
-	struct sk_buff *skb = __alloc_skb(size, priority, SKB_ALLOC_FCLONE, NUMA_NO_NODE);
-	if (skb)
-		netmem_stats_alloc(skb->truesize/*, priority, true*/);
-	return skb;
+	return __alloc_skb(size, priority, SKB_ALLOC_FCLONE, NUMA_NO_NODE);
 }
 
 struct sk_buff *skb_morph(struct sk_buff *dst, struct sk_buff *src);
