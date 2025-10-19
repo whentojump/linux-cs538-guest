@@ -480,6 +480,8 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 	memset(skb, 0, offsetof(struct sk_buff, tail));
 	__build_skb_around(skb, data, frag_size);
 
+	netmem_stats_alloc(skb->truesize, GFP_ATOMIC, true);
+
 	return skb;
 }
 
@@ -540,6 +542,8 @@ static struct sk_buff *__napi_build_skb(void *data, unsigned int frag_size)
 
 	memset(skb, 0, offsetof(struct sk_buff, tail));
 	__build_skb_around(skb, data, frag_size);
+
+	netmem_stats_alloc(skb->truesize, GFP_ATOMIC, true);
 
 	return skb;
 }
@@ -701,6 +705,8 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 		skb->fclone = SKB_FCLONE_ORIG;
 		refcount_set(&fclones->fclone_ref, 1);
 	}
+
+	netmem_stats_alloc(skb->truesize, gfp_mask, true);
 
 	return skb;
 
@@ -1201,6 +1207,8 @@ static void skb_release_all(struct sk_buff *skb, enum skb_drop_reason reason)
 
 void __kfree_skb(struct sk_buff *skb)
 {
+	if (skb)
+		netmem_stats_free(skb->truesize);
 	skb_release_all(skb, SKB_DROP_REASON_NOT_SPECIFIED);
 	kfree_skbmem(skb);
 }
