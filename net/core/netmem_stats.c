@@ -18,8 +18,8 @@
 struct netmem_stats netmem_global_stats;
 
 /* Size thresholds for allocation categorization */
-#define NETMEM_SMALL_THRESHOLD   (1024)      /* 1KB */
-#define NETMEM_MEDIUM_THRESHOLD  (4096)      /* 4KB */
+// #define NETMEM_SMALL_THRESHOLD   (1024)      /* 1KB */
+// #define NETMEM_MEDIUM_THRESHOLD  (4096)      /* 4KB */
 
 /**
  * netmem_stats_init - Initialize network memory statistics
@@ -35,22 +35,22 @@ void netmem_stats_init(void)
 	atomic64_set(&stats->total_bytes_deallocated, 0);
 	atomic64_set(&stats->active_allocations, 0);
 	atomic64_set(&stats->active_bytes, 0);
-	atomic64_set(&stats->small_allocs, 0);
-	atomic64_set(&stats->medium_allocs, 0);
-	atomic64_set(&stats->large_allocs, 0);
-	atomic64_set(&stats->interrupt_allocs, 0);
-	atomic64_set(&stats->process_allocs, 0);
-	atomic64_set(&stats->napi_allocs, 0);
-	atomic64_set(&stats->pressure_allocs, 0);
-	atomic64_set(&stats->failed_allocs, 0);
+	// atomic64_set(&stats->small_allocs, 0);
+	// atomic64_set(&stats->medium_allocs, 0);
+	// atomic64_set(&stats->large_allocs, 0);
+	// atomic64_set(&stats->interrupt_allocs, 0);
+	// atomic64_set(&stats->process_allocs, 0);
+	// atomic64_set(&stats->napi_allocs, 0);
+	// atomic64_set(&stats->pressure_allocs, 0);
+	// atomic64_set(&stats->failed_allocs, 0);
 
 	/* Initialize per-CPU statistics */
-	stats->per_cpu_stats = alloc_percpu(struct netmem_per_cpu_stats);
+	// stats->per_cpu_stats = alloc_percpu(struct netmem_per_cpu_stats);
 
-	if (!stats->per_cpu_stats) {
-		pr_err("Failed to allocate per-CPU network memory statistics\n");
-		return;
-	}
+	// if (!stats->per_cpu_stats) {
+	// 	pr_err("Failed to allocate per-CPU network memory statistics\n");
+	// 	return;
+	// }
 
 	/* Initialize spinlock */
 	spin_lock_init(&stats->stats_lock);
@@ -65,10 +65,10 @@ void netmem_stats_cleanup(void)
 {
 	struct netmem_stats *stats = &netmem_global_stats;
 
-	if (stats->per_cpu_stats) {
-		free_percpu(stats->per_cpu_stats);
-		stats->per_cpu_stats = NULL;
-	}
+	// if (stats->per_cpu_stats) {
+	// 	free_percpu(stats->per_cpu_stats);
+	// 	stats->per_cpu_stats = NULL;
+	// }
 
 	/* Reset atomic counters */
 	atomic64_set(&stats->total_allocations, 0);
@@ -77,22 +77,22 @@ void netmem_stats_cleanup(void)
 	atomic64_set(&stats->total_bytes_deallocated, 0);
 	atomic64_set(&stats->active_allocations, 0);
 	atomic64_set(&stats->active_bytes, 0);
-	atomic64_set(&stats->small_allocs, 0);
-	atomic64_set(&stats->medium_allocs, 0);
-	atomic64_set(&stats->large_allocs, 0);
-	atomic64_set(&stats->interrupt_allocs, 0);
-	atomic64_set(&stats->process_allocs, 0);
-	atomic64_set(&stats->napi_allocs, 0);
-	atomic64_set(&stats->pressure_allocs, 0);
-	atomic64_set(&stats->failed_allocs, 0);
+	// atomic64_set(&stats->small_allocs, 0);
+	// atomic64_set(&stats->medium_allocs, 0);
+	// atomic64_set(&stats->large_allocs, 0);
+	// atomic64_set(&stats->interrupt_allocs, 0);
+	// atomic64_set(&stats->process_allocs, 0);
+	// atomic64_set(&stats->napi_allocs, 0);
+	// atomic64_set(&stats->pressure_allocs, 0);
+	// atomic64_set(&stats->failed_allocs, 0);
 
 	/* Re-initialize per-CPU statistics */
-	stats->per_cpu_stats = alloc_percpu(struct netmem_per_cpu_stats);
+	// stats->per_cpu_stats = alloc_percpu(struct netmem_per_cpu_stats);
 
-	if (!stats->per_cpu_stats) {
-		pr_err("Failed to allocate per-CPU network memory statistics\n");
-		return;
-	}
+	// if (!stats->per_cpu_stats) {
+	// 	pr_err("Failed to allocate per-CPU network memory statistics\n");
+	// 	return;
+	// }
 
 	pr_info("Network memory statistics cleaned up\n");
 }
@@ -103,50 +103,50 @@ void netmem_stats_cleanup(void)
  * @gfp_flags: GFP flags used for allocation
  * @success: Whether the allocation was successful
  */
-void netmem_stats_alloc(size_t size, gfp_t gfp_flags, bool success)
+void netmem_stats_alloc(size_t size/*, gfp_t gfp_flags, bool success*/)
 {
 	struct netmem_stats *stats = &netmem_global_stats;
 	unsigned long flags;
 
 	spin_lock_irqsave(&stats->stats_lock, flags);
 
-	if (success) {
+	// if (success) {
 		/* Update total counters */
 		atomic64_inc(&stats->total_allocations);
 		atomic64_add(size, &stats->total_bytes_allocated);
 		atomic64_inc(&stats->active_allocations);
 		atomic64_add(size, &stats->active_bytes);
 
-		/* Update per-CPU counters */
-		if (stats->per_cpu_stats) {
-			struct netmem_per_cpu_stats *cpu_stats = this_cpu_ptr(stats->per_cpu_stats);
-			atomic64_inc(&cpu_stats->local_allocs);
-			atomic64_add(size, &cpu_stats->local_bytes);
-		}
+		// /* Update per-CPU counters */
+		// if (stats->per_cpu_stats) {
+		// 	struct netmem_per_cpu_stats *cpu_stats = this_cpu_ptr(stats->per_cpu_stats);
+		// 	atomic64_inc(&cpu_stats->local_allocs);
+		// 	atomic64_add(size, &cpu_stats->local_bytes);
+		// }
 
-		/* Categorize by size */
-		if (size <= NETMEM_SMALL_THRESHOLD) {
-			atomic64_inc(&stats->small_allocs);
-		} else if (size <= NETMEM_MEDIUM_THRESHOLD) {
-			atomic64_inc(&stats->medium_allocs);
-		} else {
-			atomic64_inc(&stats->large_allocs);
-		}
+		// /* Categorize by size */
+		// if (size <= NETMEM_SMALL_THRESHOLD) {
+		// 	atomic64_inc(&stats->small_allocs);
+		// } else if (size <= NETMEM_MEDIUM_THRESHOLD) {
+		// 	atomic64_inc(&stats->medium_allocs);
+		// } else {
+		// 	atomic64_inc(&stats->large_allocs);
+		// }
 
-		/* Categorize by context */
-		if (gfp_flags & GFP_ATOMIC) {
-			atomic64_inc(&stats->interrupt_allocs);
-		} else {
-			atomic64_inc(&stats->process_allocs);
-		}
+		// /* Categorize by context */
+		// if (gfp_flags & GFP_ATOMIC) {
+		// 	atomic64_inc(&stats->interrupt_allocs);
+		// } else {
+		// 	atomic64_inc(&stats->process_allocs);
+		// }
 
-		/* Check for memory pressure */
-		if (gfp_flags & __GFP_MEMALLOC) {
-			atomic64_inc(&stats->pressure_allocs);
-		}
-	} else {
-		atomic64_inc(&stats->failed_allocs);
-	}
+		// /* Check for memory pressure */
+		// if (gfp_flags & __GFP_MEMALLOC) {
+		// 	atomic64_inc(&stats->pressure_allocs);
+		// }
+	// } else {
+	// 	atomic64_inc(&stats->failed_allocs);
+	// }
 
 	spin_unlock_irqrestore(&stats->stats_lock, flags);
 }
@@ -167,12 +167,12 @@ void netmem_stats_free(size_t size)
 	atomic64_dec(&stats->active_allocations);
 	atomic64_sub(size, &stats->active_bytes);
 
-	/* Update per-CPU counters */
-	if (stats->per_cpu_stats) {
-		struct netmem_per_cpu_stats *cpu_stats = this_cpu_ptr(stats->per_cpu_stats);
-		atomic64_dec(&cpu_stats->local_allocs);
-		atomic64_sub(size, &cpu_stats->local_bytes);
-	}
+	// /* Update per-CPU counters */
+	// if (stats->per_cpu_stats) {
+	// 	struct netmem_per_cpu_stats *cpu_stats = this_cpu_ptr(stats->per_cpu_stats);
+	// 	atomic64_dec(&cpu_stats->local_allocs);
+	// 	atomic64_sub(size, &cpu_stats->local_bytes);
+	// }
 
 	spin_unlock_irqrestore(&stats->stats_lock, flags);
 }
@@ -187,8 +187,8 @@ void netmem_stats_show(struct seq_file *seq)
 	unsigned long flags;
 	u64 total_alloc, total_dealloc, active_alloc, active_bytes;
 	u64 total_bytes_allocated, total_bytes_deallocated;
-	u64 small_alloc, medium_alloc, large_alloc;
-	u64 interrupt_alloc, process_alloc, pressure_alloc, failed_alloc;
+	// u64 small_alloc, medium_alloc, large_alloc;
+	// u64 interrupt_alloc, process_alloc, pressure_alloc, failed_alloc;
 
 	spin_lock_irqsave(&stats->stats_lock, flags);
 
@@ -198,13 +198,13 @@ void netmem_stats_show(struct seq_file *seq)
 	total_bytes_deallocated = atomic64_read(&stats->total_bytes_deallocated);
 	active_alloc = atomic64_read(&stats->active_allocations);
 	active_bytes = atomic64_read(&stats->active_bytes);
-	small_alloc = atomic64_read(&stats->small_allocs);
-	medium_alloc = atomic64_read(&stats->medium_allocs);
-	large_alloc = atomic64_read(&stats->large_allocs);
-	interrupt_alloc = atomic64_read(&stats->interrupt_allocs);
-	process_alloc = atomic64_read(&stats->process_allocs);
-	pressure_alloc = atomic64_read(&stats->pressure_allocs);
-	failed_alloc = atomic64_read(&stats->failed_allocs);
+	// small_alloc = atomic64_read(&stats->small_allocs);
+	// medium_alloc = atomic64_read(&stats->medium_allocs);
+	// large_alloc = atomic64_read(&stats->large_allocs);
+	// interrupt_alloc = atomic64_read(&stats->interrupt_allocs);
+	// process_alloc = atomic64_read(&stats->process_allocs);
+	// pressure_alloc = atomic64_read(&stats->pressure_allocs);
+	// failed_alloc = atomic64_read(&stats->failed_allocs);
 
 	spin_unlock_irqrestore(&stats->stats_lock, flags);
 

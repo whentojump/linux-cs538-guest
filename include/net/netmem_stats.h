@@ -56,7 +56,7 @@ extern struct netmem_stats netmem_global_stats;
 /* Function declarations */
 void netmem_stats_init(void);
 void netmem_stats_cleanup(void);
-void netmem_stats_alloc(size_t size, gfp_t gfp_flags, bool success);
+void netmem_stats_alloc(size_t size/*, gfp_t gfp_flags, bool success*/);
 void netmem_stats_free(size_t size);
 void netmem_stats_show(struct seq_file *seq);
 
