@@ -186,6 +186,7 @@ void netmem_stats_show(struct seq_file *seq)
 	struct netmem_stats *stats = &netmem_global_stats;
 	unsigned long flags;
 	u64 total_alloc, total_dealloc, active_alloc, active_bytes;
+	u64 total_bytes_allocated, total_bytes_deallocated;
 	u64 small_alloc, medium_alloc, large_alloc;
 	u64 interrupt_alloc, process_alloc, pressure_alloc, failed_alloc;
 
@@ -193,6 +194,8 @@ void netmem_stats_show(struct seq_file *seq)
 
 	total_alloc = atomic64_read(&stats->total_allocations);
 	total_dealloc = atomic64_read(&stats->total_deallocations);
+	total_bytes_allocated = atomic64_read(&stats->total_bytes_allocated);
+	total_bytes_deallocated = atomic64_read(&stats->total_bytes_deallocated);
 	active_alloc = atomic64_read(&stats->active_allocations);
 	active_bytes = atomic64_read(&stats->active_bytes);
 	small_alloc = atomic64_read(&stats->small_allocs);
@@ -206,7 +209,9 @@ void netmem_stats_show(struct seq_file *seq)
 	spin_unlock_irqrestore(&stats->stats_lock, flags);
 
 	seq_printf(seq, "Total Allocations: %lld\n", total_alloc);
+	seq_printf(seq, "Total Bytes Allocated: %lld\n", total_bytes_allocated);
 	seq_printf(seq, "Total Deallocations: %lld\n", total_dealloc);
+	seq_printf(seq, "Total Bytes Deallocated: %lld\n", total_bytes_deallocated);
 	seq_printf(seq, "Active Allocations: %lld\n", active_alloc);
 	seq_printf(seq, "Active Bytes: %lld\n", active_bytes);
 
