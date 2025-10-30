@@ -19,6 +19,11 @@
 /* Global network memory statistics */
 struct netmem_stats netmem_global_stats;
 
+/* Per-site statistics hash table */
+#define NETMEM_SITE_HASH_BITS 7  /* 128 buckets */
+static DEFINE_HASHTABLE(netmem_site_hash, NETMEM_SITE_HASH_BITS);
+static DEFINE_SPINLOCK(netmem_site_lock);
+
 /* Size thresholds for allocation categorization */
 // #define NETMEM_SMALL_THRESHOLD   (1024)      /* 1KB */
 // #define NETMEM_MEDIUM_THRESHOLD  (4096)      /* 4KB */

@@ -61,6 +61,9 @@ struct netmem_stats {
 /* Global network memory statistics instance */
 extern struct netmem_stats netmem_global_stats;
 
+/* Forward declarations */
+struct sk_buff;
+
 /* Function declarations */
 void netmem_stats_init(void);
 void netmem_stats_cleanup(void);
