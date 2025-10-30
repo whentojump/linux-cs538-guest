@@ -480,7 +480,8 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 	memset(skb, 0, offsetof(struct sk_buff, tail));
 	__build_skb_around(skb, data, frag_size);
 
-	netmem_stats_alloc(skb->truesize/*, GFP_ATOMIC, true*/);
+	// netmem_stats_alloc(skb->truesize);
+	netmem_stats_alloc_per_site(skb->truesize, "__build_skb");
 
 	return skb;
 }
@@ -543,7 +544,8 @@ static struct sk_buff *__napi_build_skb(void *data, unsigned int frag_size)
 	memset(skb, 0, offsetof(struct sk_buff, tail));
 	__build_skb_around(skb, data, frag_size);
 
-	netmem_stats_alloc(skb->truesize/*, GFP_ATOMIC, true*/);
+	// netmem_stats_alloc(skb->truesize);
+	netmem_stats_alloc_per_site(skb->truesize, "__napi_build_skb");
 
 	return skb;
 }
@@ -706,7 +708,8 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 		refcount_set(&fclones->fclone_ref, 1);
 	}
 
-	netmem_stats_alloc(skb->truesize/*, gfp_mask, true*/);
+	// netmem_stats_alloc(skb->truesize);
+	netmem_stats_alloc_per_site(skb->truesize, "__alloc_skb");
 
 	return skb;
 
@@ -2101,9 +2104,11 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 	n = __skb_clone(n, skb);
 
 	/* Track allocation only if we allocated new memory (not reusing fclone) */
-	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE)
-		netmem_stats_alloc(n->truesize);
+	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE) {
+		// netmem_stats_alloc(n->truesize);
+		netmem_stats_alloc_per_site(n->truesize, "__skb_clone");
 
+	}
 	return n;
 }
 EXPORT_SYMBOL(skb_clone);

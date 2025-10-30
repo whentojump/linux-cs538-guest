@@ -14,6 +14,14 @@
 #include <linux/spinlock.h>
 #include <linux/seq_file.h>
 
+/* Per-site statistics entry */
+struct netmem_site_stats {
+	char site_name[64];                  /* Caller site identifier */
+	atomic64_t allocations;              /* Total allocations from this site */
+	atomic64_t bytes_allocated;          /* Total bytes allocated from this site */
+	struct hlist_node hash_node;         /* Hash table linkage */
+};
+
 /* Network memory allocation statistics */
 struct netmem_stats {
 	/* Total allocations and deallocations */
@@ -57,8 +65,10 @@ extern struct netmem_stats netmem_global_stats;
 void netmem_stats_init(void);
 void netmem_stats_cleanup(void);
 void netmem_stats_alloc(size_t size/*, gfp_t gfp_flags, bool success*/);
+void netmem_stats_alloc_per_site(size_t size, const char *site);
 void netmem_stats_free(size_t size);
 void netmem_stats_show(struct seq_file *seq);
+void netmem_stats_show_per_site(struct seq_file *seq);
 
 /* Custom deallocation function that replaces kfree_skb() */
 void kfree_skb_reason_profile(struct sk_buff *skb);

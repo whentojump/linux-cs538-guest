@@ -12,6 +12,8 @@
 #include <linux/proc_fs.h>
 #include <linux/percpu.h>
 #include <linux/slab.h>
+#include <linux/hashtable.h>
+#include <linux/jhash.h>
 #include <net/netmem_stats.h>
 
 /* Global network memory statistics */
@@ -55,6 +57,9 @@ void netmem_stats_init(void)
 	/* Initialize spinlock */
 	spin_lock_init(&stats->stats_lock);
 
+	/* Initialize per-site hash table */
+	hash_init(netmem_site_hash);
+
 	pr_info("Network memory statistics initialized\n");
 }
 
@@ -64,11 +69,23 @@ void netmem_stats_init(void)
 void netmem_stats_cleanup(void)
 {
 	struct netmem_stats *stats = &netmem_global_stats;
+	struct netmem_site_stats *site_stats;
+	struct hlist_node *tmp;
+	int bkt;
+	unsigned long flags;
 
 	// if (stats->per_cpu_stats) {
 	// 	free_percpu(stats->per_cpu_stats);
 	// 	stats->per_cpu_stats = NULL;
 	// }
+
+	/* Clean up per-site hash table */
+	spin_lock_irqsave(&netmem_site_lock, flags);
+	hash_for_each_safe(netmem_site_hash, bkt, tmp, site_stats, hash_node) {
+		hash_del(&site_stats->hash_node);
+		kfree(site_stats);
+	}
+	spin_unlock_irqrestore(&netmem_site_lock, flags);
 
 	/* Reset atomic counters */
 	atomic64_set(&stats->total_allocations, 0);
@@ -95,6 +112,54 @@ void netmem_stats_cleanup(void)
 	// }
 
 	pr_info("Network memory statistics cleaned up\n");
+}
+
+/**
+ * netmem_stats_alloc_per_site - Record allocation with caller site information
+ * @size: Size of the allocation
+ * @site: String identifying the allocation site (caller)
+ */
+void netmem_stats_alloc_per_site(size_t size, const char *site)
+{
+	struct netmem_site_stats *site_stats;
+	unsigned long flags;
+	u32 hash;
+	bool found = false;
+
+	/* Also update global stats */
+	netmem_stats_alloc(size);
+
+	if (!site)
+		return;
+
+	/* Calculate hash for this site */
+	hash = jhash(site, strlen(site), 0);
+
+	/* Look for existing entry */
+	spin_lock_irqsave(&netmem_site_lock, flags);
+	hash_for_each_possible(netmem_site_hash, site_stats, hash_node, hash) {
+		if (strcmp(site_stats->site_name, site) == 0) {
+			found = true;
+			break;
+		}
+	}
+
+	if (found) {
+		/* Update existing entry */
+		atomic64_inc(&site_stats->allocations);
+		atomic64_add(size, &site_stats->bytes_allocated);
+	} else {
+		/* Create new entry */
+		site_stats = kmalloc(sizeof(*site_stats), GFP_ATOMIC);
+		if (site_stats) {
+			strncpy(site_stats->site_name, site, 63);
+			site_stats->site_name[63] = '\0';
+			atomic64_set(&site_stats->allocations, 1);
+			atomic64_set(&site_stats->bytes_allocated, size);
+			hash_add(netmem_site_hash, &site_stats->hash_node, hash);
+		}
+	}
+	spin_unlock_irqrestore(&netmem_site_lock, flags);
 }
 
 /**
@@ -246,6 +311,39 @@ void netmem_stats_show(struct seq_file *seq)
 	// }
 }
 
+/**
+ * netmem_stats_show_per_site - Display per-site memory statistics
+ * @seq: Sequence file for output
+ */
+void netmem_stats_show_per_site(struct seq_file *seq)
+{
+	struct netmem_site_stats *site_stats;
+	unsigned long flags;
+	int bkt;
+
+	u64 total_alloc = 0;
+	u64 total_bytes_allocated = 0;
+
+	seq_printf(seq, "Per-Site Network Memory Statistics:\n");
+	seq_printf(seq, "%-50s %15s %20s\n", "Caller Site", "Allocations", "Bytes Allocated");
+	seq_printf(seq, "%s\n", "--------------------------------------------------------------------------------");
+
+	spin_lock_irqsave(&netmem_site_lock, flags);
+	hash_for_each(netmem_site_hash, bkt, site_stats, hash_node) {
+		u64 allocs = atomic64_read(&site_stats->allocations);
+		u64 bytes = atomic64_read(&site_stats->bytes_allocated);
+		seq_printf(seq, "%-50s %15llu %20llu\n",
+			   site_stats->site_name, allocs, bytes);
+		total_alloc += allocs;
+		total_bytes_allocated += bytes;
+	}
+
+	seq_printf(seq, "%-50s %15llu %20llu\n",
+		"Total", total_alloc, total_bytes_allocated);
+
+	spin_unlock_irqrestore(&netmem_site_lock, flags);
+}
+
 // /**
 //  * __alloc_skb_profile - Custom network buffer allocation function with statistics
 //  * @size: Size to allocate
@@ -316,6 +414,24 @@ static const struct proc_ops netmem_stats_reset_proc_ops = {
     .proc_write = netmem_stats_reset_proc_write,
 };
 
+static int __netmem_stats_per_site_proc_open(struct seq_file *seq, void *v)
+{
+	netmem_stats_show_per_site(seq);
+	return 0;
+}
+
+static int netmem_stats_per_site_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, __netmem_stats_per_site_proc_open, NULL);
+}
+
+static const struct proc_ops netmem_stats_per_site_proc_ops = {
+	.proc_open = netmem_stats_per_site_proc_open,
+	.proc_read = seq_read,
+	.proc_lseek = seq_lseek,
+	.proc_release = single_release,
+};
+
 /* Module initialization and cleanup */
 static int __init netmem_stats_init_module(void)
 {
@@ -325,6 +441,7 @@ static int __init netmem_stats_init_module(void)
 	proc_mkdir("netmem_stats", NULL);
 	proc_create("netmem_stats/dump", 0444, NULL, &netmem_stats_dump_proc_ops);
 	proc_create("netmem_stats/reset", 0200, NULL, &netmem_stats_reset_proc_ops);
+	proc_create("netmem_stats/per_site", 0444, NULL, &netmem_stats_per_site_proc_ops);
 
 	pr_info("Network memory statistics module loaded\n");
 	return 0;
