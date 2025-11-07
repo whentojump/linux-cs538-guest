@@ -1,0 +1,4 @@
+echo "arping -c 20"
+echo 1 > /proc/netmem_stats/reset
+arping -c 20 10.0.2.2; sleep 5
+/usr/bin/cat /proc/netmem_stats/dump
