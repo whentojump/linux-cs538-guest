@@ -1,0 +1,3 @@
+echo 1 > /proc/netmem_stats/reset
+ip a
+/usr/bin/cat /proc/netmem_stats/dump
