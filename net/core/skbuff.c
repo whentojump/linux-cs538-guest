@@ -468,6 +468,10 @@ static void __build_skb_around(struct sk_buff *skb, void *data,
  *  before giving packet to stack.
  *  RX rings only contains data buffers, not full skbs.
  */
+
+// static int i = 0;
+// #define NUM_STACK_TRACES 1000
+
 struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 {
 	struct sk_buff *skb;
@@ -482,6 +486,11 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 
 	// netmem_stats_alloc(skb->truesize);
 	netmem_stats_alloc_per_site(skb->truesize, "__build_skb");
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_ALLOC: %p site=__build_skb truesize=%u frag_size=%u head=%p tail=%u end=%u data_len=%u\n",
+	       skb, skb->truesize, frag_size, skb->head, skb->tail, skb->end, skb->data_len);
+	dump_stack();
+#endif
 
 	return skb;
 }
@@ -546,6 +555,11 @@ static struct sk_buff *__napi_build_skb(void *data, unsigned int frag_size)
 
 	// netmem_stats_alloc(skb->truesize);
 	netmem_stats_alloc_per_site(skb->truesize, "__napi_build_skb");
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_ALLOC: %p site=__napi_build_skb truesize=%u frag_size=%u head=%p tail=%u end=%u data_len=%u\n",
+	       skb, skb->truesize, frag_size, skb->head, skb->tail, skb->end, skb->data_len);
+	dump_stack();
+#endif
 
 	return skb;
 }
@@ -710,6 +724,11 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 
 	// netmem_stats_alloc(skb->truesize);
 	netmem_stats_alloc_per_site(skb->truesize, "__alloc_skb");
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_ALLOC: %p site=__alloc_skb truesize=%u size=%u head=%p tail=%u end=%u data_len=%u fclone=%u\n",
+	       skb, skb->truesize, size, skb->head, skb->tail, skb->end, skb->data_len, skb->fclone);
+	dump_stack();
+#endif
 
 	return skb;
 
@@ -893,6 +912,11 @@ void skb_add_rx_frag_netmem(struct sk_buff *skb, int i, netmem_ref netmem,
 	skb_fill_netmem_desc(skb, i, netmem, off, size);
 	skb->len += size;
 	skb->data_len += size;
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_ADJUST: %p site=skb_add_rx_frag_netmem old_truesize=%u delta=+%u new_truesize=%u\n",
+	       skb, skb->truesize, truesize, skb->truesize + truesize);
+	dump_stack();
+#endif
 	/* Account for truesize increase */
 	netmem_stats_alloc(truesize);
 	skb->truesize += truesize;
@@ -909,6 +933,11 @@ void skb_coalesce_rx_frag(struct sk_buff *skb, int i, int size,
 	skb_frag_size_add(frag, size);
 	skb->len += size;
 	skb->data_len += size;
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_ADJUST: %p site=skb_coalesce_rx_frag old_truesize=%u delta=+%u new_truesize=%u\n",
+	       skb, skb->truesize, truesize, skb->truesize + truesize);
+	dump_stack();
+#endif
 	/* Account for truesize increase */
 	netmem_stats_alloc(truesize);
 	skb->truesize += truesize;
@@ -1158,6 +1187,11 @@ static void kfree_skbmem(struct sk_buff *skb)
 
 	switch (skb->fclone) {
 	case SKB_FCLONE_UNAVAILABLE:
+#ifdef NETMEM_DUMPSTACK
+		printk(KERN_INFO "NETMEM_FREE: %p site=kfree_skbmem_unavail truesize=%u head=%p tail=%u end=%u data_len=%u\n",
+		       skb, skb->truesize, skb->head, skb->tail, skb->end, skb->data_len);
+		dump_stack();
+#endif
 		netmem_stats_free(skb->truesize);
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 		return;
@@ -1180,6 +1214,11 @@ static void kfree_skbmem(struct sk_buff *skb)
 	if (!refcount_dec_and_test(&fclones->fclone_ref))
 		return;
 fastpath:
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_FREE: %p site=kfree_skbmem_fclone truesize=%u head=%p tail=%u end=%u data_len=%u fclone=%u\n",
+	       skb, skb->truesize, skb->head, skb->tail, skb->end, skb->data_len, skb->fclone);
+	dump_stack();
+#endif
 	netmem_stats_free(skb->truesize);
 	kmem_cache_free(net_hotdata.skbuff_fclone_cache, fclones);
 }
@@ -1276,6 +1315,11 @@ static void kfree_skb_add_bulk(struct sk_buff *skb,
 	}
 
 	skb_release_all(skb, reason);
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_FREE: %p site=__kfree_skb_defer truesize=%u head=%p tail=%u end=%u data_len=%u\n",
+	       skb, skb->truesize, skb->head, skb->tail, skb->end, skb->data_len);
+	dump_stack();
+#endif
 	netmem_stats_free(skb->truesize);
 	sa->skb_array[sa->skb_count++] = skb;
 
@@ -1476,6 +1520,11 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 	if (!kasan_mempool_poison_object(skb))
 		return;
 
+#ifdef NETMEM_DUMPSTACK
+	printk(KERN_INFO "NETMEM_FREE: %p site=napi_skb_cache_put truesize=%u head=%p tail=%u end=%u data_len=%u\n",
+	       skb, skb->truesize, skb->head, skb->tail, skb->end, skb->data_len);
+	dump_stack();
+#endif
 	netmem_stats_free(skb->truesize);
 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
 	nc->skb_cache[nc->skb_count++] = skb;
@@ -2111,7 +2160,11 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE) {
 		// netmem_stats_alloc(n->truesize);
 		netmem_stats_alloc_per_site(n->truesize, "__skb_clone");
-
+#ifdef NETMEM_DUMPSTACK
+		printk(KERN_INFO "NETMEM_ALLOC: %p site=__skb_clone truesize=%u orig=%p orig_truesize=%u\n",
+		       n, n->truesize, skb, skb->truesize);
+		dump_stack();
+#endif
 	}
 	return n;
 }
@@ -2356,6 +2409,11 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
 	 */
 	if (!skb->sk || skb->destructor == sock_edemux) {
 		int delta = size - osize;
+#ifdef NETMEM_DUMPSTACK
+		printk(KERN_INFO "NETMEM_ADJUST: %p site=pskb_expand_head old_truesize=%u delta=%d new_truesize=%u\n",
+		       skb, skb->truesize, delta, (unsigned int)(skb->truesize + delta));
+		dump_stack();
+#endif
 		/* Account for truesize change (can be positive or negative) */
 		if (delta > 0)
 			netmem_stats_alloc(delta);
@@ -6023,6 +6081,11 @@ void kfree_skb_partial(struct sk_buff *skb, bool head_stolen)
 {
 	if (head_stolen) {
 		skb_release_head_state(skb);
+#ifdef NETMEM_DUMPSTACK
+		printk(KERN_INFO "NETMEM_FREE: %p site=kfree_skb_partial truesize=%u head=%p tail=%u end=%u data_len=%u\n",
+		       skb, skb->truesize, skb->head, skb->tail, skb->end, skb->data_len);
+		dump_stack();
+#endif
 		netmem_stats_free(skb->truesize);
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 	} else {
