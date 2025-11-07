@@ -14,6 +14,8 @@
 #include <linux/spinlock.h>
 #include <linux/seq_file.h>
 
+#define NETMEM_DUMPSTACK
+
 /* Per-site statistics entry */
 struct netmem_site_stats {
 	char site_name[64];                  /* Caller site identifier */
