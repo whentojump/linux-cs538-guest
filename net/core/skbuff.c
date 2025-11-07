@@ -893,6 +893,8 @@ void skb_add_rx_frag_netmem(struct sk_buff *skb, int i, netmem_ref netmem,
 	skb_fill_netmem_desc(skb, i, netmem, off, size);
 	skb->len += size;
 	skb->data_len += size;
+	/* Account for truesize increase */
+	netmem_stats_alloc(truesize);
 	skb->truesize += truesize;
 }
 EXPORT_SYMBOL(skb_add_rx_frag_netmem);
@@ -907,6 +909,8 @@ void skb_coalesce_rx_frag(struct sk_buff *skb, int i, int size,
 	skb_frag_size_add(frag, size);
 	skb->len += size;
 	skb->data_len += size;
+	/* Account for truesize increase */
+	netmem_stats_alloc(truesize);
 	skb->truesize += truesize;
 }
 EXPORT_SYMBOL(skb_coalesce_rx_frag);
@@ -2350,8 +2354,15 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
 	 * For the moment, we really care of rx path, or
 	 * when skb is orphaned (not attached to a socket).
 	 */
-	if (!skb->sk || skb->destructor == sock_edemux)
-		skb->truesize += size - osize;
+	if (!skb->sk || skb->destructor == sock_edemux) {
+		int delta = size - osize;
+		/* Account for truesize change (can be positive or negative) */
+		if (delta > 0)
+			netmem_stats_alloc(delta);
+		else if (delta < 0)
+			netmem_stats_free(-delta);
+		skb->truesize += delta;
+	}
 
 	return 0;
 
