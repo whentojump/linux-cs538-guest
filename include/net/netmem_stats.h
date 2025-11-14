@@ -42,4 +42,7 @@ void netmem_stats_free_per_site(size_t size, const char *site);
 void netmem_stats_show(struct seq_file *seq);
 void netmem_stats_show_per_site(struct seq_file *seq);
 
+void netmem_track_skb_reset(void);
+void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size_t size);
+
 #endif /* _NET_NETMEM_STATS_H */

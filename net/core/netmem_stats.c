@@ -288,6 +288,7 @@ static const struct proc_ops netmem_stats_dump_proc_ops = {
 static ssize_t netmem_stats_reset_proc_write(struct file * file, const char __user * ubuf, size_t cnt, loff_t * ppos)
 {
 	netmem_stats_cleanup_counters();
+	netmem_track_skb_reset();
 	return cnt;
 }
 
@@ -312,6 +313,93 @@ static const struct proc_ops netmem_stats_per_site_proc_ops = {
 	.proc_lseek = seq_lseek,
 	.proc_release = single_release,
 };
+
+/* Single SKB tracking - track the first SKB seen after reset */
+
+static struct sk_buff *tracked_skb = NULL;
+static void *tracked_skb_head = NULL;
+static atomic_t tracked_skb_operation_count = ATOMIC_INIT(0);
+static DEFINE_SPINLOCK(tracked_skb_lock);
+
+void netmem_track_skb_reset(void)
+{
+	unsigned long flags;
+
+	spin_lock_irqsave(&tracked_skb_lock, flags);
+	tracked_skb = NULL;
+	tracked_skb_head = NULL;
+	atomic_set(&tracked_skb_operation_count, 0);
+	spin_unlock_irqrestore(&tracked_skb_lock, flags);
+}
+EXPORT_SYMBOL(netmem_track_skb_reset);
+
+void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size_t size)
+{
+	bool should_track = false;
+	int op_count;
+	// int dataref = -1;
+	// int users = -1;
+
+	unsigned long flags;
+
+	if (!skb)
+		return;
+
+	if (!skb->head)
+		return;
+
+	// if (skb_end_pointer(skb) > (unsigned char *)skb->head) {
+	// 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+	// 	if (shinfo)
+	// 		dataref = atomic_read(&shinfo->dataref);
+	// }
+
+	// if (refcount_read(&skb->users) != 0)
+	// 	users = refcount_read(&skb->users);
+
+	spin_lock_irqsave(&tracked_skb_lock, flags);
+
+	if (!tracked_skb) {
+		tracked_skb = skb;
+		tracked_skb_head = skb->head;
+		atomic_set(&tracked_skb_operation_count, 1);
+		spin_unlock_irqrestore(&tracked_skb_lock, flags);
+
+		// if (dataref >= 0)
+		// 	pr_info("NETMEM: [OP 1] TRACKING START - skb=%p head=%p operation=%s size=%zu truesize=%u dataref=%d\n",
+		// 		skb, skb->head, operation, size, skb->truesize, dataref);
+		// else
+		// 	pr_info("NETMEM: [OP 1] TRACKING START - skb=%p head=%p operation=%s size=%zu truesize=%u\n",
+		// 		skb, skb->head, operation, size, skb->truesize);
+
+		pr_info("NETMEM: [OP 1] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
+			skb, skb->head, operation, size, skb->truesize);
+
+		return;
+	}
+
+	if (skb == tracked_skb || skb->head == tracked_skb_head) {
+		should_track = true;
+		op_count = atomic_inc_return(&tracked_skb_operation_count);
+	}
+
+	spin_unlock_irqrestore(&tracked_skb_lock, flags);
+
+	if (should_track) {
+		// if (dataref >= 0 && users >= 0)
+		// 	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u dataref=%d users=%d\n",
+		// 		op_count, skb, skb->head, operation, size, skb->truesize, dataref, users);
+		// else if (dataref >= 0)
+		// 	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u dataref=%d\n",
+		// 		op_count, skb, skb->head, operation, size, skb->truesize, dataref);
+		// else
+		// 	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
+		// 		op_count, skb, skb->head, operation, size, skb->truesize);
+		pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
+			op_count, skb, skb->head, operation, size, skb->truesize);
+	}
+}
+EXPORT_SYMBOL(netmem_track_skb_operation);
 
 static int __init netmem_stats_init(void)
 {
