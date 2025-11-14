@@ -2142,7 +2142,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE) {
 #ifdef NETMEM_COUNT_BY_ADDRESS
 		char site_id[64];
-		snprintf(site_id, sizeof(site_id), "%p %p skb_clone", n->head, n->head);
+		snprintf(site_id, sizeof(site_id), "%p %p skb_clone", n->head, n);
 #else
 		const char *site_id = "skb_clone";
 #endif
