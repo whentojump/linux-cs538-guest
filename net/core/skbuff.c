@@ -378,6 +378,7 @@ static inline void __finalize_skb_around(struct sk_buff *skb, void *data,
 
 	/* Assumes caller memset cleared SKB */
 	skb->truesize = SKB_TRUESIZE(size);
+	netmem_track_skb_operation(skb, "__finalize_skb_around =", SKB_TRUESIZE(size));
 	refcount_set(&skb->users, 1);
 	skb->head = data;
 	skb->data = data;
@@ -490,6 +491,7 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 #endif
 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
 	netmem_stats_alloc_per_site(data_size, site_id);
+	netmem_track_skb_operation(skb, "__build_skb", data_size);
 
 	return skb;
 }
@@ -720,6 +722,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 	const char *site_id = "__alloc_skb";
 #endif
 	netmem_stats_alloc_per_site(skb->truesize, site_id);
+	netmem_track_skb_operation(skb, "__alloc_skb", skb->truesize);
 
 	return skb;
 
@@ -887,6 +890,7 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
 	#endif
 		unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
 		netmem_stats_alloc_per_site(data_size, site_id);
+		netmem_track_skb_operation(skb, "napi_alloc_skb", data_size);
 	}
 	if (unlikely(!skb)) {
 		skb_free_frag(data);
@@ -915,6 +919,8 @@ void skb_add_rx_frag_netmem(struct sk_buff *skb, int i, netmem_ref netmem,
 	skb->len += size;
 	skb->data_len += size;
 	skb->truesize += truesize;
+
+	netmem_track_skb_operation(skb, "skb_add_rx_frag_netmem +=", truesize);
 }
 EXPORT_SYMBOL(skb_add_rx_frag_netmem);
 
@@ -929,6 +935,8 @@ void skb_coalesce_rx_frag(struct sk_buff *skb, int i, int size,
 	skb->len += size;
 	skb->data_len += size;
 	skb->truesize += truesize;
+
+	netmem_track_skb_operation(skb, "skb_coalesce_rx_frag +=", truesize);
 }
 EXPORT_SYMBOL(skb_coalesce_rx_frag);
 
@@ -1145,6 +1153,7 @@ static void skb_release_data(struct sk_buff *skb, enum skb_drop_reason reason)
 #endif
 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
 	netmem_stats_free_per_site(data_size, site_id);
+	netmem_track_skb_operation(skb, "skb_release_data", data_size);
 
 	if (skb_zcopy(skb)) {
 		bool skip_unref = shinfo->flags & SKBFL_MANAGED_FRAG_REFS;
@@ -1192,6 +1201,7 @@ static void kfree_skbmem(struct sk_buff *skb)
 		const char *site_id = "kfree_skbmem UNAVAILABLE";
 #endif
 		netmem_stats_free_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
+		netmem_track_skb_operation(skb, "kfree_skbmem", kmem_cache_size(net_hotdata.skbuff_cache));
 
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 		return;
@@ -1648,6 +1658,7 @@ static struct sk_buff *__skb_clone(struct sk_buff *n, struct sk_buff *skb)
 	C(head_frag);
 	C(data);
 	C(truesize);
+	netmem_track_skb_operation(n, "__skb_clone = ", skb->truesize);
 	refcount_set(&n->users, 1);
 
 	atomic_inc(&(skb_shinfo(skb)->dataref));
@@ -1672,6 +1683,7 @@ struct sk_buff *alloc_skb_for_msg(struct sk_buff *first)
 	n->len = first->len;
 	n->data_len = first->len;
 	n->truesize = first->truesize;
+	netmem_track_skb_operation(n, "alloc_skb_for_msg = ", first->truesize);
 
 	skb_shinfo(n)->frag_list = first;
 
@@ -2147,6 +2159,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 		const char *site_id = "skb_clone";
 #endif
 		netmem_stats_alloc_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
+		netmem_track_skb_operation(n, "skb_clone", kmem_cache_size(net_hotdata.skbuff_cache));
 	}
 	return n;
 }
@@ -2268,6 +2281,7 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *skb, int headroom,
 	skb_copy_from_linear_data(skb, n->data, n->len);
 
 	n->truesize += skb->data_len;
+	netmem_track_skb_operation(n, "__pskb_copy_fclone +=", skb->data_len);
 	n->data_len  = skb->data_len;
 	n->len	     = skb->len;
 
@@ -2389,8 +2403,14 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
 	 * For the moment, we really care of rx path, or
 	 * when skb is orphaned (not attached to a socket).
 	 */
-	if (!skb->sk || skb->destructor == sock_edemux)
-		skb->truesize += size - osize;
+	if (!skb->sk || skb->destructor == sock_edemux) {
+		int delta = size - osize;
+		skb->truesize += delta;
+		if (delta >= 0)
+			netmem_track_skb_operation(skb, "pskb_expand_head +=", delta);
+		else
+			netmem_track_skb_operation(skb, "pskb_expand_head -=", -delta);
+	}
 
 	return 0;
 
@@ -2437,6 +2457,8 @@ int __skb_unclone_keeptruesize(struct sk_buff *skb, gfp_t pri)
 		return res;
 
 	skb->truesize = saved_truesize;
+
+	netmem_track_skb_operation(skb, "__skb_unclone_keeptruesize =", saved_truesize);
 
 	if (likely(skb_end_offset(skb) == saved_end_offset))
 		return 0;
@@ -2511,6 +2533,10 @@ struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
 		delta = skb_end_offset(skb) - osize;
 		refcount_add(delta, &sk->sk_wmem_alloc);
 		skb->truesize += delta;
+		if (delta >= 0)
+			netmem_track_skb_operation(skb, "skb_expand_head +=", delta);
+		else
+			netmem_track_skb_operation(skb, "skb_expand_head -=", -delta);
 	}
 	return skb;
 
@@ -4717,6 +4743,7 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
 	}
 
 	skb->truesize = skb->truesize - delta_truesize;
+	netmem_track_skb_operation(skb, "skb_segment_list -= ", delta_truesize);
 	skb->data_len = skb->data_len - delta_len;
 	skb->len = skb->len - delta_len;
 
@@ -4907,7 +4934,9 @@ normal:
 				goto err;
 			}
 
-			nskb->truesize += skb_end_offset(nskb) - hsize;
+			int delta = skb_end_offset(nskb) - hsize;
+			nskb->truesize += delta;
+			netmem_track_skb_operation(nskb, "skb_segment +=", delta);
 			skb_release_head_state(nskb);
 			__skb_push(nskb, doffset);
 		} else {
@@ -5035,6 +5064,8 @@ skip_fraglist:
 		nskb->len += nskb->data_len;
 		nskb->truesize += nskb->data_len;
 
+		netmem_track_skb_operation(nskb, "skb_segment +=", nskb->data_len);
+
 perform_csum_check:
 		if (!csum) {
 			if (skb_has_shared_frag(nskb) &&
@@ -5088,6 +5119,8 @@ perform_csum_check:
 	 */
 	if (head_skb->destructor == sock_wfree) {
 		swap(tail->truesize, head_skb->truesize);
+		netmem_track_skb_operation(tail, "skb_segment swap", 4242);
+		netmem_track_skb_operation(head_skb, "skb_segment swap", 4242);
 		swap(tail->destructor, head_skb->destructor);
 		swap(tail->sk, head_skb->sk);
 	}
@@ -5428,6 +5461,7 @@ static void sock_rmem_free(struct sk_buff *skb)
 	struct sock *sk = skb->sk;
 
 	atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
+	netmem_track_skb_operation(skb, "sock_rmem_free -= ", &sk->sk_rmem_alloc);
 }
 
 static void skb_set_err_queue(struct sk_buff *skb)
@@ -5452,6 +5486,7 @@ int sock_queue_err_skb(struct sock *sk, struct sk_buff *skb)
 	skb->sk = sk;
 	skb->destructor = sock_rmem_free;
 	atomic_add(skb->truesize, &sk->sk_rmem_alloc);
+	netmem_track_skb_operation(skb, "sock_queue_err_skb += ", &sk->sk_rmem_alloc);
 	skb_set_err_queue(skb);
 
 	/* before exiting rcu section, make sure dst is refcounted */
@@ -6148,6 +6183,10 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
 	}
 
 	to->truesize += delta;
+	if (delta >= 0)
+		netmem_track_skb_operation(to, "skb_try_coalesce +=", delta);
+	else
+		netmem_track_skb_operation(to, "skb_try_coalesce -=", -delta);
 	to->len += len;
 	to->data_len += len;
 
@@ -6698,6 +6737,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
 		skb_fill_page_desc(skb, nr_frags, page, 0, chunk);
 		nr_frags++;
 		skb->truesize += (PAGE_SIZE << order);
+		netmem_track_skb_operation(skb, "alloc_skb_with_frags +=", PAGE_SIZE << order);
 		data_len -= chunk;
 	}
 	return skb;
@@ -6960,7 +7000,9 @@ void skb_condense(struct sk_buff *skb)
 	 * was freed, but __pskb_pull_tail() could not possibly
 	 * adjust skb->truesize, not knowing the frag truesize.
 	 */
-	skb->truesize = SKB_TRUESIZE(skb_end_offset(skb));
+	int new_truesize = SKB_TRUESIZE(skb_end_offset(skb));
+	skb->truesize = new_truesize;
+	netmem_track_skb_operation(skb, "skb_condense =", new_truesize);
 }
 EXPORT_SYMBOL(skb_condense);
 
