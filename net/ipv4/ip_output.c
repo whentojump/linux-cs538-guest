@@ -1265,6 +1265,7 @@ alloc_new_skb:
 			const char *site_id = "__ip_append_data";
 #endif
 			netmem_stats_alloc_per_site(copy, site_id);
+			netmem_track_skb_operation(skb, "__ip_append_data +=", copy);
 
 			wmem_alloc_delta += copy;
 		} else {
