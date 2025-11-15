@@ -85,6 +85,8 @@
 #include <linux/netlink.h>
 #include <linux/tcp.h>
 
+# include <net/netmem_stats.h>
+
 static int
 ip_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
 	    unsigned int mtu,
@@ -1255,6 +1257,15 @@ alloc_new_skb:
 			pfrag->offset += copy;
 			skb_frag_size_add(&skb_shinfo(skb)->frags[i - 1], copy);
 			skb_len_add(skb, copy);
+
+#ifdef NETMEM_COUNT_BY_ADDRESS
+			char site_id[64];
+			snprintf(site_id, sizeof(site_id), "%p %p __ip_append_data", skb->head, skb);
+#else
+			const char *site_id = "__ip_append_data";
+#endif
+			netmem_stats_alloc_per_site(copy, site_id);
+
 			wmem_alloc_delta += copy;
 		} else {
 			err = skb_zerocopy_iter_dgram(skb, from, copy);
