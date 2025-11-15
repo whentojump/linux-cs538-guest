@@ -325,6 +325,9 @@ void netmem_track_skb_reset(void)
 {
 	unsigned long flags;
 
+	/* Uninstall any existing watchpoint */
+	skb_uninstall_truesize_watchpoint();
+
 	spin_lock_irqsave(&tracked_skb_lock, flags);
 	tracked_skb = NULL;
 	tracked_skb_head = NULL;
@@ -374,6 +377,11 @@ void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size
 
 		pr_info("NETMEM: [OP 1] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
 			skb, skb->head, operation, size, skb->truesize);
+
+		/* Install hardware watchpoint on truesize field at OP1 */
+		if (skb_install_truesize_watchpoint(skb) < 0) {
+			pr_warn("NETMEM: Failed to install watchpoint at OP1\n");
+		}
 
 		return;
 	}

@@ -45,4 +45,17 @@ void netmem_stats_show_per_site(struct seq_file *seq);
 void netmem_track_skb_reset(void);
 void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size_t size);
 
+/* Hardware watchpoint for truesize field */
+#ifdef CONFIG_HAVE_HW_BREAKPOINT
+int skb_install_truesize_watchpoint(struct sk_buff *skb);
+void skb_uninstall_truesize_watchpoint(void);
+bool skb_has_truesize_watchpoint(void);
+struct sk_buff *skb_get_watched_skb(void);
+#else
+static inline int skb_install_truesize_watchpoint(struct sk_buff *skb) { return -ENOSYS; }
+static inline void skb_uninstall_truesize_watchpoint(void) { }
+static inline bool skb_has_truesize_watchpoint(void) { return false; }
+static inline struct sk_buff *skb_get_watched_skb(void) { return NULL; }
+#endif
+
 #endif /* _NET_NETMEM_STATS_H */
