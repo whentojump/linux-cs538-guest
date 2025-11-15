@@ -321,6 +321,10 @@ static void *tracked_skb_head = NULL;
 static atomic_t tracked_skb_operation_count = ATOMIC_INIT(0);
 static DEFINE_SPINLOCK(tracked_skb_lock);
 
+/* Configuration for which SKB to track (1=first, 2=second, etc.) */
+static int target_skb_number = 1;
+static int skbs_seen_count = 0;
+
 void netmem_track_skb_reset(void)
 {
 	unsigned long flags;
@@ -332,7 +336,10 @@ void netmem_track_skb_reset(void)
 	tracked_skb = NULL;
 	tracked_skb_head = NULL;
 	atomic_set(&tracked_skb_operation_count, 0);
+	skbs_seen_count = 0;  /* Reset SKB counter */
 	spin_unlock_irqrestore(&tracked_skb_lock, flags);
+
+	pr_info("NETMEM: Reset complete, will track SKB #%d\n", target_skb_number);
 }
 EXPORT_SYMBOL(netmem_track_skb_reset);
 
@@ -363,24 +370,30 @@ void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size
 	spin_lock_irqsave(&tracked_skb_lock, flags);
 
 	if (!tracked_skb) {
+		/* Count this SKB encounter */
+		skbs_seen_count++;
+
+		/* Check if this is the SKB we want to track */
+		if (skbs_seen_count < target_skb_number) {
+			/* Not the target SKB yet, skip it */
+			spin_unlock_irqrestore(&tracked_skb_lock, flags);
+			pr_info("NETMEM: [SKB %d/%d] skb=%p head=%p operation=%s (skipping)\n",
+				skbs_seen_count, target_skb_number, skb, skb->head, operation);
+			return;
+		}
+
+		/* This is the target SKB - start tracking! */
 		tracked_skb = skb;
 		tracked_skb_head = skb->head;
 		atomic_set(&tracked_skb_operation_count, 1);
 		spin_unlock_irqrestore(&tracked_skb_lock, flags);
 
-		// if (dataref >= 0)
-		// 	pr_info("NETMEM: [OP 1] TRACKING START - skb=%p head=%p operation=%s size=%zu truesize=%u dataref=%d\n",
-		// 		skb, skb->head, operation, size, skb->truesize, dataref);
-		// else
-		// 	pr_info("NETMEM: [OP 1] TRACKING START - skb=%p head=%p operation=%s size=%zu truesize=%u\n",
-		// 		skb, skb->head, operation, size, skb->truesize);
+		pr_info("NETMEM: [OP 1] **TRACKING SKB #%d** skb=%p head=%p operation=%s size=%zu truesize=%u\n",
+			skbs_seen_count, skb, skb->head, operation, size, skb->truesize);
 
-		pr_info("NETMEM: [OP 1] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
-			skb, skb->head, operation, size, skb->truesize);
-
-		/* Install hardware watchpoint on truesize field at OP1 */
+		/* Install hardware watchpoint on truesize field */
 		if (skb_install_truesize_watchpoint(skb) < 0) {
-			pr_warn("NETMEM: Failed to install watchpoint at OP1\n");
+			pr_warn("NETMEM: Failed to install watchpoint on SKB #%d\n", skbs_seen_count);
 		}
 
 		return;
@@ -409,6 +422,52 @@ void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size
 }
 EXPORT_SYMBOL(netmem_track_skb_operation);
 
+/* Proc interface to configure target SKB number */
+static int netmem_target_skb_show(struct seq_file *m, void *v)
+{
+	seq_printf(m, "%d\n", target_skb_number);
+	return 0;
+}
+
+static ssize_t netmem_target_skb_write(struct file *file, const char __user *buffer,
+				       size_t count, loff_t *ppos)
+{
+	char buf[32];
+	int new_target;
+
+	if (count >= sizeof(buf))
+		return -EINVAL;
+
+	if (copy_from_user(buf, buffer, count))
+		return -EFAULT;
+
+	buf[count] = '\0';
+
+	if (kstrtoint(buf, 10, &new_target) < 0)
+		return -EINVAL;
+
+	if (new_target < 1)
+		return -EINVAL;
+
+	target_skb_number = new_target;
+	pr_info("NETMEM: Target SKB number set to %d\n", target_skb_number);
+
+	return count;
+}
+
+static int netmem_target_skb_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, netmem_target_skb_show, NULL);
+}
+
+static const struct proc_ops netmem_target_skb_proc_ops = {
+	.proc_open = netmem_target_skb_open,
+	.proc_read = seq_read,
+	.proc_write = netmem_target_skb_write,
+	.proc_lseek = seq_lseek,
+	.proc_release = single_release,
+};
+
 static int __init netmem_stats_init(void)
 {
 	netmem_stats_init_counters();
@@ -417,6 +476,7 @@ static int __init netmem_stats_init(void)
 	proc_create("netmem_stats/dump", 0444, NULL, &netmem_stats_dump_proc_ops);
 	proc_create("netmem_stats/reset", 0200, NULL, &netmem_stats_reset_proc_ops);
 	proc_create("netmem_stats/per_site", 0444, NULL, &netmem_stats_per_site_proc_ops);
+	proc_create("netmem_stats/target_skb", 0644, NULL, &netmem_target_skb_proc_ops);
 
 	return 0;
 }
