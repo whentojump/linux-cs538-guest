@@ -24,6 +24,8 @@
 
 #include <linux/highmem.h>
 
+#include <net/netmem_stats.h>
+
 struct esp_skb_cb {
 	struct xfrm_skb_cb xfrm;
 	void *tmp;
@@ -503,6 +505,14 @@ int esp_output_head(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
 			nfrags++;
 
 			skb_len_add(skb, tailen);
+			netmem_track_skb_operation(skb, "dummy 7", tailen);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+			char site_id[64];
+			snprintf(site_id, sizeof(site_id), "%p %p esp_output_head", skb->head, skb);
+#else
+			const char *site_id = "esp_output_head";
+#endif
+			netmem_stats_alloc_per_site(tailen, site_id);
 			if (sk && sk_fullsock(sk))
 				refcount_add(tailen, &sk->sk_wmem_alloc);
 

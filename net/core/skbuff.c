@@ -3910,6 +3910,14 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
 	}
 
 	skb_len_add(to, len + plen);
+	netmem_track_skb_operation(to, "dummy 2", len + plen);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+	char site_id[64];
+	snprintf(site_id, sizeof(site_id), "%p %p skb_zerocopy", to->head, to);
+#else
+	const char *site_id = "skb_zerocopy";
+#endif
+	netmem_stats_alloc_per_site(len+plen, site_id);
 
 	if (unlikely(skb_orphan_frags(from, GFP_ATOMIC))) {
 		skb_tx_error(from);
@@ -4387,8 +4395,29 @@ onlymerged:
 	skb->ip_summed = CHECKSUM_PARTIAL;
 
 	skb_len_add(skb, -shiftlen);
+	netmem_track_skb_operation(skb, "dummy 3", -shiftlen);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+	char site_id[64];
+	snprintf(site_id, sizeof(site_id), "%p %p skb_shift 1", skb->head, skb);
+#else
+	const char *site_id = "skb_shift 1";
+#endif
+	if (-shiftlen > 0)
+		netmem_stats_alloc_per_site(-shiftlen, site_id);
+	else
+		netmem_stats_free_per_site(shiftlen, site_id);
 	skb_len_add(tgt, shiftlen);
-
+	netmem_track_skb_operation(tgt, "dummy 4", shiftlen);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+	// char site_id[64];
+	snprintf(site_id, sizeof(site_id), "%p %p skb_shift 2", tgt->head, tgt);
+#else
+	const char *site_id = "skb_shift 2";
+#endif
+	if (shiftlen > 0)
+		netmem_stats_alloc_per_site(shiftlen, site_id);
+	else
+		netmem_stats_free_per_site(-shiftlen, site_id);
 	return shiftlen;
 }
 
@@ -7350,6 +7379,14 @@ ssize_t skb_splice_from_iter(struct sk_buff *skb, struct iov_iter *iter,
 
 out:
 	skb_len_add(skb, spliced);
+	netmem_track_skb_operation(skb, "dummy 5", spliced);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+	char site_id[64];
+	snprintf(site_id, sizeof(site_id), "%p %p skb_splice_from_iter", skb->head, skb);
+#else
+	const char *site_id = "skb_splice_from_iter";
+#endif
+	netmem_stats_alloc_per_site(spliced, site_id);
 	return spliced ?: ret;
 }
 EXPORT_SYMBOL(skb_splice_from_iter);

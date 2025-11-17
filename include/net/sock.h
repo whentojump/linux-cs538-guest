@@ -70,6 +70,8 @@
 #include <net/l3mdev.h>
 #include <uapi/linux/socket.h>
 
+#include <net/netmem_stats.h>
+
 /*
  * This structure really needs to be cleaned up.
  * Most of it is for TCP, and not used by any of
@@ -2200,6 +2202,14 @@ static inline int skb_copy_to_page_nocache(struct sock *sk, struct iov_iter *fro
 		return err;
 
 	skb_len_add(skb, copy);
+	netmem_track_skb_operation(skb, "dummy 1", copy);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+	char site_id[64];
+	snprintf(site_id, sizeof(site_id), "%p %p skb_copy_to_page_nocache", skb->head, skb);
+#else
+	const char *site_id = "skb_copy_to_page_nocache";
+#endif
+	netmem_stats_alloc_per_site(copy, site_id);
 	sk_wmem_queued_add(sk, copy);
 	sk_mem_charge(sk, copy);
 	return 0;

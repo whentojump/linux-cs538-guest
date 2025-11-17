@@ -49,6 +49,8 @@
 
 #include <trace/events/tcp.h>
 
+#include <net/netmem_stats.h>
+
 /* Refresh clocks of a TCP socket,
  * ensuring monotically increasing values.
  */
@@ -4016,6 +4018,14 @@ static int tcp_send_syn_data(struct sock *sk, struct sk_buff *syn)
 		page_ref_inc(pfrag->page);
 		pfrag->offset += space;
 		skb_len_add(syn_data, space);
+		netmem_track_skb_operation(syn_data, "dummy 6", space);
+#ifdef NETMEM_COUNT_BY_ADDRESS
+		char site_id[64];
+		snprintf(site_id, sizeof(site_id), "%p %p tcp_send_syn_data", syn_data->head, syn_data);
+#else
+		const char *site_id = "tcp_send_syn_data";
+#endif
+		netmem_stats_alloc_per_site(space, site_id);
 		skb_zcopy_set(syn_data, fo->uarg, NULL);
 	}
 	/* No more data pending in inet_wait_for_connect() */
