@@ -349,7 +349,9 @@ void netmem_track_skb_reset(void)
 }
 EXPORT_SYMBOL(netmem_track_skb_reset);
 
-void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, long long size)
+void netmem_track_skb_operation(struct sk_buff *skb, const char *func_name,
+				enum netmem_track_skb_operation_type operation_type,
+				long long size)
 {
 	int op_num;
 
@@ -359,11 +361,30 @@ void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, long
 	if (!skb->head)
 		return;
 
-	/* Track everything after reset - just increment global counter */
 	op_num = atomic_inc_return(&global_op_count);
 
-	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
-		op_num, skb, skb->head, operation, size, skb->truesize);
+	switch (operation_type) {
+		case STRUCT_ALLOC:
+			pr_info("NETMEM: [OP %d] [STRUCT_ALLOC] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
+				op_num, skb, skb->head, func_name, size, skb->truesize);
+			break;
+		case STRUCT_FREE:
+			pr_info("NETMEM: [OP %d] [STRUCT_FREE] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
+				op_num, skb, skb->head, func_name, size, skb->truesize);
+			break;
+		case DATA_ALLOC:
+			pr_info("NETMEM: [OP %d] [DATA_ALLOC] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
+				op_num, skb, skb->head, func_name, size, skb->truesize);
+			break;
+		case DATA_FREE:
+			pr_info("NETMEM: [OP %d] [DATA_FREE] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
+				op_num, skb, skb->head, func_name, size, skb->truesize);
+			break;
+		case TRUESIZE_CHANGE:
+			pr_info("NETMEM: [OP %d] skb=%p head=%p func=%s truesize=%u\n",
+				op_num, skb, skb->head, func_name, skb->truesize);
+			break;
+	}
 }
 EXPORT_SYMBOL(netmem_track_skb_operation);
 

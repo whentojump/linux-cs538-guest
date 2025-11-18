@@ -43,7 +43,18 @@ void netmem_stats_show(struct seq_file *seq);
 void netmem_stats_show_per_site(struct seq_file *seq);
 
 void netmem_track_skb_reset(void);
-void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, long long size);
+
+enum netmem_track_skb_operation_type {
+	STRUCT_ALLOC,
+	STRUCT_FREE,
+	DATA_ALLOC,
+	DATA_FREE,
+	TRUESIZE_CHANGE,
+};
+
+void netmem_track_skb_operation(struct sk_buff *skb, const char *func_name,
+				enum netmem_track_skb_operation_type operation_type,
+				long long size);
 
 /* Hardware watchpoint for truesize field */
 #ifdef CONFIG_HAVE_HW_BREAKPOINT
