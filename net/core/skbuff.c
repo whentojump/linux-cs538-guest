@@ -721,6 +721,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 // #endif
 // 	netmem_stats_alloc_per_site(skb->truesize, site_id);
 
+	netmem_stats_alloc(skb->truesize);
 	return skb;
 
 nodata:
@@ -1249,6 +1250,7 @@ static void skb_release_all(struct sk_buff *skb, enum skb_drop_reason reason)
 
 void __kfree_skb(struct sk_buff *skb)
 {
+	netmem_stats_free(skb->truesize);
 	skb_release_all(skb, SKB_DROP_REASON_NOT_SPECIFIED);
 	kfree_skbmem(skb);
 }
