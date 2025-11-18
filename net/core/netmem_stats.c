@@ -325,6 +325,9 @@ static DEFINE_SPINLOCK(tracked_skb_lock);
 static int target_skb_number = 1;
 static int skbs_seen_count = 0;
 
+/* Global operation counter for tracking all SKBs */
+static atomic_t global_op_count = ATOMIC_INIT(0);
+
 void netmem_track_skb_reset(void)
 {
 	unsigned long flags;
@@ -339,18 +342,16 @@ void netmem_track_skb_reset(void)
 	skbs_seen_count = 0;  /* Reset SKB counter */
 	spin_unlock_irqrestore(&tracked_skb_lock, flags);
 
-	pr_info("NETMEM: Reset complete, will track SKB #%d\n", target_skb_number);
+	/* Reset global operation counter */
+	atomic_set(&global_op_count, 0);
+
+	pr_info("NETMEM: Reset complete, will track all SKBs\n");
 }
 EXPORT_SYMBOL(netmem_track_skb_reset);
 
 void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size_t size)
 {
-	bool should_track = false;
-	int op_count;
-	// int dataref = -1;
-	// int users = -1;
-
-	unsigned long flags;
+	int op_num;
 
 	if (!skb)
 		return;
@@ -358,67 +359,11 @@ void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size
 	if (!skb->head)
 		return;
 
-	// if (skb_end_pointer(skb) > (unsigned char *)skb->head) {
-	// 	struct skb_shared_info *shinfo = skb_shinfo(skb);
-	// 	if (shinfo)
-	// 		dataref = atomic_read(&shinfo->dataref);
-	// }
+	/* Track everything after reset - just increment global counter */
+	op_num = atomic_inc_return(&global_op_count);
 
-	// if (refcount_read(&skb->users) != 0)
-	// 	users = refcount_read(&skb->users);
-
-	spin_lock_irqsave(&tracked_skb_lock, flags);
-
-	if (!tracked_skb) {
-		/* Count this SKB encounter */
-		skbs_seen_count++;
-
-		/* Check if this is the SKB we want to track */
-		if (skbs_seen_count < target_skb_number) {
-			/* Not the target SKB yet, skip it */
-			spin_unlock_irqrestore(&tracked_skb_lock, flags);
-			pr_info("NETMEM: [SKB %d/%d] skb=%p head=%p operation=%s (skipping)\n",
-				skbs_seen_count, target_skb_number, skb, skb->head, operation);
-			return;
-		}
-
-		/* This is the target SKB - start tracking! */
-		tracked_skb = skb;
-		tracked_skb_head = skb->head;
-		atomic_set(&tracked_skb_operation_count, 1);
-		spin_unlock_irqrestore(&tracked_skb_lock, flags);
-
-		pr_info("NETMEM: [OP 1] **TRACKING SKB #%d** skb=%p head=%p operation=%s size=%zu truesize=%u\n",
-			skbs_seen_count, skb, skb->head, operation, size, skb->truesize);
-
-		/* Install hardware watchpoint on truesize field */
-		if (skb_install_truesize_watchpoint(skb) < 0) {
-			pr_warn("NETMEM: Failed to install watchpoint on SKB #%d\n", skbs_seen_count);
-		}
-
-		return;
-	}
-
-	if (skb == tracked_skb || skb->head == tracked_skb_head) {
-		should_track = true;
-		op_count = atomic_inc_return(&tracked_skb_operation_count);
-	}
-
-	spin_unlock_irqrestore(&tracked_skb_lock, flags);
-
-	if (should_track) {
-		// if (dataref >= 0 && users >= 0)
-		// 	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u dataref=%d users=%d\n",
-		// 		op_count, skb, skb->head, operation, size, skb->truesize, dataref, users);
-		// else if (dataref >= 0)
-		// 	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u dataref=%d\n",
-		// 		op_count, skb, skb->head, operation, size, skb->truesize, dataref);
-		// else
-		// 	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
-		// 		op_count, skb, skb->head, operation, size, skb->truesize);
-		pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
-			op_count, skb, skb->head, operation, size, skb->truesize);
-	}
+	pr_info("NETMEM: [OP %d] skb=%p head=%p operation=%s size=%zu truesize=%u\n",
+		op_num, skb, skb->head, operation, size, skb->truesize);
 }
 EXPORT_SYMBOL(netmem_track_skb_operation);
 
