@@ -1,0 +1,1912 @@
+[    0.105689]  dump_stack_lvl+0x55/0x70
+[    0.105689]  __alloc_skb+0x15a/0x200
+[    0.105689]  audit_log_start.part.0+0xb2/0x3a0
+----------------------------------------
+[    0.107689]  dump_stack_lvl+0x55/0x70
+[    0.107689]  kfree_skbmem+0xe4/0x130
+[    0.107689]  kauditd_send_queue+0x119/0x170
+----------------------------------------
+[    0.170689]  dump_stack_lvl+0x55/0x70
+[    0.170689]  __alloc_skb+0x15a/0x200
+[    0.170689]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.177689]  dump_stack_lvl+0x55/0x70
+[    0.177689]  kfree_skbmem+0xe4/0x130
+[    0.177689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.184689]  dump_stack_lvl+0x55/0x70
+[    0.184689]  __alloc_skb+0x15a/0x200
+[    0.184689]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.191689]  dump_stack_lvl+0x55/0x70
+[    0.191689]  kfree_skbmem+0xe4/0x130
+[    0.191689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.198689]  dump_stack_lvl+0x55/0x70
+[    0.198689]  __alloc_skb+0x15a/0x200
+[    0.198689]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.204689]  dump_stack_lvl+0x55/0x70
+[    0.204689]  kfree_skbmem+0xe4/0x130
+[    0.204689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.211689]  dump_stack_lvl+0x55/0x70
+[    0.211689]  __alloc_skb+0x15a/0x200
+[    0.211689]  rtmsg_ifinfo_build_skb+0x4d/0x110
+----------------------------------------
+[    0.218689]  dump_stack_lvl+0x55/0x70
+[    0.218689]  kfree_skbmem+0xe4/0x130
+[    0.218689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.224689]  dump_stack_lvl+0x55/0x70
+[    0.224689]  __alloc_skb+0x15a/0x200
+[    0.224689]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.229689]  dump_stack_lvl+0x55/0x70
+[    0.229689]  pskb_expand_head+0x30c/0x420
+[    0.229689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.234689]  dump_stack_lvl+0x55/0x70
+[    0.234689]  kfree_skbmem+0xe4/0x130
+[    0.234689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.239689]  dump_stack_lvl+0x55/0x70
+[    0.239689]  __alloc_skb+0x15a/0x200
+[    0.239689]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.244689]  dump_stack_lvl+0x55/0x70
+[    0.244689]  pskb_expand_head+0x30c/0x420
+[    0.244689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.249689]  dump_stack_lvl+0x55/0x70
+[    0.249689]  kfree_skbmem+0xe4/0x130
+[    0.249689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.254689]  dump_stack_lvl+0x55/0x70
+[    0.254689]  __alloc_skb+0x15a/0x200
+[    0.254689]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.258689]  dump_stack_lvl+0x55/0x70
+[    0.258689]  pskb_expand_head+0x30c/0x420
+[    0.258689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.263689]  dump_stack_lvl+0x55/0x70
+[    0.263689]  kfree_skbmem+0xe4/0x130
+[    0.263689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.268689]  dump_stack_lvl+0x55/0x70
+[    0.268689]  __alloc_skb+0x15a/0x200
+[    0.268689]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.273689]  dump_stack_lvl+0x55/0x70
+[    0.273689]  pskb_expand_head+0x30c/0x420
+[    0.273689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.278689]  dump_stack_lvl+0x55/0x70
+[    0.278689]  kfree_skbmem+0xe4/0x130
+[    0.278689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.283689]  dump_stack_lvl+0x55/0x70
+[    0.283689]  __alloc_skb+0x15a/0x200
+[    0.283689]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.288689]  dump_stack_lvl+0x55/0x70
+[    0.288689]  pskb_expand_head+0x30c/0x420
+[    0.288689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.293689]  dump_stack_lvl+0x55/0x70
+[    0.293689]  kfree_skbmem+0xe4/0x130
+[    0.293689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.299689]  dump_stack_lvl+0x55/0x70
+[    0.299689]  __alloc_skb+0x15a/0x200
+[    0.299689]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.304689]  dump_stack_lvl+0x55/0x70
+[    0.304689]  pskb_expand_head+0x30c/0x420
+[    0.304689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.309689]  dump_stack_lvl+0x55/0x70
+[    0.309689]  kfree_skbmem+0xe4/0x130
+[    0.309689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.314689]  dump_stack_lvl+0x55/0x70
+[    0.314689]  __alloc_skb+0x15a/0x200
+[    0.314689]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.319689]  dump_stack_lvl+0x55/0x70
+[    0.319689]  pskb_expand_head+0x30c/0x420
+[    0.319689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.325689]  dump_stack_lvl+0x55/0x70
+[    0.325689]  kfree_skbmem+0xe4/0x130
+[    0.325689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.330689]  dump_stack_lvl+0x55/0x70
+[    0.330689]  __alloc_skb+0x15a/0x200
+[    0.330689]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.335689]  dump_stack_lvl+0x55/0x70
+[    0.335689]  pskb_expand_head+0x30c/0x420
+[    0.335689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.340689]  dump_stack_lvl+0x55/0x70
+[    0.340689]  kfree_skbmem+0xe4/0x130
+[    0.340689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.346689]  dump_stack_lvl+0x55/0x70
+[    0.346689]  __alloc_skb+0x15a/0x200
+[    0.346689]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.351689]  dump_stack_lvl+0x55/0x70
+[    0.351689]  pskb_expand_head+0x30c/0x420
+[    0.351689]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.356689]  dump_stack_lvl+0x55/0x70
+[    0.356689]  kfree_skbmem+0xe4/0x130
+[    0.356689]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.368384]  dump_stack_lvl+0x55/0x70
+[    0.368384]  __alloc_skb+0x15a/0x200
+[    0.368384]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.372740]  dump_stack_lvl+0x55/0x70
+[    0.372740]  pskb_expand_head+0x30c/0x420
+[    0.372740]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.378437]  dump_stack_lvl+0x55/0x70
+[    0.378437]  kfree_skbmem+0xe4/0x130
+[    0.378437]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.383456]  dump_stack_lvl+0x55/0x70
+[    0.383456]  __alloc_skb+0x15a/0x200
+[    0.383456]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.387568]  dump_stack_lvl+0x55/0x70
+[    0.387568]  pskb_expand_head+0x30c/0x420
+[    0.387568]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.393454]  dump_stack_lvl+0x55/0x70
+[    0.393454]  kfree_skbmem+0xe4/0x130
+[    0.393454]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.397648]  dump_stack_lvl+0x55/0x70
+[    0.397648]  __alloc_skb+0x15a/0x200
+[    0.397648]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.402696]  dump_stack_lvl+0x55/0x70
+[    0.402696]  pskb_expand_head+0x30c/0x420
+[    0.402696]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.408419]  dump_stack_lvl+0x55/0x70
+[    0.408419]  kfree_skbmem+0xe4/0x130
+[    0.408419]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.413456]  dump_stack_lvl+0x55/0x70
+[    0.413456]  __alloc_skb+0x15a/0x200
+[    0.413456]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.417589]  dump_stack_lvl+0x55/0x70
+[    0.417589]  pskb_expand_head+0x30c/0x420
+[    0.417589]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.423496]  dump_stack_lvl+0x55/0x70
+[    0.423496]  kfree_skbmem+0xe4/0x130
+[    0.423496]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.436415]  dump_stack_lvl+0x55/0x70
+[    0.436415]  __alloc_skb+0x15a/0x200
+[    0.436415]  inet_netconf_notify_devconf+0x7a/0x140
+----------------------------------------
+[    0.441742]  dump_stack_lvl+0x55/0x70
+[    0.441742]  kfree_skbmem+0xe4/0x130
+[    0.441742]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.448520]  dump_stack_lvl+0x55/0x70
+[    0.448520]  __alloc_skb+0x15a/0x200
+[    0.448520]  inet_netconf_notify_devconf+0x7a/0x140
+----------------------------------------
+[    0.454447]  dump_stack_lvl+0x55/0x70
+[    0.454447]  kfree_skbmem+0xe4/0x130
+[    0.454447]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.460596]  dump_stack_lvl+0x55/0x70
+[    0.460596]  __alloc_skb+0x15a/0x200
+[    0.460596]  inet_netconf_notify_devconf+0x7a/0x140
+----------------------------------------
+[    0.466535]  dump_stack_lvl+0x55/0x70
+[    0.466535]  kfree_skbmem+0xe4/0x130
+[    0.466535]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.473927]  dump_stack_lvl+0x55/0x70
+[    0.473927]  __napi_build_skb+0xaa/0xc0
+[    0.473927]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[    0.479346]  dump_stack_lvl+0x55/0x70
+[    0.479346]  kfree_skbmem+0xe4/0x130
+[    0.479346]  napi_get_frags_check+0x2b/0x50
+----------------------------------------
+[    0.485396]  dump_stack_lvl+0x55/0x70
+[    0.485396]  __napi_build_skb+0xaa/0xc0
+[    0.485396]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[    0.491418]  dump_stack_lvl+0x55/0x70
+[    0.491418]  kfree_skbmem+0xe4/0x130
+[    0.491418]  napi_get_frags_check+0x2b/0x50
+----------------------------------------
+[    0.498568]  dump_stack_lvl+0x55/0x70
+[    0.498568]  __alloc_skb+0x15a/0x200
+[    0.498568]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.503642]  dump_stack_lvl+0x55/0x70
+[    0.503642]  pskb_expand_head+0x30c/0x420
+[    0.503642]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.509393]  dump_stack_lvl+0x55/0x70
+[    0.509393]  kfree_skbmem+0xe4/0x130
+[    0.509393]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.516921]  dump_stack_lvl+0x55/0x70
+[    0.516921]  __alloc_skb+0x15a/0x200
+[    0.516921]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.521522]  dump_stack_lvl+0x55/0x70
+[    0.521522]  kfree_skbmem+0xe4/0x130
+[    0.521522]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.526401]  dump_stack_lvl+0x55/0x70
+[    0.526401]  __alloc_skb+0x15a/0x200
+[    0.526401]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.530497]  dump_stack_lvl+0x55/0x70
+[    0.530497]  pskb_expand_head+0x30c/0x420
+[    0.530497]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.535842]  dump_stack_lvl+0x55/0x70
+[    0.535842]  kfree_skbmem+0xe4/0x130
+[    0.535842]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.540567]  dump_stack_lvl+0x55/0x70
+[    0.540567]  __alloc_skb+0x15a/0x200
+[    0.540567]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.544663]  dump_stack_lvl+0x55/0x70
+[    0.544663]  pskb_expand_head+0x30c/0x420
+[    0.544663]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.549441]  dump_stack_lvl+0x55/0x70
+[    0.549441]  kfree_skbmem+0xe4/0x130
+[    0.549441]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.554715]  dump_stack_lvl+0x55/0x70
+[    0.554715]  __alloc_skb+0x15a/0x200
+[    0.554715]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.558808]  dump_stack_lvl+0x55/0x70
+[    0.558808]  pskb_expand_head+0x30c/0x420
+[    0.558808]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.563585]  dump_stack_lvl+0x55/0x70
+[    0.563585]  kfree_skbmem+0xe4/0x130
+[    0.563585]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.568856]  dump_stack_lvl+0x55/0x70
+[    0.568856]  __alloc_skb+0x15a/0x200
+[    0.568856]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.573438]  dump_stack_lvl+0x55/0x70
+[    0.573438]  pskb_expand_head+0x30c/0x420
+[    0.573438]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.577733]  dump_stack_lvl+0x55/0x70
+[    0.577733]  kfree_skbmem+0xe4/0x130
+[    0.577733]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.582388]  dump_stack_lvl+0x55/0x70
+[    0.582388]  __alloc_skb+0x15a/0x200
+[    0.582388]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.587579]  dump_stack_lvl+0x55/0x70
+[    0.587579]  pskb_expand_head+0x30c/0x420
+[    0.587579]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.592429]  dump_stack_lvl+0x55/0x70
+[    0.592429]  kfree_skbmem+0xe4/0x130
+[    0.592429]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.596529]  dump_stack_lvl+0x55/0x70
+[    0.596529]  __alloc_skb+0x15a/0x200
+[    0.596529]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.601716]  dump_stack_lvl+0x55/0x70
+[    0.601716]  pskb_expand_head+0x30c/0x420
+[    0.601716]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.606570]  dump_stack_lvl+0x55/0x70
+[    0.606570]  kfree_skbmem+0xe4/0x130
+[    0.606570]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.645417]  dump_stack_lvl+0x55/0x70
+[    0.645417]  __napi_build_skb+0xaa/0xc0
+[    0.645417]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[    0.652720]  dump_stack_lvl+0x55/0x70
+[    0.652720]  kfree_skbmem+0xe4/0x130
+[    0.652720]  napi_get_frags_check+0x2b/0x50
+----------------------------------------
+[    0.659778]  dump_stack_lvl+0x55/0x70
+[    0.659778]  __napi_build_skb+0xaa/0xc0
+[    0.659778]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[    0.666811]  dump_stack_lvl+0x55/0x70
+[    0.666811]  kfree_skbmem+0xe4/0x130
+[    0.666811]  napi_get_frags_check+0x2b/0x50
+----------------------------------------
+[    0.673591]  dump_stack_lvl+0x55/0x70
+[    0.673591]  __alloc_skb+0x15a/0x200
+[    0.673591]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.680712]  dump_stack_lvl+0x55/0x70
+[    0.680712]  kfree_skbmem+0xe4/0x130
+[    0.680712]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.687392]  dump_stack_lvl+0x55/0x70
+[    0.687392]  __alloc_skb+0x15a/0x200
+[    0.687392]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.694857]  dump_stack_lvl+0x55/0x70
+[    0.694857]  kfree_skbmem+0xe4/0x130
+[    0.694857]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.701364]  dump_stack_lvl+0x55/0x70
+[    0.701364]  __alloc_skb+0x15a/0x200
+[    0.701364]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.708777]  dump_stack_lvl+0x55/0x70
+[    0.708777]  kfree_skbmem+0xe4/0x130
+[    0.708777]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.715884]  dump_stack_lvl+0x55/0x70
+[    0.715884]  __alloc_skb+0x15a/0x200
+[    0.715884]  inet_netconf_notify_devconf+0x7a/0x140
+----------------------------------------
+[    0.722751]  dump_stack_lvl+0x55/0x70
+[    0.722751]  kfree_skbmem+0xe4/0x130
+[    0.722751]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.730352]  dump_stack_lvl+0x55/0x70
+[    0.730352]  __alloc_skb+0x15a/0x200
+[    0.730352]  rtmsg_ifinfo_build_skb+0x4d/0x110
+----------------------------------------
+[    0.736769]  dump_stack_lvl+0x55/0x70
+[    0.736769]  kfree_skbmem+0xe4/0x130
+[    0.736769]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.752394]  dump_stack_lvl+0x55/0x70
+[    0.752394]  __alloc_skb+0x15a/0x200
+[    0.752394]  inet6_netconf_notify_devconf+0x59/0x100
+----------------------------------------
+[    0.757636]  dump_stack_lvl+0x55/0x70
+[    0.757636]  kfree_skbmem+0xe4/0x130
+[    0.757636]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.762465]  dump_stack_lvl+0x55/0x70
+[    0.762465]  __alloc_skb+0x15a/0x200
+[    0.762465]  inet6_netconf_notify_devconf+0x59/0x100
+----------------------------------------
+[    0.768373]  dump_stack_lvl+0x55/0x70
+[    0.768373]  kfree_skbmem+0xe4/0x130
+[    0.768373]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.773831]  dump_stack_lvl+0x55/0x70
+[    0.773831]  __alloc_skb+0x15a/0x200
+[    0.773831]  inet6_netconf_notify_devconf+0x59/0x100
+----------------------------------------
+[    0.779626]  dump_stack_lvl+0x55/0x70
+[    0.779626]  kfree_skbmem+0xe4/0x130
+[    0.779626]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.785567]  dump_stack_lvl+0x55/0x70
+[    0.785567]  __alloc_skb+0x15a/0x200
+[    0.785567]  inet6_netconf_notify_devconf+0x59/0x100
+----------------------------------------
+[    0.790614]  dump_stack_lvl+0x55/0x70
+[    0.790614]  kfree_skbmem+0xe4/0x130
+[    0.790614]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.796386]  dump_stack_lvl+0x55/0x70
+[    0.796386]  __alloc_skb+0x15a/0x200
+[    0.796386]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.802411]  dump_stack_lvl+0x55/0x70
+[    0.802411]  pskb_expand_head+0x30c/0x420
+[    0.802411]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.807671]  dump_stack_lvl+0x55/0x70
+[    0.807671]  kfree_skbmem+0xe4/0x130
+[    0.807671]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.813355]  dump_stack_lvl+0x55/0x70
+[    0.813355]  __alloc_skb+0x15a/0x200
+[    0.813355]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.817510]  dump_stack_lvl+0x55/0x70
+[    0.817510]  pskb_expand_head+0x30c/0x420
+[    0.817510]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.823349]  dump_stack_lvl+0x55/0x70
+[    0.823349]  kfree_skbmem+0xe4/0x130
+[    0.823349]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.828447]  dump_stack_lvl+0x55/0x70
+[    0.828447]  __alloc_skb+0x15a/0x200
+[    0.828447]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.832573]  dump_stack_lvl+0x55/0x70
+[    0.832573]  pskb_expand_head+0x30c/0x420
+[    0.832573]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.837403]  dump_stack_lvl+0x55/0x70
+[    0.837403]  kfree_skbmem+0xe4/0x130
+[    0.837403]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.843349]  dump_stack_lvl+0x55/0x70
+[    0.843349]  __alloc_skb+0x15a/0x200
+[    0.843349]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.849756]  dump_stack_lvl+0x55/0x70
+[    0.849756]  kfree_skbmem+0xe4/0x130
+[    0.849756]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.856451]  dump_stack_lvl+0x55/0x70
+[    0.856451]  __alloc_skb+0x15a/0x200
+[    0.856451]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.862692]  dump_stack_lvl+0x55/0x70
+[    0.862692]  kfree_skbmem+0xe4/0x130
+[    0.862692]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.868516]  dump_stack_lvl+0x55/0x70
+[    0.868516]  __alloc_skb+0x15a/0x200
+[    0.868516]  alloc_uevent_skb+0x42/0xc0
+----------------------------------------
+[    0.875685]  dump_stack_lvl+0x55/0x70
+[    0.875685]  kfree_skbmem+0xe4/0x130
+[    0.875685]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.881814]  dump_stack_lvl+0x55/0x70
+[    0.881814]  __alloc_skb+0x15a/0x200
+[    0.881814]  inet_netconf_notify_devconf+0x7a/0x140
+----------------------------------------
+[    0.888518]  dump_stack_lvl+0x55/0x70
+[    0.888518]  kfree_skbmem+0xe4/0x130
+[    0.888518]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.894541]  dump_stack_lvl+0x55/0x70
+[    0.894541]  __alloc_skb+0x15a/0x200
+[    0.894541]  inet6_netconf_notify_devconf+0x59/0x100
+----------------------------------------
+[    0.901380]  dump_stack_lvl+0x55/0x70
+[    0.901380]  kfree_skbmem+0xe4/0x130
+[    0.901380]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.907805]  dump_stack_lvl+0x55/0x70
+[    0.907805]  __alloc_skb+0x15a/0x200
+[    0.907805]  rtmsg_ifinfo_build_skb+0x4d/0x110
+----------------------------------------
+[    0.912558]  dump_stack_lvl+0x55/0x70
+[    0.912558]  pskb_expand_head+0x30c/0x420
+[    0.912558]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.918595]  dump_stack_lvl+0x55/0x70
+[    0.918595]  kfree_skbmem+0xe4/0x130
+[    0.918595]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.924352]  dump_stack_lvl+0x55/0x70
+[    0.924352]  __alloc_skb+0x15a/0x200
+[    0.924352]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.929616]  dump_stack_lvl+0x55/0x70
+[    0.929616]  pskb_expand_head+0x30c/0x420
+[    0.929616]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.934545]  dump_stack_lvl+0x55/0x70
+[    0.934545]  kfree_skbmem+0xe4/0x130
+[    0.934545]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.939353]  dump_stack_lvl+0x55/0x70
+[    0.939353]  __alloc_skb+0x15a/0x200
+[    0.939353]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.943816]  dump_stack_lvl+0x55/0x70
+[    0.943816]  pskb_expand_head+0x30c/0x420
+[    0.943816]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.948547]  dump_stack_lvl+0x55/0x70
+[    0.948547]  kfree_skbmem+0xe4/0x130
+[    0.948547]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.952524]  dump_stack_lvl+0x55/0x70
+[    0.952524]  __alloc_skb+0x15a/0x200
+[    0.952524]  genl_ctrl_event.isra.0+0x6b/0x320
+----------------------------------------
+[    0.957590]  dump_stack_lvl+0x55/0x70
+[    0.957590]  pskb_expand_head+0x30c/0x420
+[    0.957590]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.961744]  dump_stack_lvl+0x55/0x70
+[    0.961744]  kfree_skbmem+0xe4/0x130
+[    0.961744]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    0.968659]  dump_stack_lvl+0x55/0x70
+[    0.968840]  __alloc_skb+0x15a/0x200
+[    0.969016]  ctrl_build_family_msg+0x34/0xa0
+----------------------------------------
+[    0.973280]  dump_stack_lvl+0x55/0x70
+[    0.973459]  pskb_expand_head+0x30c/0x420
+[    0.973657]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    0.978202]  dump_stack_lvl+0x55/0x70
+[    0.978381]  kfree_skbmem+0xe4/0x130
+[    0.978556]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.297694]  dump_stack_lvl+0x55/0x70
+[    1.297831]  __alloc_skb+0x15a/0x200
+[    1.297965]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    1.303025]  dump_stack_lvl+0x55/0x70
+[    1.303160]  kfree_skbmem+0xe4/0x130
+[    1.303293]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    1.308033]  dump_stack_lvl+0x55/0x70
+[    1.308168]  __alloc_skb+0x15a/0x200
+[    1.308301]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    1.313368]  dump_stack_lvl+0x55/0x70
+[    1.313503]  kfree_skbmem+0xe4/0x130
+[    1.313639]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    1.374755]  dump_stack_lvl+0x55/0x70
+[    1.374891]  __alloc_skb+0x15a/0x200
+[    1.375024]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    1.379937]  dump_stack_lvl+0x55/0x70
+[    1.380072]  kfree_skbmem+0xe4/0x130
+[    1.380204]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    1.384928]  dump_stack_lvl+0x55/0x70
+[    1.385064]  __alloc_skb+0x15a/0x200
+[    1.385196]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    1.390046]  dump_stack_lvl+0x55/0x70
+[    1.390181]  kfree_skbmem+0xe4/0x130
+[    1.390314]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    1.402340]  dump_stack_lvl+0x55/0x70
+[    1.402478]  __alloc_skb+0x15a/0x200
+[    1.402612]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.407680]  dump_stack_lvl+0x55/0x70
+[    1.407816]  __alloc_skb+0x15a/0x200
+[    1.407949]  netlink_ack+0x81/0x290
+----------------------------------------
+[    1.413561]  dump_stack_lvl+0x55/0x70
+[    1.413698]  kfree_skbmem+0xe4/0x130
+[    1.413831]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    1.419041]  dump_stack_lvl+0x55/0x70
+[    1.419178]  kfree_skbmem+0xe4/0x130
+[    1.419311]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.424762]  dump_stack_lvl+0x55/0x70
+[    1.424898]  __alloc_skb+0x15a/0x200
+[    1.425031]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.429741]  dump_stack_lvl+0x55/0x70
+[    1.429877]  __alloc_skb+0x15a/0x200
+[    1.430010]  rtnl_getlink+0x1e6/0x3f0
+----------------------------------------
+[    1.435653]  dump_stack_lvl+0x55/0x70
+[    1.435788]  pskb_expand_head+0x30c/0x420
+[    1.435934]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    1.441865]  dump_stack_lvl+0x55/0x70
+[    1.442000]  kfree_skbmem+0xe4/0x130
+[    1.442132]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    1.446921]  dump_stack_lvl+0x55/0x70
+[    1.447055]  kfree_skbmem+0xe4/0x130
+[    1.447187]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.452426]  dump_stack_lvl+0x55/0x70
+[    1.452560]  __alloc_skb+0x15a/0x200
+[    1.452693]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.458358]  dump_stack_lvl+0x55/0x70
+[    1.458492]  __alloc_skb+0x15a/0x200
+[    1.458625]  rtmsg_ifinfo_build_skb+0x4d/0x110
+----------------------------------------
+[    1.467027]  dump_stack_lvl+0x55/0x70
+[    1.467161]  pskb_expand_head+0x30c/0x420
+[    1.467306]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    1.475709]  dump_stack_lvl+0x55/0x70
+[    1.475842]  kfree_skbmem+0xe4/0x130
+[    1.475973]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.484259]  dump_stack_lvl+0x55/0x70
+[    1.484394]  __alloc_skb+0x15a/0x200
+[    1.484526]  rtmsg_ifa+0x77/0x110
+----------------------------------------
+[    1.493044]  dump_stack_lvl+0x55/0x70
+[    1.493179]  kfree_skbmem+0xe4/0x130
+[    1.493311]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.502219]  dump_stack_lvl+0x55/0x70
+[    1.502355]  __alloc_skb+0x15a/0x200
+[    1.502487]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    1.512444]  dump_stack_lvl+0x55/0x70
+[    1.512579]  kfree_skbmem+0xe4/0x130
+[    1.512712]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.522823]  dump_stack_lvl+0x55/0x70
+[    1.522958]  __alloc_skb+0x15a/0x200
+[    1.523090]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    1.533030]  dump_stack_lvl+0x55/0x70
+[    1.533163]  kfree_skbmem+0xe4/0x130
+[    1.533294]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.543309]  dump_stack_lvl+0x55/0x70
+[    1.543444]  __alloc_skb+0x15a/0x200
+[    1.543575]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    1.553438]  dump_stack_lvl+0x55/0x70
+[    1.553572]  kfree_skbmem+0xe4/0x130
+[    1.553704]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.563756]  dump_stack_lvl+0x55/0x70
+[    1.563890]  __alloc_skb+0x15a/0x200
+[    1.564021]  __ipv6_ifa_notify+0x93/0x370
+----------------------------------------
+[    1.572652]  dump_stack_lvl+0x55/0x70
+[    1.572786]  kfree_skbmem+0xe4/0x130
+[    1.572917]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.582018]  dump_stack_lvl+0x55/0x70
+[    1.582152]  __alloc_skb+0x15a/0x200
+[    1.582283]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    1.591605]  dump_stack_lvl+0x55/0x70
+[    1.591740]  kfree_skbmem+0xe4/0x130
+[    1.591871]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.601368]  dump_stack_lvl+0x55/0x70
+[    1.601502]  __alloc_skb+0x15a/0x200
+[    1.601635]  inet6_ifinfo_notify+0x2f/0xb0
+----------------------------------------
+[    1.609885]  dump_stack_lvl+0x55/0x70
+[    1.610020]  kfree_skbmem+0xe4/0x130
+[    1.610151]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.618739]  dump_stack_lvl+0x55/0x70
+[    1.618872]  __alloc_skb+0x15a/0x200
+[    1.619003]  netlink_ack+0x81/0x290
+----------------------------------------
+[    1.625149]  dump_stack_lvl+0x55/0x70
+[    1.625284]  kfree_skbmem+0xe4/0x130
+[    1.625417]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    1.631145]  dump_stack_lvl+0x55/0x70
+[    1.631278]  kfree_skbmem+0xe4/0x130
+[    1.631411]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.640822]  dump_stack_lvl+0x55/0x70
+[    1.640958]  __alloc_skb+0x15a/0x200
+[    1.641090]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.645770]  dump_stack_lvl+0x55/0x70
+[    1.645904]  __alloc_skb+0x15a/0x200
+[    1.646034]  netlink_ack+0x81/0x290
+----------------------------------------
+[    1.651230]  dump_stack_lvl+0x55/0x70
+[    1.651365]  kfree_skbmem+0xe4/0x130
+[    1.651497]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    1.656261]  dump_stack_lvl+0x55/0x70
+[    1.656397]  kfree_skbmem+0xe4/0x130
+[    1.656529]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.661714]  dump_stack_lvl+0x55/0x70
+[    1.661847]  __alloc_skb+0x15a/0x200
+[    1.661978]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.667025]  dump_stack_lvl+0x55/0x70
+[    1.667158]  __alloc_skb+0x15a/0x200
+[    1.667289]  rtnl_getlink+0x1e6/0x3f0
+----------------------------------------
+[    1.673286]  dump_stack_lvl+0x55/0x70
+[    1.673420]  pskb_expand_head+0x30c/0x420
+[    1.673566]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    1.679876]  dump_stack_lvl+0x55/0x70
+[    1.680010]  kfree_skbmem+0xe4/0x130
+[    1.680141]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    1.685310]  dump_stack_lvl+0x55/0x70
+[    1.685445]  kfree_skbmem+0xe4/0x130
+[    1.685576]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.690759]  dump_stack_lvl+0x55/0x70
+[    1.690893]  __alloc_skb+0x15a/0x200
+[    1.691024]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.696628]  dump_stack_lvl+0x55/0x70
+[    1.696761]  __alloc_skb+0x15a/0x200
+[    1.696893]  rtmsg_ifinfo_build_skb+0x4d/0x110
+----------------------------------------
+[    1.705207]  dump_stack_lvl+0x55/0x70
+[    1.705341]  pskb_expand_head+0x30c/0x420
+[    1.705488]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    1.713836]  dump_stack_lvl+0x55/0x70
+[    1.713969]  kfree_skbmem+0xe4/0x130
+[    1.714101]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.722379]  dump_stack_lvl+0x55/0x70
+[    1.722513]  __alloc_skb+0x15a/0x200
+[    1.722646]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    1.731884]  dump_stack_lvl+0x55/0x70
+[    1.732017]  kfree_skbmem+0xe4/0x130
+[    1.732149]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.741583]  dump_stack_lvl+0x55/0x70
+[    1.741718]  __alloc_skb+0x15a/0x200
+[    1.741850]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    1.750845]  dump_stack_lvl+0x55/0x70
+[    1.750979]  kfree_skbmem+0xe4/0x130
+[    1.751111]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.760306]  dump_stack_lvl+0x55/0x70
+[    1.760442]  __alloc_skb+0x15a/0x200
+[    1.760573]  inet6_ifinfo_notify+0x2f/0xb0
+----------------------------------------
+[    1.768795]  dump_stack_lvl+0x55/0x70
+[    1.768929]  kfree_skbmem+0xe4/0x130
+[    1.769060]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    1.777660]  dump_stack_lvl+0x55/0x70
+[    1.777794]  __alloc_skb+0x15a/0x200
+[    1.777926]  netlink_ack+0x81/0x290
+----------------------------------------
+[    1.784047]  dump_stack_lvl+0x55/0x70
+[    1.784180]  kfree_skbmem+0xe4/0x130
+[    1.784311]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    1.790198]  dump_stack_lvl+0x55/0x70
+[    1.790332]  __alloc_skb+0x15a/0x200
+[    1.790463]  alloc_skb_with_frags+0x43/0x1e0
+----------------------------------------
+[    1.793458]  dump_stack_lvl+0x55/0x70
+[    1.793461]  napi_skb_cache_put+0x47/0xb0
+[    1.793463]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    1.806856]  dump_stack_lvl+0x55/0x70
+[    1.806991]  kfree_skbmem+0xe4/0x130
+[    1.807122]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.824114]  dump_stack_lvl+0x55/0x70
+[    1.824249]  __alloc_skb+0x15a/0x200
+[    1.824381]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    1.829216]  dump_stack_lvl+0x55/0x70
+[    1.829352]  kfree_skbmem+0xe4/0x130
+[    1.829484]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    1.834153]  dump_stack_lvl+0x55/0x70
+[    1.834278]  __alloc_skb+0x15a/0x200
+[    1.834407]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    1.839060]  dump_stack_lvl+0x55/0x70
+[    1.839190]  kfree_skbmem+0xe4/0x130
+[    1.839318]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    1.845632]  dump_stack_lvl+0x55/0x70
+[    1.845761]  __alloc_skb+0x15a/0x200
+[    1.845887]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.850965]  dump_stack_lvl+0x55/0x70
+[    1.851100]  __alloc_skb+0x15a/0x200
+[    1.851233]  netlink_dump+0x114/0x430
+----------------------------------------
+[    1.857784]  dump_stack_lvl+0x55/0x70
+[    1.857919]  kfree_skbmem+0xe4/0x130
+[    1.858051]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.863412]  dump_stack_lvl+0x55/0x70
+[    1.863547]  __alloc_skb+0x15a/0x200
+[    1.863680]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.869161]  dump_stack_lvl+0x55/0x70
+[    1.869296]  kfree_skbmem+0xe4/0x130
+[    1.869428]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.874777]  dump_stack_lvl+0x55/0x70
+[    1.874912]  __alloc_skb+0x15a/0x200
+[    1.875043]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.880475]  dump_stack_lvl+0x55/0x70
+[    1.880610]  kfree_skbmem+0xe4/0x130
+[    1.880741]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    1.886189]  dump_stack_lvl+0x55/0x70
+[    1.886324]  kfree_skbmem+0xe4/0x130
+[    1.886456]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.891783]  dump_stack_lvl+0x55/0x70
+[    1.891918]  __alloc_skb+0x15a/0x200
+[    1.892049]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.896574]  dump_stack_lvl+0x55/0x70
+[    1.896712]  __alloc_skb+0x15a/0x200
+[    1.896844]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.902673]  dump_stack_lvl+0x55/0x70
+[    1.902807]  kfree_skbmem+0xe4/0x130
+[    1.902938]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.908260]  dump_stack_lvl+0x55/0x70
+[    1.908397]  __alloc_skb+0x15a/0x200
+[    1.908528]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.913906]  dump_stack_lvl+0x55/0x70
+[    1.914041]  kfree_skbmem+0xe4/0x130
+[    1.914173]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    1.919650]  dump_stack_lvl+0x55/0x70
+[    1.919785]  kfree_skbmem+0xe4/0x130
+[    1.919918]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.925364]  dump_stack_lvl+0x55/0x70
+[    1.925499]  __alloc_skb+0x15a/0x200
+[    1.925632]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.930173]  dump_stack_lvl+0x55/0x70
+[    1.930308]  __alloc_skb+0x15a/0x200
+[    1.930441]  netlink_dump+0x114/0x430
+----------------------------------------
+[    1.936339]  dump_stack_lvl+0x55/0x70
+[    1.936476]  kfree_skbmem+0xe4/0x130
+[    1.936610]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.941943]  dump_stack_lvl+0x55/0x70
+[    1.942076]  __alloc_skb+0x15a/0x200
+[    1.942207]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.947629]  dump_stack_lvl+0x55/0x70
+[    1.947763]  kfree_skbmem+0xe4/0x130
+[    1.947894]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.953206]  dump_stack_lvl+0x55/0x70
+[    1.953341]  __alloc_skb+0x15a/0x200
+[    1.953472]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.958883]  dump_stack_lvl+0x55/0x70
+[    1.959017]  kfree_skbmem+0xe4/0x130
+[    1.959148]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    1.964567]  dump_stack_lvl+0x55/0x70
+[    1.964702]  kfree_skbmem+0xe4/0x130
+[    1.964834]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.970137]  dump_stack_lvl+0x55/0x70
+[    1.970271]  __alloc_skb+0x15a/0x200
+[    1.970403]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    1.974899]  dump_stack_lvl+0x55/0x70
+[    1.975033]  __alloc_skb+0x15a/0x200
+[    1.975164]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.981011]  dump_stack_lvl+0x55/0x70
+[    1.981146]  kfree_skbmem+0xe4/0x130
+[    1.981279]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    1.986634]  dump_stack_lvl+0x55/0x70
+[    1.986769]  __alloc_skb+0x15a/0x200
+[    1.986901]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    1.992361]  dump_stack_lvl+0x55/0x70
+[    1.992496]  kfree_skbmem+0xe4/0x130
+[    1.992630]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    1.998107]  dump_stack_lvl+0x55/0x70
+[    1.998242]  kfree_skbmem+0xe4/0x130
+[    1.998374]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.003738]  dump_stack_lvl+0x55/0x70
+[    2.003874]  __alloc_skb+0x15a/0x200
+[    2.004006]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.008545]  dump_stack_lvl+0x55/0x70
+[    2.008681]  __alloc_skb+0x15a/0x200
+[    2.008813]  netlink_dump+0x114/0x430
+----------------------------------------
+[    2.014711]  dump_stack_lvl+0x55/0x70
+[    2.014846]  kfree_skbmem+0xe4/0x130
+[    2.014978]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.020344]  dump_stack_lvl+0x55/0x70
+[    2.020480]  __alloc_skb+0x15a/0x200
+[    2.020614]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.026084]  dump_stack_lvl+0x55/0x70
+[    2.026219]  kfree_skbmem+0xe4/0x130
+[    2.026351]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.031716]  dump_stack_lvl+0x55/0x70
+[    2.031851]  __alloc_skb+0x15a/0x200
+[    2.031983]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.037442]  dump_stack_lvl+0x55/0x70
+[    2.037577]  kfree_skbmem+0xe4/0x130
+[    2.037710]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.043186]  dump_stack_lvl+0x55/0x70
+[    2.043321]  kfree_skbmem+0xe4/0x130
+[    2.043454]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.048809]  dump_stack_lvl+0x55/0x70
+[    2.048944]  __alloc_skb+0x15a/0x200
+[    2.049077]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.053620]  dump_stack_lvl+0x55/0x70
+[    2.053755]  __alloc_skb+0x15a/0x200
+[    2.053888]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.059765]  dump_stack_lvl+0x55/0x70
+[    2.059900]  kfree_skbmem+0xe4/0x130
+[    2.060032]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.065554]  dump_stack_lvl+0x55/0x70
+[    2.065691]  __alloc_skb+0x15a/0x200
+[    2.065823]  alloc_skb_with_frags+0x43/0x1e0
+----------------------------------------
+[    2.070093]  dump_stack_lvl+0x55/0x70
+[    2.070271]  __alloc_skb+0x15a/0x200
+[    2.070446]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.075950]  dump_stack_lvl+0x55/0x70
+[    2.076085]  napi_skb_cache_put+0x47/0xb0
+[    2.076231]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    2.083012]  dump_stack_lvl+0x55/0x70
+[    2.083138]  kfree_skbmem+0xe4/0x130
+[    2.083262]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.088362]  dump_stack_lvl+0x55/0x70
+[    2.088489]  kfree_skbmem+0xe4/0x130
+[    2.088614]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.118104]  dump_stack_lvl+0x55/0x70
+[    2.118232]  __alloc_skb+0x15a/0x200
+[    2.118357]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.122764]  dump_stack_lvl+0x55/0x70
+[    2.122890]  __alloc_skb+0x15a/0x200
+[    2.123013]  netlink_ack+0x81/0x290
+----------------------------------------
+[    2.127895]  dump_stack_lvl+0x55/0x70
+[    2.128021]  kfree_skbmem+0xe4/0x130
+[    2.128145]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.132646]  dump_stack_lvl+0x55/0x70
+[    2.132772]  kfree_skbmem+0xe4/0x130
+[    2.132895]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.137780]  dump_stack_lvl+0x55/0x70
+[    2.137907]  __alloc_skb+0x15a/0x200
+[    2.138030]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.142785]  dump_stack_lvl+0x55/0x70
+[    2.142911]  __alloc_skb+0x15a/0x200
+[    2.143034]  rtnl_getlink+0x1e6/0x3f0
+----------------------------------------
+[    2.148679]  dump_stack_lvl+0x55/0x70
+[    2.148804]  pskb_expand_head+0x30c/0x420
+[    2.148942]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    2.154878]  dump_stack_lvl+0x55/0x70
+[    2.155004]  kfree_skbmem+0xe4/0x130
+[    2.155128]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.159996]  dump_stack_lvl+0x55/0x70
+[    2.160122]  kfree_skbmem+0xe4/0x130
+[    2.160244]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.165134]  dump_stack_lvl+0x55/0x70
+[    2.165260]  __alloc_skb+0x15a/0x200
+[    2.165384]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.170512]  dump_stack_lvl+0x55/0x70
+[    2.170639]  __alloc_skb+0x15a/0x200
+[    2.170763]  netlink_ack+0x81/0x290
+----------------------------------------
+[    2.176972]  dump_stack_lvl+0x55/0x70
+[    2.177099]  kfree_skbmem+0xe4/0x130
+[    2.177222]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.182445]  dump_stack_lvl+0x55/0x70
+[    2.182570]  kfree_skbmem+0xe4/0x130
+[    2.182693]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.206258]  dump_stack_lvl+0x55/0x70
+[    2.206388]  __alloc_skb+0x15a/0x200
+[    2.206513]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.210954]  dump_stack_lvl+0x55/0x70
+[    2.211081]  __alloc_skb+0x15a/0x200
+[    2.211205]  netlink_dump+0x114/0x430
+----------------------------------------
+[    2.217205]  dump_stack_lvl+0x55/0x70
+[    2.217332]  kfree_skbmem+0xe4/0x130
+[    2.217457]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.222486]  dump_stack_lvl+0x55/0x70
+[    2.222614]  __alloc_skb+0x15a/0x200
+[    2.222738]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.227865]  dump_stack_lvl+0x55/0x70
+[    2.227991]  kfree_skbmem+0xe4/0x130
+[    2.228115]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.233158]  dump_stack_lvl+0x55/0x70
+[    2.233285]  __alloc_skb+0x15a/0x200
+[    2.233410]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.238521]  dump_stack_lvl+0x55/0x70
+[    2.238649]  kfree_skbmem+0xe4/0x130
+[    2.238772]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.243901]  dump_stack_lvl+0x55/0x70
+[    2.244027]  kfree_skbmem+0xe4/0x130
+[    2.244151]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.249161]  dump_stack_lvl+0x55/0x70
+[    2.249287]  __alloc_skb+0x15a/0x200
+[    2.249411]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.253641]  dump_stack_lvl+0x55/0x70
+[    2.253767]  __alloc_skb+0x15a/0x200
+[    2.253892]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.259383]  dump_stack_lvl+0x55/0x70
+[    2.259509]  kfree_skbmem+0xe4/0x130
+[    2.259633]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.264631]  dump_stack_lvl+0x55/0x70
+[    2.264756]  __alloc_skb+0x15a/0x200
+[    2.264879]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.269965]  dump_stack_lvl+0x55/0x70
+[    2.270091]  kfree_skbmem+0xe4/0x130
+[    2.270215]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.275312]  dump_stack_lvl+0x55/0x70
+[    2.275439]  kfree_skbmem+0xe4/0x130
+[    2.275561]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.280570]  dump_stack_lvl+0x55/0x70
+[    2.280697]  __alloc_skb+0x15a/0x200
+[    2.280820]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.285048]  dump_stack_lvl+0x55/0x70
+[    2.285174]  __alloc_skb+0x15a/0x200
+[    2.285297]  netlink_dump+0x114/0x430
+----------------------------------------
+[    2.290793]  dump_stack_lvl+0x55/0x70
+[    2.290919]  kfree_skbmem+0xe4/0x130
+[    2.291042]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.296032]  dump_stack_lvl+0x55/0x70
+[    2.296158]  __alloc_skb+0x15a/0x200
+[    2.296282]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.301370]  dump_stack_lvl+0x55/0x70
+[    2.301497]  kfree_skbmem+0xe4/0x130
+[    2.301621]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.306607]  dump_stack_lvl+0x55/0x70
+[    2.306733]  __alloc_skb+0x15a/0x200
+[    2.306856]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.311933]  dump_stack_lvl+0x55/0x70
+[    2.312059]  kfree_skbmem+0xe4/0x130
+[    2.312182]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.317289]  dump_stack_lvl+0x55/0x70
+[    2.317418]  kfree_skbmem+0xe4/0x130
+[    2.317542]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.322495]  dump_stack_lvl+0x55/0x70
+[    2.322625]  __alloc_skb+0x15a/0x200
+[    2.322747]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.326951]  dump_stack_lvl+0x55/0x70
+[    2.327076]  __alloc_skb+0x15a/0x200
+[    2.327199]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.332634]  dump_stack_lvl+0x55/0x70
+[    2.332759]  kfree_skbmem+0xe4/0x130
+[    2.332881]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.337842]  dump_stack_lvl+0x55/0x70
+[    2.337966]  __alloc_skb+0x15a/0x200
+[    2.338088]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.343017]  dump_stack_lvl+0x55/0x70
+[    2.343138]  kfree_skbmem+0xe4/0x130
+[    2.343258]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.348178]  dump_stack_lvl+0x55/0x70
+[    2.348300]  kfree_skbmem+0xe4/0x130
+[    2.348420]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.353242]  dump_stack_lvl+0x55/0x70
+[    2.353364]  __alloc_skb+0x15a/0x200
+[    2.353484]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.357571]  dump_stack_lvl+0x55/0x70
+[    2.357693]  __alloc_skb+0x15a/0x200
+[    2.357813]  netlink_dump+0x114/0x430
+----------------------------------------
+[    2.363220]  dump_stack_lvl+0x55/0x70
+[    2.363346]  kfree_skbmem+0xe4/0x130
+[    2.363468]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.368391]  dump_stack_lvl+0x55/0x70
+[    2.368516]  __alloc_skb+0x15a/0x200
+[    2.368638]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.373657]  dump_stack_lvl+0x55/0x70
+[    2.373780]  kfree_skbmem+0xe4/0x130
+[    2.373902]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.378825]  dump_stack_lvl+0x55/0x70
+[    2.378950]  __alloc_skb+0x15a/0x200
+[    2.379071]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.384088]  dump_stack_lvl+0x55/0x70
+[    2.384212]  kfree_skbmem+0xe4/0x130
+[    2.384334]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.389360]  dump_stack_lvl+0x55/0x70
+[    2.389484]  kfree_skbmem+0xe4/0x130
+[    2.389605]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.394515]  dump_stack_lvl+0x55/0x70
+[    2.394640]  __alloc_skb+0x15a/0x200
+[    2.394761]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.398950]  dump_stack_lvl+0x55/0x70
+[    2.399075]  __alloc_skb+0x15a/0x200
+[    2.399197]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.404604]  dump_stack_lvl+0x55/0x70
+[    2.404729]  kfree_skbmem+0xe4/0x130
+[    2.404851]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.409813]  dump_stack_lvl+0x55/0x70
+[    2.409938]  __alloc_skb+0x15a/0x200
+[    2.410060]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.415107]  dump_stack_lvl+0x55/0x70
+[    2.415232]  kfree_skbmem+0xe4/0x130
+[    2.415357]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.420422]  dump_stack_lvl+0x55/0x70
+[    2.420547]  kfree_skbmem+0xe4/0x130
+[    2.420671]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.425627]  dump_stack_lvl+0x55/0x70
+[    2.425752]  __alloc_skb+0x15a/0x200
+[    2.425875]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.430077]  dump_stack_lvl+0x55/0x70
+[    2.430203]  __alloc_skb+0x15a/0x200
+[    2.430326]  netlink_dump+0x114/0x430
+----------------------------------------
+[    2.435785]  dump_stack_lvl+0x55/0x70
+[    2.435910]  kfree_skbmem+0xe4/0x130
+[    2.436033]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.440998]  dump_stack_lvl+0x55/0x70
+[    2.441123]  __alloc_skb+0x15a/0x200
+[    2.441245]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.446301]  dump_stack_lvl+0x55/0x70
+[    2.446427]  kfree_skbmem+0xe4/0x130
+[    2.446550]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.451515]  dump_stack_lvl+0x55/0x70
+[    2.451640]  __alloc_skb+0x15a/0x200
+[    2.451763]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.456808]  dump_stack_lvl+0x55/0x70
+[    2.456933]  kfree_skbmem+0xe4/0x130
+[    2.457056]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.462112]  dump_stack_lvl+0x55/0x70
+[    2.462236]  kfree_skbmem+0xe4/0x130
+[    2.462360]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.467310]  dump_stack_lvl+0x55/0x70
+[    2.467436]  __alloc_skb+0x15a/0x200
+[    2.467559]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.471753]  dump_stack_lvl+0x55/0x70
+[    2.471878]  __alloc_skb+0x15a/0x200
+[    2.472000]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.477427]  dump_stack_lvl+0x55/0x70
+[    2.477551]  kfree_skbmem+0xe4/0x130
+[    2.477675]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.482628]  dump_stack_lvl+0x55/0x70
+[    2.482753]  __alloc_skb+0x15a/0x200
+[    2.482875]  netlink_dump+0xa0/0x430
+----------------------------------------
+[    2.487914]  dump_stack_lvl+0x55/0x70
+[    2.488039]  kfree_skbmem+0xe4/0x130
+[    2.488161]  netlink_dump+0x36c/0x430
+----------------------------------------
+[    2.493219]  dump_stack_lvl+0x55/0x70
+[    2.493346]  kfree_skbmem+0xe4/0x130
+[    2.493468]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.508431]  dump_stack_lvl+0x55/0x70
+[    2.508557]  __alloc_skb+0x15a/0x200
+[    2.508681]  alloc_skb_with_frags+0x43/0x1e0
+----------------------------------------
+[    2.514001]  dump_stack_lvl+0x55/0x70
+[    2.514138]  napi_skb_cache_put+0x47/0xb0
+[    2.514285]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    2.520117]  dump_stack_lvl+0x55/0x70
+[    2.520242]  __build_skb+0x95/0xb0
+[    2.520360]  build_skb+0x10/0xa0
+----------------------------------------
+[    2.526236]  dump_stack_lvl+0x55/0x70
+[    2.526361]  skb_clone+0x13c/0x150
+[    2.526478]  packet_rcv+0x10c/0x430
+----------------------------------------
+[    2.526794]  ? dump_stack_lvl+0x61/0x70
+[    2.526924]  ? __build_skb+0x95/0xb0
+[    2.527047]  ? __skb_checksum+0x6b/0x350
+----------------------------------------
+[    2.533404]  dump_stack_lvl+0x55/0x70
+[    2.533586]  kfree_skbmem+0xe4/0x130
+[    2.533761]  packet_recvmsg+0x2aa/0x580
+----------------------------------------
+[    2.539754]  dump_stack_lvl+0x55/0x70
+[    2.539889]  __alloc_skb+0x15a/0x200
+[    2.540021]  alloc_skb_with_frags+0x43/0x1e0
+----------------------------------------
+[    2.545887]  dump_stack_lvl+0x55/0x70
+[    2.546022]  kfree_skbmem+0xe4/0x130
+[    2.546154]  udp_recvmsg+0x1f8/0x540
+----------------------------------------
+[    2.550785]  dump_stack_lvl+0x55/0x70
+[    2.550961]  napi_skb_cache_put+0x47/0xb0
+[    2.551152]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    2.559584]  dump_stack_lvl+0x55/0x70
+[    2.559709]  __build_skb+0x95/0xb0
+[    2.559825]  build_skb+0x10/0xa0
+----------------------------------------
+[    2.560181]  ? dump_stack_lvl+0x61/0x70
+[    2.560312]  ? __free_old_xmit+0xa3/0x120
+[    2.560447]  ? detach_buf_split+0x6a/0x150
+----------------------------------------
+[    2.567997]  dump_stack_lvl+0x55/0x70
+[    2.568122]  skb_clone+0x13c/0x150
+[    2.568239]  packet_rcv+0x10c/0x430
+----------------------------------------
+[    2.568553]  ? dump_stack_lvl+0x61/0x70
+[    2.568685]  ? __build_skb+0x95/0xb0
+[    2.568807]  ? __skb_checksum+0x6b/0x350
+----------------------------------------
+[    2.577523]  dump_stack_lvl+0x55/0x70
+[    2.577704]  kfree_skbmem+0xe4/0x130
+[    2.577878]  packet_recvmsg+0x2aa/0x580
+----------------------------------------
+[    2.600833]  dump_stack_lvl+0x55/0x70
+[    2.601013]  __alloc_skb+0x15a/0x200
+[    2.601188]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.606669]  dump_stack_lvl+0x55/0x70
+[    2.606805]  __alloc_skb+0x15a/0x200
+[    2.606937]  rtnl_getlink+0x1e6/0x3f0
+----------------------------------------
+[    2.613003]  dump_stack_lvl+0x55/0x70
+[    2.613139]  pskb_expand_head+0x30c/0x420
+[    2.613286]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    2.619668]  dump_stack_lvl+0x55/0x70
+[    2.619803]  kfree_skbmem+0xe4/0x130
+[    2.619935]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.625171]  dump_stack_lvl+0x55/0x70
+[    2.625306]  kfree_skbmem+0xe4/0x130
+[    2.625439]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.630640]  dump_stack_lvl+0x55/0x70
+[    2.630774]  __alloc_skb+0x15a/0x200
+[    2.630904]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.636055]  dump_stack_lvl+0x55/0x70
+[    2.636188]  __alloc_skb+0x15a/0x200
+[    2.636320]  rtmsg_ifa+0x77/0x110
+----------------------------------------
+[    2.642617]  dump_stack_lvl+0x55/0x70
+[    2.642751]  kfree_skbmem+0xe4/0x130
+[    2.642882]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    2.649521]  dump_stack_lvl+0x55/0x70
+[    2.649656]  __alloc_skb+0x15a/0x200
+[    2.649787]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    2.657319]  dump_stack_lvl+0x55/0x70
+[    2.657454]  kfree_skbmem+0xe4/0x130
+[    2.657587]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    2.665275]  dump_stack_lvl+0x55/0x70
+[    2.665411]  __alloc_skb+0x15a/0x200
+[    2.665543]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    2.673068]  dump_stack_lvl+0x55/0x70
+[    2.673202]  kfree_skbmem+0xe4/0x130
+[    2.673334]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    2.681112]  dump_stack_lvl+0x55/0x70
+[    2.681248]  __alloc_skb+0x15a/0x200
+[    2.681382]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    2.688997]  dump_stack_lvl+0x55/0x70
+[    2.689131]  kfree_skbmem+0xe4/0x130
+[    2.689264]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    2.697022]  dump_stack_lvl+0x55/0x70
+[    2.697157]  __alloc_skb+0x15a/0x200
+[    2.697290]  netlink_ack+0x81/0x290
+----------------------------------------
+[    2.703042]  dump_stack_lvl+0x55/0x70
+[    2.703176]  kfree_skbmem+0xe4/0x130
+[    2.703308]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.708625]  dump_stack_lvl+0x55/0x70
+[    2.708760]  kfree_skbmem+0xe4/0x130
+[    2.708891]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.716824]  dump_stack_lvl+0x55/0x70
+[    2.716951]  __alloc_skb+0x15a/0x200
+[    2.717076]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.721481]  dump_stack_lvl+0x55/0x70
+[    2.721609]  __alloc_skb+0x15a/0x200
+[    2.721734]  rtnl_getlink+0x1e6/0x3f0
+----------------------------------------
+[    2.727020]  dump_stack_lvl+0x55/0x70
+[    2.727147]  pskb_expand_head+0x30c/0x420
+[    2.727285]  netlink_trim+0x85/0xc0
+----------------------------------------
+[    2.732866]  dump_stack_lvl+0x55/0x70
+[    2.732993]  kfree_skbmem+0xe4/0x130
+[    2.733117]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.737629]  dump_stack_lvl+0x55/0x70
+[    2.737756]  kfree_skbmem+0xe4/0x130
+[    2.737878]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.742755]  dump_stack_lvl+0x55/0x70
+[    2.742880]  __alloc_skb+0x15a/0x200
+[    2.743003]  netlink_sendmsg+0x145/0x420
+----------------------------------------
+[    2.748152]  dump_stack_lvl+0x55/0x70
+[    2.748279]  __alloc_skb+0x15a/0x200
+[    2.748403]  rtmsg_fib+0x61/0x170
+----------------------------------------
+[    2.754934]  dump_stack_lvl+0x55/0x70
+[    2.755059]  kfree_skbmem+0xe4/0x130
+[    2.755181]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    2.761860]  dump_stack_lvl+0x55/0x70
+[    2.761985]  __alloc_skb+0x15a/0x200
+[    2.762107]  netlink_ack+0x81/0x290
+----------------------------------------
+[    2.767785]  dump_stack_lvl+0x55/0x70
+[    2.767910]  kfree_skbmem+0xe4/0x130
+[    2.768032]  netlink_unicast+0x24d/0x370
+----------------------------------------
+[    2.773294]  dump_stack_lvl+0x55/0x70
+[    2.773420]  kfree_skbmem+0xe4/0x130
+[    2.773544]  netlink_recvmsg+0x13f/0x3c0
+----------------------------------------
+[    2.796632]  dump_stack_lvl+0x55/0x70
+[    2.796760]  __alloc_skb+0x15a/0x200
+[    2.796885]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.802048]  dump_stack_lvl+0x55/0x70
+[    2.802174]  __alloc_skb+0x15a/0x200
+[    2.802299]  ndisc_alloc_skb+0x47/0xd0
+----------------------------------------
+[    2.804402]  dump_stack_lvl+0x55/0x70
+[    2.805301]  kfree_skbmem+0xe4/0x130
+[    2.805426]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.810068]  dump_stack_lvl+0x55/0x70
+[    2.810194]  skb_clone+0x13c/0x150
+[    2.810313]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[    2.815167]  dump_stack_lvl+0x55/0x70
+[    2.815294]  __alloc_skb+0x15a/0x200
+[    2.815418]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.819774]  dump_stack_lvl+0x55/0x70
+[    2.819901]  kfree_skbmem+0xe4/0x130
+[    2.820025]  packet_rcv+0x5b/0x430
+----------------------------------------
+[    2.824261]  dump_stack_lvl+0x55/0x70
+[    2.824262]  napi_skb_cache_put+0x47/0xb0
+[    2.824264]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    2.834316]  dump_stack_lvl+0x55/0x70
+[    2.834444]  kfree_skbmem+0xe4/0x130
+[    2.834570]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.839419]  dump_stack_lvl+0x55/0x70
+[    2.839547]  __alloc_skb+0x15a/0x200
+[    2.839672]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.844206]  dump_stack_lvl+0x55/0x70
+[    2.844334]  kfree_skbmem+0xe4/0x130
+[    2.844459]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.848878]  dump_stack_lvl+0x55/0x70
+[    2.849005]  __alloc_skb+0x15a/0x200
+[    2.849128]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.853757]  dump_stack_lvl+0x55/0x70
+[    2.853893]  kfree_skbmem+0xe4/0x130
+[    2.854026]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.863494]  dump_stack_lvl+0x55/0x70
+[    2.863630]  kfree_skbmem+0xe4/0x130
+[    2.863766]  udp_recvmsg+0x1f8/0x540
+----------------------------------------
+[    2.876368]  dump_stack_lvl+0x55/0x70
+[    2.876495]  __alloc_skb+0x15a/0x200
+[    2.876620]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.881142]  dump_stack_lvl+0x55/0x70
+[    2.881269]  kfree_skbmem+0xe4/0x130
+[    2.881394]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.885795]  dump_stack_lvl+0x55/0x70
+[    2.885921]  __alloc_skb+0x15a/0x200
+[    2.886044]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.890552]  dump_stack_lvl+0x55/0x70
+[    2.890676]  kfree_skbmem+0xe4/0x130
+[    2.890800]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.911611]  dump_stack_lvl+0x55/0x70
+[    2.911748]  __alloc_skb+0x15a/0x200
+[    2.911883]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.916646]  dump_stack_lvl+0x55/0x70
+[    2.916781]  kfree_skbmem+0xe4/0x130
+[    2.916913]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    2.921515]  dump_stack_lvl+0x55/0x70
+[    2.921652]  __alloc_skb+0x15a/0x200
+[    2.921785]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[    2.926644]  dump_stack_lvl+0x55/0x70
+[    2.926779]  kfree_skbmem+0xe4/0x130
+[    2.926912]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[    3.832108]  dump_stack_lvl+0x55/0x70
+[    3.832875]  __alloc_skb+0x15a/0x200
+[    3.833504]  __ipv6_ifa_notify+0x93/0x370
+----------------------------------------
+[    3.848446]  dump_stack_lvl+0x55/0x70
+[    3.848811]  kfree_skbmem+0xe4/0x130
+[    3.849165]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.856789]  dump_stack_lvl+0x55/0x70
+[    3.856967]  __alloc_skb+0x15a/0x200
+[    3.857142]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    3.862195]  dump_stack_lvl+0x55/0x70
+[    3.862318]  kfree_skbmem+0xe4/0x130
+[    3.862439]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.866626]  dump_stack_lvl+0x55/0x70
+[    3.866750]  __alloc_skb+0x15a/0x200
+[    3.866870]  alloc_skb_with_frags+0x43/0x1e0
+----------------------------------------
+[    3.871040]  dump_stack_lvl+0x55/0x70
+[    3.871164]  skb_clone+0x13c/0x150
+[    3.871281]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[    3.876104]  dump_stack_lvl+0x55/0x70
+[    3.876227]  kfree_skbmem+0xe4/0x130
+[    3.876348]  packet_rcv+0x5b/0x430
+----------------------------------------
+[    3.881845]  dump_stack_lvl+0x55/0x70
+[    3.881971]  __alloc_skb+0x15a/0x200
+[    3.882094]  ndisc_alloc_skb+0x47/0xd0
+----------------------------------------
+[    3.884786]  dump_stack_lvl+0x55/0x70
+[    3.884913]  napi_skb_cache_put+0x47/0xb0
+[    3.885050]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    3.891141]  dump_stack_lvl+0x55/0x70
+[    3.891264]  skb_clone+0x13c/0x150
+[    3.891380]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[    3.896378]  dump_stack_lvl+0x55/0x70
+[    3.896502]  kfree_skbmem+0xe4/0x130
+[    3.896624]  packet_rcv+0x5b/0x430
+----------------------------------------
+[    3.901579]  dump_stack_lvl+0x55/0x70
+[    3.901704]  napi_skb_cache_put+0x47/0xb0
+[    3.901839]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    3.907505]  dump_stack_lvl+0x55/0x70
+[    3.907632]  __napi_build_skb+0xaa/0xc0
+[    3.907762]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[    3.908273]  ? dump_stack_lvl+0x61/0x70
+[    3.908405]  ? __free_old_xmit+0xa3/0x120
+[    3.908542]  ? detach_buf_split+0x6a/0x150
+----------------------------------------
+[    3.913978]  dump_stack_lvl+0x55/0x70
+[    3.914103]  __alloc_skb+0x15a/0x200
+[    3.914227]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    3.921750]  dump_stack_lvl+0x55/0x70
+[    3.921875]  kfree_skbmem+0xe4/0x130
+[    3.921998]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.929703]  dump_stack_lvl+0x55/0x70
+[    3.929829]  __alloc_skb+0x15a/0x200
+[    3.929952]  __neigh_notify+0x39/0xc0
+----------------------------------------
+[    3.938614]  dump_stack_lvl+0x55/0x70
+[    3.938783]  kfree_skbmem+0xe4/0x130
+[    3.938948]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.948788]  dump_stack_lvl+0x55/0x70
+[    3.948958]  __alloc_skb+0x15a/0x200
+[    3.949124]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    3.957181]  dump_stack_lvl+0x55/0x70
+[    3.957303]  kfree_skbmem+0xe4/0x130
+[    3.957425]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.965533]  dump_stack_lvl+0x55/0x70
+[    3.965659]  __alloc_skb+0x15a/0x200
+[    3.965783]  addrconf_prefix_rcv+0x151/0x840
+----------------------------------------
+[    3.973200]  dump_stack_lvl+0x55/0x70
+[    3.973326]  kfree_skbmem+0xe4/0x130
+[    3.973449]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.981374]  dump_stack_lvl+0x55/0x70
+[    3.981499]  __alloc_skb+0x15a/0x200
+[    3.981622]  ndisc_router_discovery+0x584/0xc40
+----------------------------------------
+[    3.988421]  dump_stack_lvl+0x55/0x70
+[    3.988547]  kfree_skbmem+0xe4/0x130
+[    3.988669]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    3.995875]  dump_stack_lvl+0x55/0x70
+[    3.996000]  kfree_skbmem+0xe4/0x130
+[    3.996121]  icmpv6_rcv+0x264/0x4c0
+----------------------------------------
+[    4.725382]  dump_stack_lvl+0x55/0x70
+[    4.726042]  __alloc_skb+0x15a/0x200
+[    4.726693]  alloc_skb_with_frags+0x43/0x1e0
+----------------------------------------
+[    4.743973]  dump_stack_lvl+0x55/0x70
+[    4.744270]  skb_clone+0x13c/0x150
+[    4.744550]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[    4.752727]  dump_stack_lvl+0x55/0x70
+[    4.752875]  kfree_skbmem+0xe4/0x130
+[    4.753020]  packet_rcv+0x5b/0x430
+----------------------------------------
+[    4.758656]  dump_stack_lvl+0x55/0x70
+[    4.758828]  napi_skb_cache_put+0x47/0xb0
+[    4.759014]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    5.046277]  dump_stack_lvl+0x55/0x70
+[    5.047001]  __alloc_skb+0x15a/0x200
+[    5.047702]  ndisc_alloc_skb+0x47/0xd0
+----------------------------------------
+[    5.063940]  dump_stack_lvl+0x55/0x70
+[    5.064424]  skb_clone+0x13c/0x150
+[    5.064882]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[    5.076593]  dump_stack_lvl+0x55/0x70
+[    5.076839]  kfree_skbmem+0xe4/0x130
+[    5.077080]  packet_rcv+0x5b/0x430
+----------------------------------------
+[    5.082145]  dump_stack_lvl+0x55/0x70
+[    5.082281]  napi_skb_cache_put+0x47/0xb0
+[    5.082427]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[    6.070221]  dump_stack_lvl+0x55/0x70
+[    6.070933]  __alloc_skb+0x15a/0x200
+[    6.071635]  __ipv6_ifa_notify+0x93/0x370
+----------------------------------------
+[    6.089562]  dump_stack_lvl+0x55/0x70
+[    6.090080]  kfree_skbmem+0xe4/0x130
+[    6.090593]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[    6.098838]  dump_stack_lvl+0x55/0x70
+[    6.098964]  __alloc_skb+0x15a/0x200
+[    6.099087]  inet6_rt_notify+0x6d/0x130
+----------------------------------------
+[    6.103336]  dump_stack_lvl+0x55/0x70
+[    6.103464]  kfree_skbmem+0xe4/0x130
+[    6.103587]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[   21.819083]  dump_stack_lvl+0x55/0x70
+[   21.819736]  __alloc_skb+0x15a/0x200
+[   21.820386]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[   21.836250]  dump_stack_lvl+0x55/0x70
+[   21.836502]  kfree_skbmem+0xe4/0x130
+[   21.836754]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[   21.843394]  dump_stack_lvl+0x55/0x70
+[   21.843519]  __alloc_skb+0x15a/0x200
+[   21.843642]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[   21.848207]  dump_stack_lvl+0x55/0x70
+[   21.848346]  kfree_skbmem+0xe4/0x130
+[   21.848479]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[   21.856838]  dump_stack_lvl+0x55/0x70
+[   21.856975]  __alloc_skb+0x15a/0x200
+[   21.857108]  __ip_append_data+0xe9d/0x1160
+----------------------------------------
+[   21.863328]  dump_stack_lvl+0x55/0x70
+[   21.863464]  skb_clone+0x13c/0x150
+[   21.863591]  neigh_probe+0x21/0x60
+----------------------------------------
+[   21.870019]  dump_stack_lvl+0x55/0x70
+[   21.870155]  __alloc_skb+0x15a/0x200
+[   21.870288]  arp_create+0x6a/0x380
+----------------------------------------
+[   21.870675]  ? dump_stack_lvl+0x61/0x70
+[   21.870816]  neigh_probe+0x49/0x60
+[   21.870944]  __neigh_event_send+0x274/0x3f0
+----------------------------------------
+[   21.877164]  dump_stack_lvl+0x55/0x70
+[   21.877300]  skb_clone+0x13c/0x150
+[   21.877428]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[   21.878424]  ? dump_stack_lvl+0x61/0x70
+[   21.878566]  neigh_probe+0x49/0x60
+[   21.878693]  __neigh_event_send+0x274/0x3f0
+----------------------------------------
+[   21.884967]  dump_stack_lvl+0x55/0x70
+[   21.885102]  kfree_skbmem+0xe4/0x130
+[   21.885234]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   21.886346]  ? dump_stack_lvl+0x61/0x70
+[   21.886487]  neigh_probe+0x49/0x60
+[   21.886612]  __neigh_event_send+0x274/0x3f0
+----------------------------------------
+[   21.893280]  dump_stack_lvl+0x55/0x70
+[   21.893415]  kfree_skbmem+0xe4/0x130
+[   21.893547]  __neigh_event_send+0x274/0x3f0
+----------------------------------------
+[   21.899850]  dump_stack_lvl+0x55/0x70
+[   21.899986]  napi_skb_cache_put+0x47/0xb0
+[   21.900135]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[   21.906324]  dump_stack_lvl+0x55/0x70
+[   21.906459]  __napi_build_skb+0xaa/0xc0
+[   21.906600]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[   21.915534]  dump_stack_lvl+0x55/0x70
+[   21.915668]  skb_clone+0x13c/0x150
+[   21.915793]  dev_queue_xmit_nit+0x13c/0x2b0
+----------------------------------------
+[   21.925851]  dump_stack_lvl+0x55/0x70
+[   21.925985]  kfree_skbmem+0xe4/0x130
+[   21.926117]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   21.936801]  dump_stack_lvl+0x55/0x70
+[   21.936937]  __alloc_skb+0x15a/0x200
+[   21.937069]  __neigh_notify+0x39/0xc0
+----------------------------------------
+[   21.946184]  dump_stack_lvl+0x55/0x70
+[   21.946320]  napi_skb_cache_put+0x47/0xb0
+[   21.946466]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[   21.952918]  dump_stack_lvl+0x55/0x70
+[   21.953052]  kfree_skbmem+0xe4/0x130
+[   21.953184]  netlink_broadcast_filtered+0x11c/0x4b0
+----------------------------------------
+[   21.962389]  dump_stack_lvl+0x55/0x70
+[   21.962523]  kfree_skbmem+0xe4/0x130
+[   21.962654]  arp_process+0x27c/0x810
+----------------------------------------
+[   21.971444]  dump_stack_lvl+0x55/0x70
+[   21.971578]  __napi_build_skb+0xaa/0xc0
+[   21.971718]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[   21.979409]  dump_stack_lvl+0x55/0x70
+[   21.979543]  skb_clone+0x13c/0x150
+[   21.979668]  raw_local_deliver+0x1a6/0x200
+----------------------------------------
+[   21.987961]  dump_stack_lvl+0x55/0x70
+[   21.988095]  kfree_skbmem+0xe4/0x130
+[   21.988226]  icmp_rcv+0x213/0x380
+----------------------------------------
+[   21.996482]  dump_stack_lvl+0x55/0x70
+[   21.996615]  kfree_skbmem+0xe4/0x130
+[   21.996746]  raw_recvmsg+0xa8/0x1f0
+----------------------------------------
+[   34.414494]  dump_stack_lvl+0x55/0x70
+[   34.415152]  __alloc_skb+0x15a/0x200
+[   34.415801]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[   34.430049]  dump_stack_lvl+0x55/0x70
+[   34.430267]  kfree_skbmem+0xe4/0x130
+[   34.430483]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[   34.437090]  dump_stack_lvl+0x55/0x70
+[   34.437217]  __alloc_skb+0x15a/0x200
+[   34.437341]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[   34.441852]  dump_stack_lvl+0x55/0x70
+[   34.441978]  kfree_skbmem+0xe4/0x130
+[   34.442102]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[   34.449810]  dump_stack_lvl+0x55/0x70
+[   34.449938]  __alloc_skb+0x15a/0x200
+[   34.450064]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[   34.454599]  dump_stack_lvl+0x55/0x70
+[   34.454725]  kfree_skbmem+0xe4/0x130
+[   34.454849]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[   34.459255]  dump_stack_lvl+0x55/0x70
+[   34.459386]  __alloc_skb+0x15a/0x200
+[   34.459509]  sock_wmalloc+0x32/0x50
+----------------------------------------
+[   34.464002]  dump_stack_lvl+0x55/0x70
+[   34.464128]  kfree_skbmem+0xe4/0x130
+[   34.464251]  unix_stream_connect+0x293/0x7f0
+----------------------------------------
+[   34.470318]  dump_stack_lvl+0x55/0x70
+[   34.470447]  __alloc_skb+0x15a/0x200
+[   34.470570]  tcp_stream_alloc_skb+0x21/0x130
+----------------------------------------
+[   34.475587]  dump_stack_lvl+0x55/0x70
+[   34.475708]  skb_clone+0x13c/0x150
+[   34.475821]  ? __pfx_csum_block_add_ext+0x10/0x10
+----------------------------------------
+[   34.482331]  dump_stack_lvl+0x55/0x70
+[   34.482454]  kfree_skbmem+0xe4/0x130
+[   34.482574]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   34.489328]  dump_stack_lvl+0x55/0x70
+[   34.489458]  __napi_build_skb+0xaa/0xc0
+[   34.489590]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[   34.496146]  dump_stack_lvl+0x55/0x70
+[   34.496272]  kfree_skbmem+0x92/0x130
+[   34.496399]  tcp_ack+0x6c6/0x1360
+----------------------------------------
+[   34.503807]  dump_stack_lvl+0x55/0x70
+[   34.503932]  __alloc_skb+0x15a/0x200
+[   34.504054]  __tcp_send_ack.part.0+0x2a/0x120
+----------------------------------------
+[   34.511388]  dump_stack_lvl+0x55/0x70
+[   34.511514]  skb_clone+0x13c/0x150
+[   34.511630]  ? __pfx_csum_block_add_ext+0x10/0x10
+----------------------------------------
+[   34.520437]  dump_stack_lvl+0x55/0x70
+[   34.520562]  kfree_skbmem+0xe4/0x130
+[   34.520685]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   34.529473]  dump_stack_lvl+0x55/0x70
+[   34.529599]  kfree_skbmem+0xe4/0x130
+[   34.529722]  tcp_rcv_state_process+0xc52/0x1090
+----------------------------------------
+[   34.537084]  dump_stack_lvl+0x55/0x70
+[   34.537219]  napi_skb_cache_put+0x47/0xb0
+[   34.537368]  __free_old_xmit+0x5c/0x120
+----------------------------------------
+[   34.543373]  dump_stack_lvl+0x55/0x70
+[   34.543507]  __alloc_skb+0x15a/0x200
+[   34.543638]  tcp_stream_alloc_skb+0x21/0x130
+----------------------------------------
+[   34.548313]  dump_stack_lvl+0x55/0x70
+[   34.548451]  skb_clone+0x13c/0x150
+[   34.548576]  ? __pfx_csum_block_add_ext+0x10/0x10
+----------------------------------------
+[   34.555108]  dump_stack_lvl+0x55/0x70
+[   34.555243]  kfree_skbmem+0xe4/0x130
+[   34.555376]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   34.562323]  dump_stack_lvl+0x55/0x70
+[   34.562458]  __alloc_skb+0x15a/0x200
+[   34.562590]  tcp_send_fin+0x83/0x1e0
+----------------------------------------
+[   34.566899]  dump_stack_lvl+0x55/0x70
+[   34.567022]  __napi_build_skb+0xaa/0xc0
+[   34.567150]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[   34.573123]  dump_stack_lvl+0x55/0x70
+[   34.573257]  skb_clone+0x13c/0x150
+[   34.573383]  ? __pfx_csum_block_add_ext+0x10/0x10
+----------------------------------------
+[   34.579645]  dump_stack_lvl+0x55/0x70
+[   34.579779]  kfree_skbmem+0xe4/0x130
+[   34.579910]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   34.586620]  dump_stack_lvl+0x55/0x70
+[   34.586754]  kfree_skbmem+0x92/0x130
+[   34.586886]  tcp_ack+0x6c6/0x1360
+----------------------------------------
+[   34.592059]  dump_stack_lvl+0x55/0x70
+[   34.592185]  __napi_build_skb+0xaa/0xc0
+[   34.592317]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[   34.598946]  dump_stack_lvl+0x55/0x70
+[   34.599080]  kfree_skbmem+0xe4/0x130
+[   34.599211]  tcp_rcv_state_process+0x606/0x1090
+----------------------------------------
+[   34.603837]  dump_stack_lvl+0x55/0x70
+[   34.603961]  __napi_build_skb+0xaa/0xc0
+[   34.604092]  napi_alloc_skb+0x88/0x1a0
+----------------------------------------
+[   34.610620]  dump_stack_lvl+0x55/0x70
+[   34.610745]  kfree_skbmem+0x92/0x130
+[   34.610868]  tcp_ack+0x6c6/0x1360
+----------------------------------------
+[   34.618583]  dump_stack_lvl+0x55/0x70
+[   34.618709]  kfree_skbmem+0xe4/0x130
+[   34.618832]  tcp_rcv_state_process+0x606/0x1090
+----------------------------------------
+[   34.626449]  dump_stack_lvl+0x55/0x70
+[   34.626574]  __alloc_skb+0x15a/0x200
+[   34.626697]  __tcp_send_ack.part.0+0x2a/0x120
+----------------------------------------
+[   34.634614]  dump_stack_lvl+0x55/0x70
+[   34.634740]  skb_clone+0x13c/0x150
+[   34.634856]  ? __pfx_csum_block_add_ext+0x10/0x10
+----------------------------------------
+[   34.644381]  dump_stack_lvl+0x55/0x70
+[   34.644506]  kfree_skbmem+0xe4/0x130
+[   34.644629]  packet_rcv+0x5b/0x430
+----------------------------------------
+[   34.644746]  ? dump_stack_lvl+0x5a/0x70
+[   34.644877]  dev_queue_xmit_nit+0x278/0x2b0
+[   34.645019]  dev_hard_start_xmit+0x66/0x1c0
+----------------------------------------
+[   34.654371]  dump_stack_lvl+0x55/0x70
+[   34.654505]  napi_skb_cache_put+0x47/0xb0
+[   34.654651]  __free_old_xmit+0x5c/0x120
+----------------------------------------
