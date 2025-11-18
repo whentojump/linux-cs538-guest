@@ -1131,10 +1131,12 @@ static int skb_pp_frag_ref(struct sk_buff *skb)
 
 static void skb_kfree_head(void *head, unsigned int end_offset)
 {
+	size_t s = ksize(head);
 	if (end_offset == SKB_SMALL_HEAD_HEADROOM)
 		kmem_cache_free(net_hotdata.skb_small_head_cache, head);
 	else
 		kfree(head);
+	pr_info("[DATA FREE] kfree <- skb_kfree_head %zu @ %px\n", s, head);
 }
 
 static void skb_free_head(struct sk_buff *skb)
