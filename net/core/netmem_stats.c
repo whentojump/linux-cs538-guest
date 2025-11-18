@@ -349,7 +349,7 @@ void netmem_track_skb_reset(void)
 }
 EXPORT_SYMBOL(netmem_track_skb_reset);
 
-void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, size_t size)
+void netmem_track_skb_operation(struct sk_buff *skb, const char *operation, long long size)
 {
 	int op_num;
 
