@@ -365,11 +365,11 @@ void netmem_track_skb_operation(struct sk_buff *skb, const char *func_name,
 
 	switch (operation_type) {
 		case STRUCT_ALLOC:
-			pr_info("NETMEM: [OP %d] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
+			pr_info("NETMEM: [OP %d] [STRUCT_ALLOC] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
 				op_num, skb, skb->head, func_name, size, skb->truesize);
 			break;
 		case STRUCT_FREE:
-			pr_info("NETMEM: [OP %d] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
+			pr_info("NETMEM: [OP %d] [STRUCT_FREE] skb=%p head=%p func=%s delta=%lld truesize=%u\n",
 				op_num, skb, skb->head, func_name, size, skb->truesize);
 			break;
 		case DATA_ALLOC:
