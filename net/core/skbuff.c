@@ -482,14 +482,14 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 	memset(skb, 0, offsetof(struct sk_buff, tail));
 	__build_skb_around(skb, data, frag_size);
 
-#ifdef NETMEM_COUNT_BY_ADDRESS
-	char site_id[64];
-	snprintf(site_id, sizeof(site_id), "%p %p __build_skb", skb->head, skb);
-#else
-	const char *site_id = "__build_skb";
-#endif
-	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
-	netmem_stats_alloc_per_site(data_size, site_id);
+// #ifdef NETMEM_COUNT_BY_ADDRESS
+// 	char site_id[64];
+// 	snprintf(site_id, sizeof(site_id), "%p %p __build_skb", skb->head, skb);
+// #else
+// 	const char *site_id = "__build_skb";
+// #endif
+// 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
+// 	netmem_stats_alloc_per_site(data_size, site_id);
 
 	return skb;
 }
@@ -713,13 +713,13 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 		refcount_set(&fclones->fclone_ref, 1);
 	}
 
-#ifdef NETMEM_COUNT_BY_ADDRESS
-	char site_id[64];
-	snprintf(site_id, sizeof(site_id), "%p %p __alloc_skb", skb->head, skb);
-#else
-	const char *site_id = "__alloc_skb";
-#endif
-	netmem_stats_alloc_per_site(skb->truesize, site_id);
+// #ifdef NETMEM_COUNT_BY_ADDRESS
+// 	char site_id[64];
+// 	snprintf(site_id, sizeof(site_id), "%p %p __alloc_skb", skb->head, skb);
+// #else
+// 	const char *site_id = "__alloc_skb";
+// #endif
+// 	netmem_stats_alloc_per_site(skb->truesize, site_id);
 
 	return skb;
 
@@ -879,14 +879,14 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
 	skb = __napi_build_skb(data, len);
 
 	if (skb) {
-	#ifdef NETMEM_COUNT_BY_ADDRESS
-		char site_id[64];
-		snprintf(site_id, sizeof(site_id), "%p %p napi_alloc_skb", skb->head, skb);
-	#else
-		const char *site_id = "napi_alloc_skb";
-	#endif
-		unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
-		netmem_stats_alloc_per_site(data_size, site_id);
+	// #ifdef NETMEM_COUNT_BY_ADDRESS
+	// 	char site_id[64];
+	// 	snprintf(site_id, sizeof(site_id), "%p %p napi_alloc_skb", skb->head, skb);
+	// #else
+	// 	const char *site_id = "napi_alloc_skb";
+	// #endif
+	// 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
+	// 	netmem_stats_alloc_per_site(data_size, site_id);
 	}
 	if (unlikely(!skb)) {
 		skb_free_frag(data);
@@ -1137,14 +1137,14 @@ static void skb_release_data(struct sk_buff *skb, enum skb_drop_reason reason)
 	if (!skb_data_unref(skb, shinfo))
 		goto exit;
 
-#ifdef NETMEM_COUNT_BY_ADDRESS
-	char site_id[64];
-	snprintf(site_id, sizeof(site_id), "%p %p skb_release_data", skb->head, skb);
-#else
-	const char *site_id = "skb_release_data";
-#endif
-	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
-	netmem_stats_free_per_site(data_size, site_id);
+// #ifdef NETMEM_COUNT_BY_ADDRESS
+// 	char site_id[64];
+// 	snprintf(site_id, sizeof(site_id), "%p %p skb_release_data", skb->head, skb);
+// #else
+// 	const char *site_id = "skb_release_data";
+// #endif
+// 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
+// 	netmem_stats_free_per_site(data_size, site_id);
 
 	if (skb_zcopy(skb)) {
 		bool skip_unref = shinfo->flags & SKBFL_MANAGED_FRAG_REFS;
@@ -1185,13 +1185,13 @@ static void kfree_skbmem(struct sk_buff *skb)
 	switch (skb->fclone) {
 	case SKB_FCLONE_UNAVAILABLE:
 
-#ifdef NETMEM_COUNT_BY_ADDRESS
-		char site_id[64];
-		snprintf(site_id, sizeof(site_id), "%p %p kfree_skbmem UNAVAILABLE", skb->head, skb);
-#else
-		const char *site_id = "kfree_skbmem UNAVAILABLE";
-#endif
-		netmem_stats_free_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
+// #ifdef NETMEM_COUNT_BY_ADDRESS
+// 		char site_id[64];
+// 		snprintf(site_id, sizeof(site_id), "%p %p kfree_skbmem UNAVAILABLE", skb->head, skb);
+// #else
+// 		const char *site_id = "kfree_skbmem UNAVAILABLE";
+// #endif
+// 		netmem_stats_free_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
 
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 		return;
@@ -2138,16 +2138,16 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 
 	n = __skb_clone(n, skb);
 
-	/* Track allocation only if we allocated new memory (not reusing fclone) */
-	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE) {
-#ifdef NETMEM_COUNT_BY_ADDRESS
-		char site_id[64];
-		snprintf(site_id, sizeof(site_id), "%p %p skb_clone", n->head, n);
-#else
-		const char *site_id = "skb_clone";
-#endif
-		netmem_stats_alloc_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
-	}
+// 	/* Track allocation only if we allocated new memory (not reusing fclone) */
+// 	if (n && n->fclone == SKB_FCLONE_UNAVAILABLE) {
+// #ifdef NETMEM_COUNT_BY_ADDRESS
+// 		char site_id[64];
+// 		snprintf(site_id, sizeof(site_id), "%p %p skb_clone", n->head, n);
+// #else
+// 		const char *site_id = "skb_clone";
+// #endif
+// 		netmem_stats_alloc_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
+// 	}
 	return n;
 }
 EXPORT_SYMBOL(skb_clone);
