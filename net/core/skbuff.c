@@ -399,8 +399,10 @@ static inline void *__slab_build_skb(struct sk_buff *skb, void *data,
 {
 	void *resized;
 
+	size_t s1, s2;
 	/* Must find the allocation size (and grow it to match). */
 	*size = ksize(data);
+	s1 = *size;
 	/* krealloc() will immediately return "data" when
 	 * "ksize(data)" is requested: it is the existing upper
 	 * bounds. As a result, GFP_ATOMIC will be ignored. Note
@@ -409,6 +411,9 @@ static inline void *__slab_build_skb(struct sk_buff *skb, void *data,
 	 * tracked correctly.
 	 */
 	resized = krealloc(data, *size, GFP_ATOMIC);
+	s2 = ksize(resized);
+	if (s1 != s2)
+		pr_info("[DATA REALLOC] krealloc <- __slab_build_skb %zu -> %zu @ %px\n", s1, s2, resized);
 	WARN_ON_ONCE(resized != data);
 	return resized;
 }
@@ -421,6 +426,8 @@ struct sk_buff *slab_build_skb(void *data)
 {
 	struct sk_buff *skb;
 	unsigned int size;
+
+	pr_info("slab_build_skb FINDME\n");
 
 	skb = kmem_cache_alloc(net_hotdata.skbuff_cache,
 			       GFP_ATOMIC | __GFP_NOWARN);
@@ -501,9 +508,14 @@ struct sk_buff *build_skb(void *data, unsigned int frag_size)
 {
 	struct sk_buff *skb = __build_skb(data, frag_size);
 
+	// pr_info("build_skb FINDME\n");
+	// dump_stack();
+
 	if (likely(skb && frag_size)) {
 		skb->head_frag = 1;
 		skb_propagate_pfmemalloc(virt_to_head_page(data), skb);
+	} else {
+		pr_info("FINDME build_skb with head_frag = 0\n");
 	}
 	return skb;
 }
@@ -518,6 +530,8 @@ EXPORT_SYMBOL(build_skb);
 struct sk_buff *build_skb_around(struct sk_buff *skb,
 				 void *data, unsigned int frag_size)
 {
+	pr_info("build_skb_around FINDME\n");
+
 	if (unlikely(!skb))
 		return NULL;
 
@@ -567,6 +581,8 @@ static struct sk_buff *__napi_build_skb(void *data, unsigned int frag_size)
  */
 struct sk_buff *napi_build_skb(void *data, unsigned int frag_size)
 {
+	pr_info("napi_build_skb FINDME\n");
+
 	struct sk_buff *skb = __napi_build_skb(data, frag_size);
 
 	if (likely(skb) && frag_size) {
@@ -694,6 +710,8 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 	 * to allow max possible filling before reallocation.
 	 */
 	prefetchw(data + SKB_WITH_OVERHEAD(size));
+	size_t s = ksize(data);
+	pr_info("[DATA ALLOC] kmalloc_reserve <- __alloc_skb %zu @ %px\n", s, data);
 
 	/*
 	 * Only clear those fields we need to clear, not those that we will
@@ -720,6 +738,9 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 // 	const char *site_id = "__alloc_skb";
 // #endif
 // 	netmem_stats_alloc_per_site(skb->truesize, site_id);
+
+	if (skb && skb->head_frag)
+		pr_info("FINDME __alloc_skb with head_frag = 1\n");
 
 	return skb;
 
@@ -2333,6 +2354,8 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
+	size_t s = ksize(data);
+	pr_info("[DATA ALLOC] kmalloc_reserve <- pskb_expand_head %zu @ %px \n", s, data);
 	if (!data)
 		goto nodata;
 	size = SKB_WITH_OVERHEAD(size);
@@ -6721,6 +6744,8 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
+	size_t s = ksize(data);
+	pr_info("[DATA ALLOC] kmalloc_reserve <- pskb_carve_inside_header %zu @ %px \n", s, data);
 	if (!data)
 		return -ENOMEM;
 	size = SKB_WITH_OVERHEAD(size);
@@ -6837,6 +6862,8 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
+	size_t s = ksize(data);
+	pr_info("[DATA ALLOC] kmalloc_reserve <- pskb_carve_inside_nonlinear %zu @ %px \n", s, data);
 	if (!data)
 		return -ENOMEM;
 	size = SKB_WITH_OVERHEAD(size);
