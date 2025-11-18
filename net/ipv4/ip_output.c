@@ -841,7 +841,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
 			const char *site_id = "__ip_do_fragment";
 #endif
 			netmem_stats_free_per_site(frag->truesize, site_id);
-			netmem_track_skb_operation(skb, "__ip_do_fragment -=", frag->truesize);
+			// netmem_track_skb_operation(skb, "__ip_do_fragment -=", frag->truesize);
 		}
 
 		/* Everything is OK. Generate! */
@@ -902,7 +902,7 @@ slow_path_clean:
 			const char *site_id = "__ip_do_fragment";
 #endif
 			netmem_stats_alloc_per_site(frag2->truesize, site_id);
-			netmem_track_skb_operation(skb, "__ip_do_fragment +=", frag2->truesize);
+			// netmem_track_skb_operation(skb, "__ip_do_fragment +=", frag2->truesize);
 		}
 	}
 
@@ -1281,7 +1281,7 @@ alloc_new_skb:
 			const char *site_id = "__ip_append_data";
 #endif
 			netmem_stats_alloc_per_site(copy, site_id);
-			netmem_track_skb_operation(skb, "__ip_append_data +=", copy);
+			// netmem_track_skb_operation(skb, "__ip_append_data +=", copy);
 
 			wmem_alloc_delta += copy;
 		} else {
@@ -1446,7 +1446,7 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
 		const char *site_id = "__ip_make_skb";
 #endif
 		netmem_stats_alloc_per_site(tmp_skb->truesize, site_id);
-		netmem_track_skb_operation(skb, "__ip_make_skb +=", tmp_skb->truesize);
+		// netmem_track_skb_operation(skb, "__ip_make_skb +=", tmp_skb->truesize);
 		tmp_skb->destructor = NULL;
 		tmp_skb->sk = NULL;
 	}

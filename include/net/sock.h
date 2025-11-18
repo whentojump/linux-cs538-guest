@@ -2202,7 +2202,7 @@ static inline int skb_copy_to_page_nocache(struct sock *sk, struct iov_iter *fro
 		return err;
 
 	skb_len_add(skb, copy);
-	netmem_track_skb_operation(skb, "dummy 1", copy);
+	// netmem_track_skb_operation(skb, "dummy 1", copy);
 #ifdef NETMEM_COUNT_BY_ADDRESS
 	char site_id[64];
 	snprintf(site_id, sizeof(site_id), "%p %p skb_copy_to_page_nocache", skb->head, skb);

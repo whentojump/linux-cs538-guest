@@ -4018,7 +4018,7 @@ static int tcp_send_syn_data(struct sock *sk, struct sk_buff *syn)
 		page_ref_inc(pfrag->page);
 		pfrag->offset += space;
 		skb_len_add(syn_data, space);
-		netmem_track_skb_operation(syn_data, "dummy 6", space);
+		// netmem_track_skb_operation(syn_data, "dummy 6", space);
 #ifdef NETMEM_COUNT_BY_ADDRESS
 		char site_id[64];
 		snprintf(site_id, sizeof(site_id), "%p %p tcp_send_syn_data", syn_data->head, syn_data);
