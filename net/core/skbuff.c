@@ -491,7 +491,7 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 #endif
 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
 	netmem_stats_alloc_per_site(data_size, site_id);
-	// netmem_track_skb_operation(skb, "__build_skb", data_size);
+	netmem_track_skb_operation(skb, "__build_skb", DATA_ALLOC, data_size);
 
 	return skb;
 }
@@ -722,7 +722,8 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 	const char *site_id = "__alloc_skb";
 #endif
 	netmem_stats_alloc_per_site(skb->truesize, site_id);
-	// netmem_track_skb_operation(skb, "__alloc_skb", skb->truesize);
+	netmem_track_skb_operation(skb, "__alloc_skb", STRUCT_ALLOC, kmem_cache_size(net_hotdata.skbuff_cache));
+	netmem_track_skb_operation(skb, "__alloc_skb", DATA_ALLOC, skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache));
 
 	return skb;
 
@@ -890,7 +891,7 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
 	#endif
 		unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
 		netmem_stats_alloc_per_site(data_size, site_id);
-		// netmem_track_skb_operation(skb, "napi_alloc_skb", data_size);
+		netmem_track_skb_operation(skb, "napi_alloc_skb", DATA_ALLOC, data_size);
 	}
 	if (unlikely(!skb)) {
 		skb_free_frag(data);
@@ -1153,7 +1154,7 @@ static void skb_release_data(struct sk_buff *skb, enum skb_drop_reason reason)
 #endif
 	unsigned int data_size = skb->truesize - kmem_cache_size(net_hotdata.skbuff_cache);
 	netmem_stats_free_per_site(data_size, site_id);
-	// netmem_track_skb_operation(skb, "skb_release_data", data_size);
+	netmem_track_skb_operation(skb, "skb_release_data", DATA_FREE, -(long long) data_size);
 
 	if (skb_zcopy(skb)) {
 		bool skip_unref = shinfo->flags & SKBFL_MANAGED_FRAG_REFS;
@@ -1201,7 +1202,7 @@ static void kfree_skbmem(struct sk_buff *skb)
 		const char *site_id = "kfree_skbmem UNAVAILABLE";
 #endif
 		netmem_stats_free_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
-		// netmem_track_skb_operation(skb, "kfree_skbmem", kmem_cache_size(net_hotdata.skbuff_cache));
+		netmem_track_skb_operation(skb, "kfree_skbmem", STRUCT_FREE, -((long long) kmem_cache_size(net_hotdata.skbuff_cache)));
 
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 		return;
@@ -2159,7 +2160,7 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 		const char *site_id = "skb_clone";
 #endif
 		netmem_stats_alloc_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
-		// netmem_track_skb_operation(n, "skb_clone", kmem_cache_size(net_hotdata.skbuff_cache));
+		netmem_track_skb_operation(n, "skb_clone", STRUCT_ALLOC, kmem_cache_size(net_hotdata.skbuff_cache));
 	}
 	return n;
 }
