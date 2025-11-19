@@ -74,6 +74,8 @@
 #include "af_netlink.h"
 #include "genetlink.h"
 
+#include <net/netmem_stats.h>
+
 struct listeners {
 	struct rcu_head		rcu;
 	unsigned long		masks[];
@@ -1193,6 +1195,7 @@ struct sk_buff *netlink_alloc_large_skb(unsigned int size, int broadcast)
 	data = kvmalloc(head_size, GFP_KERNEL);
 	size_t s = ksize(data);
 	pr_info("[DATA ALLOC] kvmalloc <- netlink_alloc_large_skb %zu @ %px \n", s, data);
+	netmem_stats_alloc_per_site(s, "netlink_alloc_large_skb");
 	if (!data)
 		return NULL;
 
