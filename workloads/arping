@@ -9,11 +9,9 @@ run() {
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 
-run "ping -4 -c 1 -s 86 localhost"
-run "ping -4 -c 1 -s 4096 localhost"
-run "ping -4 -c 1 -s 40960 localhost"
-run "ping -4 -c 5 -s 4096 localhost"
-run "ping -c 1 -s 86 10.0.2.2"
-run "ping -c 1 -s 87 10.0.2.2"
-run "ping -c 1 -s 1600 10.0.2.2"
-run "ping -c 10 -s 4800 10.0.2.2"
+run "arping -c 1 localhost"
+run "arping -c 5 localhost"
+run "arping -c 10 localhost"
+run "arping -c 1 10.0.2.2"
+run "arping -c 5 10.0.2.2"
+run "arping -c 10 10.0.2.2"
