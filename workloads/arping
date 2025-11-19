@@ -5,13 +5,14 @@ THIS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 run() {
     echo "%%%%%%%%%%%%%%%%%% $1 %%%%%%%%%%%%%%%%%%"
     echo 1 > /proc/netmem_stats/reset
-    $1 > /dev/null 2>&1; sleep 1
+    $1 `#> /dev/null 2>&1`; sleep 1
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 
+# Interface "lo" is not ARPable
 run "arping -c 1 localhost"
-run "arping -c 5 localhost"
-run "arping -c 10 localhost"
+# run "arping -c 5 localhost"
+# run "arping -c 10 localhost"
 run "arping -c 1 10.0.2.2"
 run "arping -c 5 10.0.2.2"
 run "arping -c 10 10.0.2.2"
