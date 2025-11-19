@@ -356,6 +356,8 @@ static struct sk_buff *napi_skb_cache_get(void)
 						      GFP_ATOMIC | __GFP_NOWARN,
 						      NAPI_SKB_CACHE_BULK,
 						      nc->skb_cache);
+		pr_info("[STRUCT ALLOC BULK] kmem_cache_alloc_bulk <- napi_skb_cache_get %zu @ %px\n",
+			(size_t) NAPI_SKB_CACHE_BULK * sizeof(struct sk_buff), nc->skb_cache);
 		if (unlikely(!nc->skb_count)) {
 			local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
 			return NULL;
@@ -431,6 +433,10 @@ struct sk_buff *slab_build_skb(void *data)
 
 	skb = kmem_cache_alloc(net_hotdata.skbuff_cache,
 			       GFP_ATOMIC | __GFP_NOWARN);
+	if (likely(skb))
+		pr_info("[STRUCT ALLOC] kmem_cache_alloc <- slab_build_skb %zu @ %px\n",
+			sizeof(struct sk_buff), skb);
+
 	if (unlikely(!skb))
 		return NULL;
 
@@ -483,6 +489,10 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
 
 	skb = kmem_cache_alloc(net_hotdata.skbuff_cache,
 			       GFP_ATOMIC | __GFP_NOWARN);
+	if (likely(skb))
+		pr_info("[STRUCT ALLOC] kmem_cache_alloc <- __build_skb %zu @ %px\n",
+			sizeof(struct sk_buff), skb);
+
 	if (unlikely(!skb))
 		return NULL;
 
@@ -691,8 +701,15 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 	if ((flags & (SKB_ALLOC_FCLONE | SKB_ALLOC_NAPI)) == SKB_ALLOC_NAPI &&
 	    likely(node == NUMA_NO_NODE || node == numa_mem_id()))
 		skb = napi_skb_cache_get();
-	else
+	else {
 		skb = kmem_cache_alloc_node(cache, gfp_mask & ~GFP_DMA, node);
+		if (cache == net_hotdata.skbuff_cache)
+			pr_info("[STRUCT ALLOC] kmem_cache_alloc_node <- __alloc_skb %zu @ %px\n",
+				sizeof(struct sk_buff), skb);
+		else
+			pr_info("[STRUCT ALLOC] kmem_cache_alloc_node <- __alloc_skb (FINDME fclone) %zu @ %px\n",
+				sizeof(struct sk_buff), skb);
+	}
 	if (unlikely(!skb))
 		return NULL;
 	prefetchw(skb);
@@ -1216,6 +1233,8 @@ static void kfree_skbmem(struct sk_buff *skb)
 // #endif
 // 		netmem_stats_free_per_site(kmem_cache_size(net_hotdata.skbuff_cache), site_id);
 
+		pr_info("[STRUCT FREE] kmem_cache_free <- kfree_skbmem %zu @ %px\n",
+			sizeof(struct sk_buff), skb);
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 		return;
 
@@ -1237,6 +1256,8 @@ static void kfree_skbmem(struct sk_buff *skb)
 	if (!refcount_dec_and_test(&fclones->fclone_ref))
 		return;
 fastpath:
+	pr_info("[STRUCT FREE] kmem_cache_free <- kfree_skbmem (FINDME fclone) %zu @ %px\n",
+		sizeof(struct sk_buff_fclones), fclones);
 	kmem_cache_free(net_hotdata.skbuff_fclone_cache, fclones);
 }
 
@@ -1335,6 +1356,8 @@ static void kfree_skb_add_bulk(struct sk_buff *skb,
 	sa->skb_array[sa->skb_count++] = skb;
 
 	if (unlikely(sa->skb_count == KFREE_SKB_BULK_SIZE)) {
+		pr_info("[STRUCT FREE BULK] kmem_cache_free_bulk <- kfree_skb_add_bulk %zu @ %px\n",
+			(size_t) KFREE_SKB_BULK_SIZE * sizeof(struct sk_buff), sa->skb_array);
 		kmem_cache_free_bulk(net_hotdata.skbuff_cache, KFREE_SKB_BULK_SIZE,
 				     sa->skb_array);
 		sa->skb_count = 0;
@@ -1359,8 +1382,11 @@ kfree_skb_list_reason(struct sk_buff *segs, enum skb_drop_reason reason)
 		segs = next;
 	}
 
-	if (sa.skb_count)
+	if (sa.skb_count) {
+		pr_info("[STRUCT FREE BULK] kmem_cache_free_bulk <- kfree_skb_list_reason %zu @ %px\n",
+			(size_t) sa.skb_count * sizeof(struct sk_buff), sa.skb_array);
 		kmem_cache_free_bulk(net_hotdata.skbuff_cache, sa.skb_count, sa.skb_array);
+	}
 }
 EXPORT_SYMBOL(kfree_skb_list_reason);
 
@@ -1538,7 +1564,8 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 		for (i = NAPI_SKB_CACHE_HALF; i < NAPI_SKB_CACHE_SIZE; i++)
 			kasan_mempool_unpoison_object(nc->skb_cache[i],
 						kmem_cache_size(net_hotdata.skbuff_cache));
-
+		pr_info("[STRUCT FREE BULK] kmem_cache_free_bulk <- napi_skb_cache_put %zu @ %px\n",
+			(size_t) NAPI_SKB_CACHE_HALF * sizeof(struct sk_buff), nc->skb_cache + NAPI_SKB_CACHE_HALF);
 		kmem_cache_free_bulk(net_hotdata.skbuff_cache, NAPI_SKB_CACHE_HALF,
 				     nc->skb_cache + NAPI_SKB_CACHE_HALF);
 		nc->skb_count = NAPI_SKB_CACHE_HALF;
@@ -2153,6 +2180,9 @@ struct sk_buff *skb_clone(struct sk_buff *skb, gfp_t gfp_mask)
 			gfp_mask |= __GFP_MEMALLOC;
 
 		n = kmem_cache_alloc(net_hotdata.skbuff_cache, gfp_mask);
+		if (n)
+			pr_info("[STRUCT ALLOC] kmem_cache_alloc <- skb_clone %zu @ %px\n",
+				sizeof(struct sk_buff), n);
 		if (!n)
 			return NULL;
 
@@ -6076,6 +6106,8 @@ void kfree_skb_partial(struct sk_buff *skb, bool head_stolen)
 {
 	if (head_stolen) {
 		skb_release_head_state(skb);
+		pr_info("[STRUCT FREE] kmem_cache_free <- kfree_skb_partial %zu @ %px\n",
+			sizeof(struct sk_buff), skb);
 		kmem_cache_free(net_hotdata.skbuff_cache, skb);
 	} else {
 		__kfree_skb(skb);
@@ -7012,6 +7044,9 @@ struct skb_ext *__skb_ext_alloc(gfp_t flags)
 {
 	struct skb_ext *new = kmem_cache_alloc(skbuff_ext_cache, flags);
 
+	if (new)
+		pr_info("[STRUCT ALLOC] kmem_cache_alloc <- __skb_ext_alloc (FINDME ext) %zu @ %px\n", sizeof(struct skb_ext), new);
+
 	if (new) {
 		memset(new->offset, 0, sizeof(new->offset));
 		refcount_set(&new->refcnt, 1);
@@ -7029,6 +7064,9 @@ static struct skb_ext *skb_ext_maybe_cow(struct skb_ext *old,
 		return old;
 
 	new = kmem_cache_alloc(skbuff_ext_cache, GFP_ATOMIC);
+	if (new)
+		pr_info("[STRUCT ALLOC] kmem_cache_alloc <- skb_ext_maybe_cow (FINDME ext) %zu @ %px\n", sizeof(struct skb_ext), new);
+
 	if (!new)
 		return NULL;
 
