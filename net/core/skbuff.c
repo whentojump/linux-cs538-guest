@@ -1584,9 +1584,9 @@ void __consume_stateless_skb(struct sk_buff *skb)
 static void napi_skb_cache_put(struct sk_buff *skb)
 {
 	/* DISABLED CACHING FOR DEBUGGING - free immediately */
-	// pr_info("[STRUCT FREE] kfree_skbmem <- napi_skb_cache_put (no cache) %zu @ %px\n",
-	// 	sizeof(struct sk_buff), skb);
-	// netmem_stats_free_per_site(sizeof(struct sk_buff), "napi_skb_cache_put (no cache)");
+	pr_info("[STRUCT FREE] kfree_skbmem <- napi_skb_cache_put (no cache) %zu @ %px\n",
+		sizeof(struct sk_buff), skb);
+	netmem_stats_free_per_site(sizeof(struct sk_buff), "napi_skb_cache_put (no cache)");
 	kfree_skbmem(skb);
 
 	/* Original caching logic disabled:
