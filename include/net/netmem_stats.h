@@ -9,6 +9,8 @@
 // #define NM_PRINT(...) pr_info(__VA_ARGS__)
 #define NM_PRINT(...) (void) 0
 
+#define CHANGE_KERNEL_CACHE_BEHAVIOR 1
+
 struct netmem_site_stats {
 	char site_name[64];
 	atomic64_t allocations;
