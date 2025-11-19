@@ -736,7 +736,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 		} else {
 			pr_info("[STRUCT ALLOC] kmem_cache_alloc_node <- __alloc_skb (FINDME fclone) %zu @ %px\n",
 				sizeof(struct sk_buff), skb);
-			netmem_stats_alloc_per_site(sizeof(struct sk_buff), "__alloc_skb (fclone)");
+			netmem_stats_alloc_per_site(sizeof(struct sk_buff_fclones), "__alloc_skb (fclone)");
 		}
 		}
 	}
