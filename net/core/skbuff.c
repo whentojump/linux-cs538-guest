@@ -1587,16 +1587,14 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
 	nc->skb_cache[nc->skb_count++] = skb;
 
-	if (unlikely(nc->skb_count == NAPI_SKB_CACHE_SIZE)) {
-		for (i = NAPI_SKB_CACHE_HALF; i < NAPI_SKB_CACHE_SIZE; i++)
+	/* DEBUGGING: Flush immediately when we have just 1 skb instead of waiting for 64 */
+	if (nc->skb_count >= 1) {
+		for (i = 0; i < nc->skb_count; i++) {
 			kasan_mempool_unpoison_object(nc->skb_cache[i],
 						kmem_cache_size(net_hotdata.skbuff_cache));
-		pr_info("[STRUCT FREE BULK] kmem_cache_free_bulk <- napi_skb_cache_put %zu @ %px\n",
-			(size_t) NAPI_SKB_CACHE_HALF * sizeof(struct sk_buff), nc->skb_cache + NAPI_SKB_CACHE_HALF);
-		netmem_stats_free_per_site(NAPI_SKB_CACHE_HALF * sizeof(struct sk_buff), "napi_skb_cache_put (bulk)");
-		kmem_cache_free_bulk(net_hotdata.skbuff_cache, NAPI_SKB_CACHE_HALF,
-				     nc->skb_cache + NAPI_SKB_CACHE_HALF);
-		nc->skb_count = NAPI_SKB_CACHE_HALF;
+			kfree_skbmem(nc->skb_cache[i]);
+		}
+		nc->skb_count = 0;
 	}
 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
 }
