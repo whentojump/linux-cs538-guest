@@ -347,6 +347,10 @@ EXPORT_SYMBOL(__netdev_alloc_frag_align);
 
 static struct sk_buff *napi_skb_cache_get(void)
 {
+	/* DISABLED CACHING FOR DEBUGGING - return NULL to force normal allocation */
+	return NULL;
+
+	/* Original caching logic disabled:
 	struct napi_alloc_cache *nc = this_cpu_ptr(&napi_alloc_cache);
 	struct sk_buff *skb;
 
@@ -370,6 +374,7 @@ static struct sk_buff *napi_skb_cache_get(void)
 	kasan_mempool_unpoison_object(skb, kmem_cache_size(net_hotdata.skbuff_cache));
 
 	return skb;
+	*/
 }
 
 static inline void __finalize_skb_around(struct sk_buff *skb, void *data,
@@ -1578,6 +1583,13 @@ void __consume_stateless_skb(struct sk_buff *skb)
 
 static void napi_skb_cache_put(struct sk_buff *skb)
 {
+	/* DISABLED CACHING FOR DEBUGGING - free immediately */
+	pr_info("[STRUCT FREE] kfree_skbmem <- napi_skb_cache_put (no cache) %zu @ %px\n",
+		sizeof(struct sk_buff), skb);
+	netmem_stats_free_per_site(sizeof(struct sk_buff), "napi_skb_cache_put (no cache)");
+	kfree_skbmem(skb);
+
+	/* Original caching logic disabled:
 	struct napi_alloc_cache *nc = this_cpu_ptr(&napi_alloc_cache);
 	u32 i;
 
@@ -1599,6 +1611,7 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 		nc->skb_count = NAPI_SKB_CACHE_HALF;
 	}
 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
+	*/
 }
 
 void __napi_kfree_skb(struct sk_buff *skb, enum skb_drop_reason reason)
