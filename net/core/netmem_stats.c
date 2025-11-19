@@ -227,7 +227,7 @@ void netmem_stats_show_per_site(struct seq_file *seq)
 	u64 total_bytes_deallocated = 0;
 
 	seq_printf(seq, "%-*s %*s %*s %*s %*s\n",
-		   COL_WIDTH1, "skbuff->head     skbuff",
+		   COL_WIDTH1, "caller site",
 		   COL_WIDTH2, "+",
 		   COL_WIDTH3, "+B",
 		   COL_WIDTH4, "-",
