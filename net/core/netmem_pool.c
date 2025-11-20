@@ -145,14 +145,15 @@ void *netmem_pool_alloc(size_t size, gfp_t gfp)
 	if (netmem_pool) {
 		addr = gen_pool_alloc_algo(netmem_pool, total_size,
 					   gen_pool_first_fit_align, &align_data);
+		size_t s = ksize((void *) addr);
 		if (addr) {
 			ptr = (void *)addr;
 			header = (struct netmem_alloc_header *)ptr;
 			header->magic = NETMEM_FROM_POOL;
-			header->size = total_size;
+			header->size = s;
 
 			atomic64_inc(&pool_alloc_count);
-			atomic64_add(size, &pool_bytes_alloc_total);
+			atomic64_add(s - sizeof(struct netmem_alloc_header), &pool_bytes_alloc_total);
 
 			return ptr + sizeof(struct netmem_alloc_header);
 		}
