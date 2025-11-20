@@ -92,6 +92,7 @@
 #include "sock_destructor.h"
 
 #include <net/netmem_stats.h>
+#include <net/netmem_pool.h>
 
 #ifdef CONFIG_SKB_EXTENSIONS
 static struct kmem_cache *skbuff_ext_cache __ro_after_init;
@@ -147,6 +148,29 @@ drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM] = {
 	[SKB_DROP_REASON_SUBSYS_CORE] = RCU_INITIALIZER(&drop_reasons_core),
 };
 EXPORT_SYMBOL(drop_reasons_by_subsys);
+
+static inline void *kmem_cache_alloc2(struct kmem_cache *s, gfp_t gfpflags) {
+	size_t size;
+
+	if (s == net_hotdata.skbuff_cache)
+		size = sizeof(struct sk_buff);
+	else if (s == net_hotdata.skbuff_fclone_cache)
+		size = sizeof(struct sk_buff_fclones);
+	else if (s == net_hotdata.skb_small_head_cache)
+		size = SKB_SMALL_HEAD_CACHE_SIZE;
+	else
+		BUG();
+
+	void *obj = netmem_pool_alloc(size, gfpflags);
+	if (obj)
+		return obj;
+	return kmem_cache_alloc(s, gfpflags);
+}
+
+static inline void kmem_cache_free2(struct kmem_cache *s, void *x)
+{
+	netmem_pool_free(x);
+}
 
 /**
  * drop_reasons_register_subsys - register another drop reason subsystem
@@ -650,15 +674,23 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
 	obj_size = SKB_HEAD_ALIGN(*size);
 	if (obj_size <= SKB_SMALL_HEAD_CACHE_SIZE &&
 	    !(flags & KMALLOC_NOT_NORMAL_BITS)) {
+#if REDIRECT_TO_POOL == 1
+		obj = kmem_cache_alloc2(net_hotdata.skb_small_head_cache, flags | __GFP_NOMEMALLOC | __GFP_NOWARN);
+#else
 		obj = kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
 				flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
 				node);
+#endif
 		*size = SKB_SMALL_HEAD_CACHE_SIZE;
 		if (obj || !(gfp_pfmemalloc_allowed(flags)))
 			goto out;
 		/* Try again but now we are using pfmemalloc reserves */
 		ret_pfmemalloc = true;
+#if REDIRECT_TO_POOL == 1
+		obj = kmem_cache_alloc2(net_hotdata.skb_small_head_cache, flags);
+#else
 		obj = kmem_cache_alloc_node(net_hotdata.skb_small_head_cache, flags, node);
+#endif
 		goto out;
 	}
 
@@ -672,15 +704,23 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
 	 * Try a regular allocation, when that fails and we're not entitled
 	 * to the reserves, fail.
 	 */
+#if REDIRECT_TO_POOL == 1
+	obj = netmem_pool_alloc(obj_size, flags | __GFP_NOMEMALLOC | __GFP_NOWARN);
+#else
 	obj = kmalloc_node_track_caller(obj_size,
 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
 					node);
+#endif
 	if (obj || !(gfp_pfmemalloc_allowed(flags)))
 		goto out;
 
 	/* Try again but now we are using pfmemalloc reserves */
 	ret_pfmemalloc = true;
+#if REDIRECT_TO_POOL == 1
+	obj = netmem_pool_alloc(obj_size, flags);
+#else
 	obj = kmalloc_node_track_caller(obj_size, flags, node);
+#endif
 
 out:
 	if (pfmemalloc)

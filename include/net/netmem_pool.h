@@ -4,6 +4,8 @@
 #include <linux/types.h>
 #include <linux/gfp.h>
 
+#define REDIRECT_TO_POOL 1
+
 #define NETMEM_FROM_POOL	0xDEADBEEF
 #define NETMEM_FROM_KMALLOC	0xCAFEBABE
 
