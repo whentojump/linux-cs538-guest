@@ -472,7 +472,8 @@ static inline void *__slab_build_skb(struct sk_buff *skb, void *data,
 #if ENABLE_NM_PROFILE == 1
 	s2 = ksize(resized);
 	if (s1 != s2) {
-		NM_PRINT("[DATA REALLOC] krealloc <- __slab_build_skb %zu -> %zu @ %px\n", s1, s2, resized);
+		// If not executed, don't worry about it
+		NM_PRINT("[FINDME DATA REALLOC] krealloc <- __slab_build_skb %zu -> %zu @ %px\n", s1, s2, resized);
 		if (s1 < s2)
 			netmem_stats_alloc_per_site(s2 - s1, "__slab_build_skb (realloc)");
 		else
