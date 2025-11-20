@@ -12,4 +12,7 @@ tail -1 $f
 
 rm -f $f
 
-grep 'Total Bytes' /proc/netmem_stats/pool
+echo
+/usr/bin/cat /proc/netmem_stats/dump
+echo
+/usr/bin/cat /proc/netmem_stats/pool
