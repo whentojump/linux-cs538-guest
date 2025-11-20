@@ -210,11 +210,11 @@ void netmem_stats_show(struct seq_file *seq)
 	seq_printf(seq, "Active Bytes: %lld\n", active_bytes);
 }
 
-#define COL_WIDTH1 65
-#define COL_WIDTH2 5
-#define COL_WIDTH3 10
-#define COL_WIDTH4 5
-#define COL_WIDTH5 10
+#define COL_WIDTH1 40
+#define COL_WIDTH2 15
+#define COL_WIDTH3 15
+#define COL_WIDTH4 15
+#define COL_WIDTH5 15
 
 void netmem_stats_show_per_site(struct seq_file *seq)
 {
