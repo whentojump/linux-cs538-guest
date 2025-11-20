@@ -7,6 +7,7 @@
 #include <linux/hashtable.h>
 #include <linux/jhash.h>
 #include <net/netmem_stats.h>
+#include <net/netmem_pool.h>
 
 struct netmem_stats netmem_global_stats;
 
@@ -56,6 +57,8 @@ void netmem_stats_cleanup_counters(void)
 	atomic64_set(&stats->total_bytes_deallocated, 0);
 	atomic64_set(&stats->active_allocations, 0);
 	atomic64_set(&stats->active_bytes, 0);
+
+	netmem_pool_reset_stats();
 }
 
 void netmem_stats_alloc_per_site(size_t size, const char *site)
