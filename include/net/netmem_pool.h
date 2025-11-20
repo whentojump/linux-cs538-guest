@@ -19,7 +19,7 @@ void netmem_pool_cleanup(void);
 void netmem_pool_reset_stats(void);
 
 void *netmem_pool_alloc(size_t size, gfp_t gfp);
-void netmem_pool_free(void *ptr);
+void netmem_pool_free(void *ptr, size_t expected_size);
 
 size_t netmem_pool_available(void);
 size_t netmem_pool_size_get(void);
