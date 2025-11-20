@@ -75,6 +75,7 @@
 #include "genetlink.h"
 
 #include <net/netmem_stats.h>
+#include <net/netmem_pool.h>
 
 struct listeners {
 	struct rcu_head		rcu;
@@ -1192,9 +1193,17 @@ struct sk_buff *netlink_alloc_large_skb(unsigned int size, int broadcast)
 	if (head_size <= PAGE_SIZE || broadcast)
 		return alloc_skb(size, GFP_KERNEL);
 
+#if REDIRECT_TO_POOL == 1
+	data = netmem_pool_alloc(head_size, GFP_KERNEL);
+#else
 	data = kvmalloc(head_size, GFP_KERNEL);
+#endif
 #if ENABLE_NM_PROFILE == 1
+# if REDIRECT_TO_POOL == 1
+	size_t s = ksize2(data);
+# else
 	size_t s = ksize(data);
+# endif
 	NM_PRINT("[DATA ALLOC] kvmalloc <- netlink_alloc_large_skb %zu @ %px\n", s, data);
 	netmem_stats_alloc_per_site(s, "netlink_alloc_large_skb");
 #endif
