@@ -803,7 +803,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 	 * to allow max possible filling before reallocation.
 	 */
 	prefetchw(data + SKB_WITH_OVERHEAD(size));
-	size_t s = ksize(data);
+	size_t s = ksize2(data);
 	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- __alloc_skb %zu @ %px\n", s, data);
 	netmem_stats_alloc_per_site(s, "__alloc_skb");
 
@@ -1211,7 +1211,7 @@ static int skb_pp_frag_ref(struct sk_buff *skb)
 
 static void skb_kfree_head(void *head, unsigned int end_offset)
 {
-	size_t s = ksize(head);
+	size_t s = ksize2(head);
 	// if (end_offset == SKB_SMALL_HEAD_HEADROOM)
 	// 	kmem_cache_free(net_hotdata.skb_small_head_cache, head);
 	// else
@@ -2446,7 +2446,7 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve2(&size, gfp_mask, NUMA_NO_NODE, NULL);
-	size_t s = ksize(data);
+	size_t s = ksize2(data);
 	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- pskb_expand_head %zu @ %px \n", s, data);
 	netmem_stats_alloc_per_site(s, "pskb_expand_head");
 	if (!data)
@@ -6840,7 +6840,7 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve2(&size, gfp_mask, NUMA_NO_NODE, NULL);
-	size_t s = ksize(data);
+	size_t s = ksize2(data);
 	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- pskb_carve_inside_header %zu @ %px\n", s, data);
 	netmem_stats_alloc_per_site(s, "pskb_carve_inside_header");
 	if (!data)
@@ -6959,7 +6959,7 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve2(&size, gfp_mask, NUMA_NO_NODE, NULL);
-	size_t s = ksize(data);
+	size_t s = ksize2(data);
 	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- pskb_carve_inside_nonlinear %zu @ %px\n", s, data);
 	netmem_stats_alloc_per_site(s, "pskb_carve_inside_nonlinear");
 	if (!data)

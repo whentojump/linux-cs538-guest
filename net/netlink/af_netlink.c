@@ -1193,7 +1193,7 @@ struct sk_buff *netlink_alloc_large_skb(unsigned int size, int broadcast)
 		return alloc_skb(size, GFP_KERNEL);
 
 	data = kvmalloc(head_size, GFP_KERNEL);
-	size_t s = ksize(data);
+	size_t s = ksize2(data);
 	NM_PRINT("[DATA ALLOC] kvmalloc <- netlink_alloc_large_skb %zu @ %px\n", s, data);
 	netmem_stats_alloc_per_site(s, "netlink_alloc_large_skb");
 	if (!data)

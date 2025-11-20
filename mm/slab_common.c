@@ -1310,7 +1310,7 @@ EXPORT_SYMBOL(kfree_sensitive);
 
 #include <net/netmem_pool.h>
 
-size_t ksize(const void *objp)
+size_t ksize2(const void *objp)
 {
 	struct netmem_alloc_header *header;
 	const void *real_ptr;
@@ -1320,7 +1320,11 @@ size_t ksize(const void *objp)
 	if (header->magic == NETMEM_FROM_POOL || header->magic == NETMEM_FROM_KMALLOC) {
 		return header->size;
 	}
+	return ksize(objp);
+}
 
+size_t ksize(const void *objp)
+{
 	/*
 	 * We need to first check that the pointer to the object is valid.
 	 * The KASAN report printed from ksize() is more useful, then when
