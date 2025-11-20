@@ -152,7 +152,7 @@ void *netmem_pool_alloc(size_t size, gfp_t gfp)
 			header->size = total_size;
 
 			atomic64_inc(&pool_alloc_count);
-			atomic64_add(total_size, &pool_bytes_alloc_total);
+			atomic64_add(size, &pool_bytes_alloc_total);
 
 			return ptr + sizeof(struct netmem_alloc_header);
 		}
@@ -190,7 +190,7 @@ void netmem_pool_free(void *ptr)
 			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
 				      header->size);
 			atomic64_inc(&pool_free_count);
-			atomic64_add(header->size, &pool_bytes_free_total);
+			atomic64_add((header->size-sizeof(struct netmem_alloc_header)), &pool_bytes_free_total);
 		} else {
 			pr_err("Trying to free pool memory but pool is destroyed!\n");
 		}

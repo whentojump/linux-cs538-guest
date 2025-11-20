@@ -1317,10 +1317,10 @@ size_t ksize2(const void *objp)
 
 	real_ptr = objp - sizeof(struct netmem_alloc_header);
 	header = (struct netmem_alloc_header *)real_ptr;
-	if (header->magic == NETMEM_FROM_POOL || header->magic == NETMEM_FROM_KMALLOC) {
-		return header->size;
+	if (header->magic == NETMEM_FROM_POOL) {
+		return (header->size-sizeof(struct netmem_alloc_header));
 	}
-	return ksize(objp);
+	return 0;
 }
 
 size_t ksize(const void *objp)
