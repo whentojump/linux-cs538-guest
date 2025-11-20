@@ -462,6 +462,7 @@ DEFINE_FREE(kfree, void *, if (!IS_ERR_OR_NULL(_T)) kfree(_T))
  * originally allocated size via the __alloc_size attribute.
  */
 size_t ksize(const void *objp);
+size_t ksize2(const void *objp);
 
 #ifdef CONFIG_PRINTK
 bool kmem_dump_obj(void *object);
