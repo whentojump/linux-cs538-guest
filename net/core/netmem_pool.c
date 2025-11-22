@@ -132,39 +132,44 @@ static inline bool netmem_pool_is_from_pool(const void *addr)
 	return false;
 }
 
-void *netmem_pool_alloc(size_t size, gfp_t gfp)
+void *netmem_pool_alloc(size_t requested_payload_size, gfp_t gfp)
 {
 	struct genpool_data_align align_data = { .align = NETMEM_ALIGNMENT };
 	unsigned long addr;
 	void *ptr;
 	struct netmem_alloc_header *header;
-	size_t total_size;
+	size_t requested_total_size;
 
-	total_size = size + sizeof(struct netmem_alloc_header);
+	requested_total_size = requested_payload_size + sizeof(struct netmem_alloc_header);
 
 	if (netmem_pool) {
-		addr = gen_pool_alloc_algo(netmem_pool, total_size,
+		addr = gen_pool_alloc_algo(netmem_pool, requested_total_size,
 					   gen_pool_first_fit_align, &align_data);
-		size_t s = ksize((void *) addr);
+		// size_t actual_total_size = ksize((void *) addr);
+		size_t actual_total_size = requested_total_size;
 		if (addr) {
 			ptr = (void *)addr;
 			header = (struct netmem_alloc_header *)ptr;
 			header->magic = NETMEM_FROM_POOL;
-			header->size = s;
+			header->requested_payload_size = requested_payload_size;
+			header->requested_total_size = requested_total_size;
+			header->actual_total_size = actual_total_size;
 
 			atomic64_inc(&pool_alloc_count);
-			atomic64_add(s - sizeof(struct netmem_alloc_header), &pool_bytes_alloc_total);
+			atomic64_add(actual_total_size - sizeof(struct netmem_alloc_header), &pool_bytes_alloc_total);
 
 			return ptr + sizeof(struct netmem_alloc_header);
 		}
 	}
 
 	// Fallback
-	ptr = kmalloc(total_size, gfp);
+	ptr = kmalloc(requested_total_size, gfp);
 	if (ptr) {
 		header = (struct netmem_alloc_header *)ptr;
 		header->magic = NETMEM_FROM_KMALLOC;
-		header->size = total_size;
+		header->requested_payload_size = requested_payload_size;
+		header->requested_total_size = requested_total_size;
+		header->actual_total_size = ksize(ptr);
 
 		atomic64_inc(&pool_fallback_alloc_count);
 
@@ -189,14 +194,14 @@ void netmem_pool_free(void *ptr, size_t expected_size)
 	if (header->magic == NETMEM_FROM_POOL) {
 		if (netmem_pool) {
 			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
-				      header->size);
+				      header->requested_total_size);
 			atomic64_inc(&pool_free_count);
-			size_t now_size = header->size-sizeof(struct netmem_alloc_header);
+			size_t now_size = header->actual_total_size-sizeof(struct netmem_alloc_header);
 			if (now_size != expected_size) {
 				pr_err("Expected size %zu, but got %zu\n", expected_size, now_size);
-				dump_stack();
+				// dump_stack();
 			}
-			atomic64_add((header->size-sizeof(struct netmem_alloc_header)), &pool_bytes_free_total);
+			atomic64_add((header->actual_total_size-sizeof(struct netmem_alloc_header)), &pool_bytes_free_total);
 		} else {
 			pr_err("Trying to free pool memory but pool is destroyed!\n");
 		}

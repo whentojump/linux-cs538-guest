@@ -11,7 +11,9 @@
 
 struct netmem_alloc_header {
 	u32 magic;	// NETMEM_FROM_POOL or NETMEM_FROM_KMALLOC
-	u32 size;
+	u32 requested_payload_size;
+	u32 requested_total_size;
+	u32 actual_total_size;
 };
 
 int netmem_pool_init(void);
