@@ -27,6 +27,7 @@ static atomic64_t pool_fallback_alloc_count = ATOMIC64_INIT(0);
 static atomic64_t pool_fallback_free_count = ATOMIC64_INIT(0);
 static atomic64_t pool_bytes_alloc_total = ATOMIC64_INIT(0);
 static atomic64_t pool_bytes_free_total = ATOMIC64_INIT(0);
+static atomic64_t pool_bytes_peak_usage = ATOMIC64_INIT(0);
 
 int __init netmem_pool_init(void)
 {
@@ -109,8 +110,22 @@ void netmem_pool_reset_stats(void)
 	atomic64_set(&pool_fallback_free_count, 0);
 	atomic64_set(&pool_bytes_alloc_total, 0);
 	atomic64_set(&pool_bytes_free_total, 0);
+	atomic64_set(&pool_bytes_peak_usage, 0);
 }
 EXPORT_SYMBOL(netmem_pool_reset_stats);
+
+static inline void netmem_pool_update_peak_usage(void)
+{
+	s64 current_usage;
+	s64 peak;
+
+	current_usage = atomic64_read(&pool_bytes_alloc_total) -
+			atomic64_read(&pool_bytes_free_total);
+	peak = atomic64_read(&pool_bytes_peak_usage);
+
+	if (current_usage > peak)
+		atomic64_set(&pool_bytes_peak_usage, current_usage);
+}
 
 static inline bool netmem_pool_is_from_pool(const void *addr)
 {
@@ -154,6 +169,7 @@ void *netmem_pool_alloc(size_t payload_size, gfp_t gfp)
 
 			atomic64_inc(&pool_alloc_count);
 			atomic64_add(payload_size, &pool_bytes_alloc_total);
+			netmem_pool_update_peak_usage();
 
 			return ptr + sizeof(struct netmem_alloc_header);
 		}
@@ -192,6 +208,7 @@ void netmem_pool_free(void *ptr)
 		if (netmem_pool) {
 			atomic64_inc(&pool_free_count);
 			atomic64_add(header->payload_size, &pool_bytes_free_total);
+			netmem_pool_update_peak_usage();
 			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
 				      header->total_size);
 		} else {
@@ -236,6 +253,7 @@ static int netmem_pool_proc_show(struct seq_file *seq, void *v)
 	u64 fallback_frees = atomic64_read(&pool_fallback_free_count);
 	u64 bytes_allocated = atomic64_read(&pool_bytes_alloc_total);
 	u64 bytes_freed = atomic64_read(&pool_bytes_free_total);
+	u64 bytes_peak = atomic64_read(&pool_bytes_peak_usage);
 
 	seq_printf(seq, "Network Memory Pool Status\n");
 	seq_printf(seq, "===========================\n\n");
@@ -263,7 +281,8 @@ static int netmem_pool_proc_show(struct seq_file *seq, void *v)
 	seq_printf(seq, "  Freed: %llu\n", pool_frees);
 	seq_printf(seq, "  Active: %lld\n", (s64)(pool_allocs - pool_frees));
 	seq_printf(seq, "  Total Bytes Allocated: %llu\n", bytes_allocated);
-	seq_printf(seq, "  Total Bytes Freed: %llu\n\n", bytes_freed);
+	seq_printf(seq, "  Total Bytes Freed: %llu\n", bytes_freed);
+	seq_printf(seq, "  Peak Usage: %llu bytes (%llu KB)\n\n", bytes_peak, bytes_peak / 1024);
 
 	seq_printf(seq, "Fallback Allocations (kmalloc):\n");
 	seq_printf(seq, "  Total: %llu\n", fallback_allocs);
