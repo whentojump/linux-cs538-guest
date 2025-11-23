@@ -121,7 +121,7 @@ static inline bool netmem_pool_is_from_pool(const void *addr)
 	return false;
 }
 
-void *netmem_pool_alloc(size_t size, gfp_t gfp)
+void *netmem_pool_alloc(size_t payload_size, gfp_t gfp)
 {
 	struct genpool_data_align align_data = { .align = NETMEM_ALIGNMENT };
 	unsigned long addr;
@@ -129,7 +129,7 @@ void *netmem_pool_alloc(size_t size, gfp_t gfp)
 	struct netmem_alloc_header *header;
 	size_t total_size;
 
-	total_size = size + sizeof(struct netmem_alloc_header);
+	total_size = payload_size + sizeof(struct netmem_alloc_header);
 
 	if (netmem_pool) {
 		addr = gen_pool_alloc_algo(netmem_pool, total_size,
@@ -138,10 +138,11 @@ void *netmem_pool_alloc(size_t size, gfp_t gfp)
 			ptr = (void *)addr;
 			header = (struct netmem_alloc_header *)ptr;
 			header->magic = NETMEM_FROM_POOL;
-			header->size = total_size;
+			header->payload_size = payload_size;
+			header->total_size = total_size;
 
 			atomic64_inc(&pool_alloc_count);
-			atomic64_add(total_size, &pool_bytes_alloc_total);
+			atomic64_add(payload_size, &pool_bytes_alloc_total);
 
 			return ptr + sizeof(struct netmem_alloc_header);
 		}
@@ -150,9 +151,11 @@ void *netmem_pool_alloc(size_t size, gfp_t gfp)
 	// Fallback
 	ptr = kmalloc(total_size, gfp);
 	if (ptr) {
+		size_t actual_total_size = ksize(ptr);
 		header = (struct netmem_alloc_header *)ptr;
 		header->magic = NETMEM_FROM_KMALLOC;
-		header->size = total_size;
+		header->payload_size = actual_total_size - sizeof(struct netmem_alloc_header);
+		header->total_size = actual_total_size;
 
 		atomic64_inc(&pool_fallback_alloc_count);
 
@@ -176,10 +179,10 @@ void netmem_pool_free(void *ptr)
 
 	if (header->magic == NETMEM_FROM_POOL) {
 		if (netmem_pool) {
-			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
-				      header->size);
 			atomic64_inc(&pool_free_count);
-			atomic64_add(header->size, &pool_bytes_free_total);
+			atomic64_add(header->payload_size, &pool_bytes_free_total);
+			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
+				      header->total_size);
 		} else {
 			pr_err("Trying to free pool memory but pool is destroyed!\n");
 		}

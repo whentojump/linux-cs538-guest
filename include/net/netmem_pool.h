@@ -11,13 +11,14 @@
 
 struct netmem_alloc_header {
 	u32 magic;	// NETMEM_FROM_POOL or NETMEM_FROM_KMALLOC
-	u32 size;
+	u32 payload_size;
+	u32 total_size;
 };
 
 int netmem_pool_init(void);
 void netmem_pool_cleanup(void);
 
-void *netmem_pool_alloc(size_t size, gfp_t gfp);
+void *netmem_pool_alloc(size_t payload_size, gfp_t gfp);
 void netmem_pool_free(void *ptr);
 
 size_t netmem_pool_available(void);
