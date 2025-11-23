@@ -11,3 +11,7 @@ tail -n+3 $f | head -n-1 | sort
 tail -1 $f
 
 rm -f $f
+
+if [[ -f /proc/netmem_stats/pool ]]; then
+    /usr/bin/cat /proc/netmem_stats/pool
+fi
