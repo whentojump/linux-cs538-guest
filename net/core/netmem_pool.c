@@ -193,8 +193,6 @@ void netmem_pool_free(void *ptr, size_t expected_size)
 
 	if (header->magic == NETMEM_FROM_POOL) {
 		if (netmem_pool) {
-			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
-				      header->requested_total_size);
 			atomic64_inc(&pool_free_count);
 			size_t now_size = header->actual_total_size-sizeof(struct netmem_alloc_header);
 			if (now_size != expected_size) {
@@ -202,6 +200,8 @@ void netmem_pool_free(void *ptr, size_t expected_size)
 				// dump_stack();
 			}
 			atomic64_add((header->actual_total_size-sizeof(struct netmem_alloc_header)), &pool_bytes_free_total);
+			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
+				      header->requested_total_size);
 		} else {
 			pr_err("Trying to free pool memory but pool is destroyed!\n");
 		}
