@@ -701,6 +701,10 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
 				flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
 				node);
 #endif
+#if ENABLE_NM_PROFILE
+		if (obj)
+			netmem_stats_alloc_per_site(SKB_SMALL_HEAD_CACHE_SIZE, "kmalloc_reserve 1");
+#endif
 		*size = SKB_SMALL_HEAD_CACHE_SIZE;
 		if (obj || !(gfp_pfmemalloc_allowed(flags)))
 			goto out;
@@ -710,6 +714,10 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
 		obj = kmem_cache_alloc2(net_hotdata.skb_small_head_cache, flags);
 #else
 		obj = kmem_cache_alloc_node(net_hotdata.skb_small_head_cache, flags, node);
+#endif
+#if ENABLE_NM_PROFILE
+		if (obj)
+			netmem_stats_alloc_per_site(SKB_SMALL_HEAD_CACHE_SIZE, "kmalloc_reserve 2");
 #endif
 		goto out;
 	}
@@ -731,6 +739,10 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
 					node);
 #endif
+#if ENABLE_NM_PROFILE
+	if (obj)
+		netmem_stats_alloc_per_site(obj_size, "kmalloc_reserve 3");
+#endif
 	if (obj || !(gfp_pfmemalloc_allowed(flags)))
 		goto out;
 
@@ -740,6 +752,10 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
 	obj = netmem_pool_alloc(obj_size, flags);
 #else
 	obj = kmalloc_node_track_caller(obj_size, flags, node);
+#endif
+#if ENABLE_NM_PROFILE
+	if (obj)
+		netmem_stats_alloc_per_site(obj_size, "kmalloc_reserve 4");
 #endif
 
 out:
@@ -827,15 +843,6 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 	 * to allow max possible filling before reallocation.
 	 */
 	prefetchw(data + SKB_WITH_OVERHEAD(size));
-#if ENABLE_NM_PROFILE == 1
-# if REDIRECT_TO_POOL == 1
-	size_t s = ksize2(data);
-# else
-	size_t s = ksize(data);
-# endif
-	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- __alloc_skb %zu @ %px\n", s, data);
-	netmem_stats_alloc_per_site(s, "__alloc_skb");
-#endif
 
 	/*
 	 * Only clear those fields we need to clear, not those that we will
@@ -2531,15 +2538,6 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
-#if ENABLE_NM_PROFILE == 1
-# if REDIRECT_TO_POOL == 1
-	size_t s = ksize2(data);
-# else
-	size_t s = ksize(data);
-# endif
-	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- pskb_expand_head %zu @ %px \n", s, data);
-	netmem_stats_alloc_per_site(s, "pskb_expand_head");
-#endif
 	if (!data)
 		goto nodata;
 	size = SKB_WITH_OVERHEAD(size);
@@ -6937,11 +6935,6 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
-#if ENABLE_NM_PROFILE == 1
-	size_t s = ksize(data);
-	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- pskb_carve_inside_header %zu @ %px\n", s, data);
-	netmem_stats_alloc_per_site(s, "pskb_carve_inside_header");
-#endif
 	if (!data)
 		return -ENOMEM;
 	size = SKB_WITH_OVERHEAD(size);
@@ -7058,15 +7051,6 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
 		gfp_mask |= __GFP_MEMALLOC;
 
 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
-#if ENABLE_NM_PROFILE == 1
-# if REDIRECT_TO_POOL == 1
-	size_t s = ksize2(data);
-# else
-	size_t s = ksize(data);
-# endif
-	NM_PRINT("[DATA ALLOC] kmalloc_reserve <- pskb_carve_inside_nonlinear %zu @ %px\n", s, data);
-	netmem_stats_alloc_per_site(s, "pskb_carve_inside_nonlinear");
-#endif
 	if (!data)
 		return -ENOMEM;
 	size = SKB_WITH_OVERHEAD(size);
