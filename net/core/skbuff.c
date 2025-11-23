@@ -870,10 +870,15 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
 
 nodata:
 #if ENABLE_NM_PROFILE == 1
+# if REDIRECT_TO_POOL == 1
+	size_t s = ksize2(skb);
+# else
+	size_t s = ksize(skb);
+# endif
 	if (cache == net_hotdata.skbuff_cache)
-		netmem_stats_free_per_site(sizeof(struct sk_buff), "__alloc_skb");
+		netmem_stats_free_per_site(s, "__alloc_skb");
 	else
-		netmem_stats_free_per_site(sizeof(struct sk_buff_fclones), "__alloc_skb (fclone)");
+		netmem_stats_free_per_site(s, "__alloc_skb (fclone)");
 #endif
 #if REDIRECT_TO_POOL == 1
 	kmem_cache_free2(cache, skb);
@@ -1337,9 +1342,14 @@ static void kfree_skbmem(struct sk_buff *skb)
 	switch (skb->fclone) {
 	case SKB_FCLONE_UNAVAILABLE:
 #if ENABLE_NM_PROFILE == 1
+# if REDIRECT_TO_POOL == 1
+		size_t s = ksize2(skb);
+# else
+		size_t s = ksize(skb);
+# endif
 		NM_PRINT("[STRUCT FREE] kmem_cache_free <- kfree_skbmem %zu @ %px\n",
-			sizeof(struct sk_buff), skb);
-		netmem_stats_free_per_site(sizeof(struct sk_buff), "kfree_skbmem");
+			s, skb);
+		netmem_stats_free_per_site(s, "kfree_skbmem");
 #endif
 #if REDIRECT_TO_POOL == 1
 		kmem_cache_free2(net_hotdata.skbuff_cache, skb);
@@ -1367,9 +1377,13 @@ static void kfree_skbmem(struct sk_buff *skb)
 		return;
 fastpath:
 #if ENABLE_NM_PROFILE == 1
-	NM_PRINT("[STRUCT FREE] kmem_cache_free <- kfree_skbmem (fclone) %zu @ %px\n",
-		sizeof(struct sk_buff_fclones), fclones);
-	netmem_stats_free_per_site(sizeof(struct sk_buff_fclones), "kfree_skbmem (fclone)");
+# if REDIRECT_TO_POOL == 1
+	size_t s = ksize2(fclones);
+# else
+	size_t s = ksize(fclones);
+# endif
+	NM_PRINT("[STRUCT FREE] kmem_cache_free <- kfree_skbmem (fclone) %zu @ %px\n", s, fclones);
+	netmem_stats_free_per_site(s, "kfree_skbmem (fclone)");
 #endif
 #if REDIRECT_TO_POOL == 1
 	kmem_cache_free2(net_hotdata.skbuff_fclone_cache, fclones);
@@ -1473,16 +1487,24 @@ static void kfree_skb_add_bulk(struct sk_buff *skb,
 	sa->skb_array[sa->skb_count++] = skb;
 
 	if (unlikely(sa->skb_count == KFREE_SKB_BULK_SIZE)) {
-#if ENABLE_NM_PROFILE == 1
-		NM_PRINT("[STRUCT FREE BULK] kmem_cache_free_bulk <- kfree_skb_add_bulk %zu @ %px\n",
-			(size_t) KFREE_SKB_BULK_SIZE * sizeof(struct sk_buff), sa->skb_array);
-		netmem_stats_free_per_site(KFREE_SKB_BULK_SIZE * sizeof(struct sk_buff), "kfree_skb_add_bulk (bulk)");
-#endif
-#if REDIRECT_TO_POOL == 1
 		for (int i = 0; i < KFREE_SKB_BULK_SIZE; i++) {
+#if ENABLE_NM_PROFILE == 1
+# if REDIRECT_TO_POOL == 1
+			size_t s = ksize2(sa->skb_array[i]);
+# else
+			size_t s = ksize(sa->skb_array[i]);
+# endif
+			NM_PRINT("[STRUCT FREE BULK] kmem_cache_free_bulk <- kfree_skb_add_bulk %zu @ %px\n",
+				s, sa->skb_array[i]);
+			netmem_stats_free_per_site(s, "kfree_skb_add_bulk (bulk)");
+#endif
+
+#if REDIRECT_TO_POOL == 1
 			kmem_cache_free2(net_hotdata.skbuff_cache, sa->skb_array[i]);
+#endif
 		}
-#else
+
+#if REDIRECT_TO_POOL == 0
 		kmem_cache_free_bulk(net_hotdata.skbuff_cache, KFREE_SKB_BULK_SIZE,
 				     sa->skb_array);
 #endif
@@ -1509,16 +1531,25 @@ kfree_skb_list_reason(struct sk_buff *segs, enum skb_drop_reason reason)
 	}
 
 	if (sa.skb_count) {
-#if ENABLE_NM_PROFILE == 1
-		NM_PRINT("[STRUCT FREE BULK] kmem_cache_free_bulk <- kfree_skb_list_reason %zu @ %px\n",
-			(size_t) sa.skb_count * sizeof(struct sk_buff), sa.skb_array);
-		netmem_stats_free_per_site(sa.skb_count * sizeof(struct sk_buff), "kfree_skb_list_reason (bulk)");
-#endif
-#if REDIRECT_TO_POOL == 1
 		for (int i = 0; i < sa.skb_count; i++) {
-			kmem_cache_free2(net_hotdata.skbuff_cache, sa.skb_array[i]);
-		}
+#if REDIRECT_TO_POOL == 1
+			size_t s = ksize2(sa.skb_array[i]);
 #else
+			size_t s = ksize(sa.skb_array[i]);
+#endif
+
+#if ENABLE_NM_PROFILE == 1
+			NM_PRINT("[STRUCT FREE BULK] kmem_cache_free_bulk <- kfree_skb_list_reason %zu @ %px\n",
+				s, sa.skb_array[i]);
+			netmem_stats_free_per_site(s, "kfree_skb_list_reason (bulk)");
+#endif
+
+#if REDIRECT_TO_POOL == 1
+			kmem_cache_free2(net_hotdata.skbuff_cache, sa.skb_array[i]);
+#endif
+		}
+
+#if REDIRECT_TO_POOL == 0
 		kmem_cache_free_bulk(net_hotdata.skbuff_cache, sa.skb_count, sa.skb_array);
 #endif
 	}
@@ -1715,7 +1746,12 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 			kasan_mempool_unpoison_object(nc->skb_cache[i],
 						kmem_cache_size(net_hotdata.skbuff_cache));
 #if ENABLE_NM_PROFILE == 1
-		netmem_stats_free_per_site(sizeof(struct sk_buff), "napi_skb_cache_put (bulk, no cache)");
+# if REDIRECT_TO_POOL == 1
+		size_t s = ksize2(nc->skb_cache[0]);
+# else
+		size_t s = ksize(nc->skb_cache[0]);
+# endif
+		netmem_stats_free_per_site(s, "napi_skb_cache_put (bulk, no cache)");
 #endif
 #if REDIRECT_TO_POOL == 1
 		kmem_cache_free2(net_hotdata.skbuff_cache, nc->skb_cache[0]);
@@ -6257,9 +6293,14 @@ void kfree_skb_partial(struct sk_buff *skb, bool head_stolen)
 	if (head_stolen) {
 		skb_release_head_state(skb);
 #if ENABLE_NM_PROFILE == 1
+# if REDIRECT_TO_POOL == 1
+		size_t s = ksize2(skb);
+# else
+		size_t s = ksize(skb);
+# endif
 		NM_PRINT("[STRUCT FREE] kmem_cache_free <- kfree_skb_partial %zu @ %px\n",
-			sizeof(struct sk_buff), skb);
-		netmem_stats_free_per_site(sizeof(struct sk_buff), "kfree_skb_partial");
+			s, skb);
+		netmem_stats_free_per_site(s, "kfree_skb_partial");
 #endif
 #if REDIRECT_TO_POOL == 1
 		kmem_cache_free2(net_hotdata.skbuff_cache, skb);
@@ -7394,8 +7435,13 @@ free_now:
 #endif
 
 #if ENABLE_NM_PROFILE == 1
-	NM_PRINT("[STRUCT FREE] kmem_cache_free <- __skb_ext_put (ext) %zu @ %px\n", sizeof(struct skb_ext), ext);
-	netmem_stats_free_per_site(sizeof(struct skb_ext), "__skb_ext_put (ext)");
+# if REDIRECT_TO_POOL == 1
+	size_t s = ksize2(ext);
+# else
+	size_t s = ksize(ext);
+# endif
+	NM_PRINT("[STRUCT FREE] kmem_cache_free <- __skb_ext_put (ext) %zu @ %px\n", s, ext);
+	netmem_stats_free_per_site(s, "__skb_ext_put (ext)");
 #endif
 #if REDIRECT_TO_POOL == 1
 	kmem_cache_free2(skbuff_ext_cache, ext);
