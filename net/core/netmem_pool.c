@@ -101,6 +101,17 @@ void netmem_pool_cleanup(void)
 	}
 }
 
+void netmem_pool_reset_stats(void)
+{
+	atomic64_set(&pool_alloc_count, 0);
+	atomic64_set(&pool_free_count, 0);
+	atomic64_set(&pool_fallback_alloc_count, 0);
+	atomic64_set(&pool_fallback_free_count, 0);
+	atomic64_set(&pool_bytes_alloc_total, 0);
+	atomic64_set(&pool_bytes_free_total, 0);
+}
+EXPORT_SYMBOL(netmem_pool_reset_stats);
+
 static inline bool netmem_pool_is_from_pool(const void *addr)
 {
 	unsigned long ptr = (unsigned long)addr;
