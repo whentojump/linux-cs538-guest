@@ -10,6 +10,7 @@
 #include <linux/gfp.h>
 #include <linux/mm.h>
 #include <net/netmem_pool.h>
+#include <linux/jsw.h>
 
 #define NETMEM_POOL_SIZE	(512 * 1024 * 1024)
 #define NETMEM_CHUNK_SIZE	(2 * 1024 * 1024)
@@ -49,7 +50,11 @@ int __init netmem_pool_init(void)
 
 	// Allocate multiple chunks
 	for (i = 0; i < netmem_num_chunks; i++) {
+#ifdef USE_JSW
+		netmem_pool_chunks[i] = alloc_jsw(NETMEM_CHUNK_SIZE);
+#else
 		netmem_pool_chunks[i] = kmalloc(NETMEM_CHUNK_SIZE, GFP_KERNEL | __GFP_ZERO);
+#endif
 		if (!netmem_pool_chunks[i])
 			goto cleanup_chunks;
 
@@ -58,7 +63,11 @@ int __init netmem_pool_init(void)
 				   (unsigned long)netmem_pool_chunks[i],
 				   NETMEM_CHUNK_SIZE, NUMA_NO_NODE);
 		if (ret < 0) {
+#ifdef USE_JSW
+			free_jsw(netmem_pool_chunks[i]);
+#else
 			kfree(netmem_pool_chunks[i]);
+#endif
 			netmem_pool_chunks[i] = NULL;
 			goto cleanup_chunks;
 		}
@@ -70,7 +79,11 @@ cleanup_chunks:
 
 	for (i = 0; i < netmem_num_chunks; i++) {
 		if (netmem_pool_chunks[i]) {
+#ifdef USE_JSW
+			free_jsw(netmem_pool_chunks[i]);
+#else
 			kfree(netmem_pool_chunks[i]);
+#endif
 			netmem_pool_chunks[i] = NULL;
 		}
 	}
@@ -88,7 +101,11 @@ void netmem_pool_cleanup(void)
 	if (netmem_pool_chunks) {
 		for (i = 0; i < netmem_num_chunks; i++) {
 			if (netmem_pool_chunks[i]) {
+#ifdef USE_JSW
+				free_jsw(netmem_pool_chunks[i]);
+#else
 				kfree(netmem_pool_chunks[i]);
+#endif
 				netmem_pool_chunks[i] = NULL;
 			}
 		}
