@@ -12,8 +12,13 @@
 #include <net/netmem_pool.h>
 #include <linux/jsw.h>
 
+#if USE_JSW == 0
 #define NETMEM_POOL_SIZE	(512 * 1024 * 1024)
 #define NETMEM_CHUNK_SIZE	(2 * 1024 * 1024)
+#else
+#define NETMEM_POOL_SIZE	(512 * 1024 * 1024)
+#define NETMEM_CHUNK_SIZE	(256 * 1024 * 1024)
+#endif
 #define NETMEM_NUM_CHUNKS	(NETMEM_POOL_SIZE / NETMEM_CHUNK_SIZE)
 #define NETMEM_MIN_ALLOC_ORDER	6			// 2^6 = 64 bytes minimum
 #define NETMEM_ALIGNMENT	64			// Cache line alignment
