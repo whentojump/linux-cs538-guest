@@ -2,4 +2,9 @@
 
 # Warm up e.g. ARP
 
-ping -c 1 -s 64 10.0.2.2 > /dev/null 2>&1
+if [ -z "$SERVER" ]; then
+    echo "SERVER is not set"
+    exit 1
+fi
+
+ping -c 1 -s 64 $SERVER > /dev/null 2>&1

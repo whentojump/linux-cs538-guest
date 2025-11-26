@@ -2,10 +2,15 @@
 
 THIS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+if [ -z "$SERVER" ]; then
+    echo "SERVER is not set"
+    exit 1
+fi
+
 run() {
-    echo "%%%%%%%%%%%%%%%%%% $1 | nc -q 0 10.0.2.2 10000 %%%%%%%%%%%%%%%%%%"
+    echo "%%%%%%%%%%%%%%%%%% $1 | nc -q 0 $SERVER 10000 %%%%%%%%%%%%%%%%%%"
     echo 1 > /proc/netmem_stats/reset
-    $1 | nc -q 0 10.0.2.2 10000 > /dev/null `#2>&1`; sleep 1
+    $1 | nc -q 0 $SERVER 10000 > /dev/null `#2>&1`; sleep 1
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 

@@ -2,6 +2,11 @@
 
 THIS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+if [ -z "$SERVER" ]; then
+    echo "SERVER is not set"
+    exit 1
+fi
+
 run() {
     echo "%%%%%%%%%%%%%%%%%% $1 %%%%%%%%%%%%%%%%%%"
     echo 1 > /proc/netmem_stats/reset
@@ -9,17 +14,17 @@ run() {
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 
-run "iperf3 -c 10.0.2.2 -t 3"
+run "iperf3 -c $SERVER -t 3"
 run "iperf3 -c localhost -t 3"
-run "iperf3 -c 10.0.2.2 -t 3 -l 1K"
-run "iperf3 -c 10.0.2.2 -t 3 -l 1K -N"
-run "iperf3 -c 10.0.2.2 -t 3 -l 128K"
-run "iperf3 -c 10.0.2.2 -n 4M"
-run "iperf3 -c 10.0.2.2 -t 3 -R"
-run "iperf3 -c 10.0.2.2 -u -b 10M -l 512 -t 3"
-run "iperf3 -c 10.0.2.2 -u -b 20M -l 1400 -t 3"
-run "iperf3 -c 10.0.2.2 -6 -t 3"
-run "iperf3 -c 10.0.2.2 -6 -u -b 10M -l 512 -t 3"
-run "iperf3 -c 10.0.2.2 -P 4 -t 3"
-run "iperf3 -c 10.0.2.2 -t 3 -S 0xb8"
-run "iperf3 -c 10.0.2.2 -t 3 -Z"
+run "iperf3 -c $SERVER -t 3 -l 1K"
+run "iperf3 -c $SERVER -t 3 -l 1K -N"
+run "iperf3 -c $SERVER -t 3 -l 128K"
+run "iperf3 -c $SERVER -n 4M"
+run "iperf3 -c $SERVER -t 3 -R"
+run "iperf3 -c $SERVER -u -b 10M -l 512 -t 3"
+run "iperf3 -c $SERVER -u -b 20M -l 1400 -t 3"
+run "iperf3 -c $SERVER -6 -t 3"
+run "iperf3 -c $SERVER -6 -u -b 10M -l 512 -t 3"
+run "iperf3 -c $SERVER -P 4 -t 3"
+run "iperf3 -c $SERVER -t 3 -S 0xb8"
+run "iperf3 -c $SERVER -t 3 -Z"
