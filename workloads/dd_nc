@@ -2,10 +2,31 @@
 
 THIS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+SERVER=$(cat "$(dirname "$0")/server.txt")
+
 if [ -z "$SERVER" ]; then
     echo "SERVER is not set"
     exit 1
 fi
+
+# Resolve script name without path
+SCRIPT_NAME=$(basename "$0")
+
+# Get Linux kernel version
+KERNEL=$(uname -r)
+
+# Timestamp: yymmdd_HHMMss
+TS=$(date +"%y%m%d_%H%M%S")
+
+OUT_DIR="$THIS_DIR/../../output"
+
+# Create output directory if not exists
+mkdir -p "$OUT_DIR"
+
+OUT_FILE="$OUT_DIR/${SCRIPT_NAME}_${KERNEL}_${TS}.txt"
+
+# Redirect stdout + stderr to output file
+exec >"$OUT_FILE" 2>&1
 
 run() {
     echo "%%%%%%%%%%%%%%%%%% $1 | nc -q 0 $SERVER 10000 %%%%%%%%%%%%%%%%%%"
