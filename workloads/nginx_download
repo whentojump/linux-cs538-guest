@@ -31,23 +31,24 @@ exec >"$OUT_FILE" 2>&1
 run() {
     echo "%%%%%%%%%%%%%%%%%% $1 %%%%%%%%%%%%%%%%%%"
     echo 1 > /proc/netmem_stats/reset
-    $1 `#> /dev/null 2>&1`; sleep 1
+    $1 2>&1 | grep '^Downloaded'; sleep 1
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 
-ulimit -n 65535
+run "axel -n 1 -o ./tmp1G http://$SERVER/1G.bin"
+rm tmp1G
 
-run "wrk -t1 -c1 -d30s http://$SERVER"
-run "wrk -t1 -c4 -d30s http://$SERVER"
-run "wrk -t1 -c16 -d30s http://$SERVER"
-run "wrk -t1 -c64 -d30s http://$SERVER"
-run "wrk -t1 -c256 -d30s http://$SERVER"
-run "wrk -t1 -c1024 -d30s http://$SERVER"
-run "wrk -t1 -c4096 -d30s http://$SERVER"
-run "wrk -t1 -c16384 -d30s http://$SERVER"
+run "axel -n 4 -o ./tmp1G http://$SERVER/1G.bin"
+rm tmp1G
 
-run "wrk -t64 -c64 -d30s http://$SERVER"
-run "wrk -t64 -c256 -d30s http://$SERVER"
-run "wrk -t64 -c1024 -d30s http://$SERVER"
-run "wrk -t64 -c4096 -d30s http://$SERVER"
-run "wrk -t64 -c16384 -d30s http://$SERVER"
+run "axel -n 16 -o ./tmp1G http://$SERVER/1G.bin"
+rm tmp1G
+
+run "axel -n 64 -o ./tmp1G http://$SERVER/1G.bin"
+rm tmp1G
+
+run "axel -n 256 -o ./tmp1G http://$SERVER/1G.bin"
+rm tmp1G
+
+run "axel -n 1024 -o ./tmp1G http://$SERVER/1G.bin"
+rm tmp1G

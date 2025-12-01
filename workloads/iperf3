@@ -35,17 +35,36 @@ run() {
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 
-run "iperf3 -c $SERVER -t 3"
-run "iperf3 -c localhost -t 3"
-run "iperf3 -c $SERVER -t 3 -l 1K"
-run "iperf3 -c $SERVER -t 3 -l 1K -N"
-run "iperf3 -c $SERVER -t 3 -l 128K"
-run "iperf3 -c $SERVER -n 4M"
-run "iperf3 -c $SERVER -t 3 -R"
-run "iperf3 -c $SERVER -u -b 10M -l 512 -t 3"
-run "iperf3 -c $SERVER -u -b 20M -l 1400 -t 3"
-run "iperf3 -c $SERVER -6 -t 3"
-run "iperf3 -c $SERVER -6 -u -b 10M -l 512 -t 3"
-run "iperf3 -c $SERVER -P 4 -t 3"
-run "iperf3 -c $SERVER -t 3 -S 0xb8"
-run "iperf3 -c $SERVER -t 3 -Z"
+# run "iperf3 -c $SERVER -t 3"
+# run "iperf3 -c localhost -t 3"
+# run "iperf3 -c $SERVER -t 3 -l 1K"
+# run "iperf3 -c $SERVER -t 3 -l 1K -N"
+# run "iperf3 -c $SERVER -t 3 -l 128K"
+# run "iperf3 -c $SERVER -n 4M"
+# run "iperf3 -c $SERVER -t 3 -R"
+# run "iperf3 -c $SERVER -u -b 10M -l 512 -t 3"
+# run "iperf3 -c $SERVER -u -b 20M -l 1400 -t 3"
+# run "iperf3 -c $SERVER -6 -t 3"
+# run "iperf3 -c $SERVER -6 -u -b 10M -l 512 -t 3"
+# run "iperf3 -c $SERVER -P 4 -t 3"
+# run "iperf3 -c $SERVER -t 3 -S 0xb8"
+# run "iperf3 -c $SERVER -t 3 -Z"
+
+# TCP Throughput
+run "iperf3 -c $SERVER -t 10"           # baseline single stream
+run "iperf3 -c $SERVER -t 10 -l 128K"   # large segment
+run "iperf3 -c $SERVER -t 10 -l 1K -N"  # small segment
+run "iperf3 -c $SERVER -t 10 -R"        # reverse direction
+run "iperf3 -c $SERVER -t 10 -P 4"      # multiple streams (moderate)
+# run "iperf3 -c $SERVER -t 10 -P 16"     # multiple streams (moderate/high)
+# run "iperf3 -c $SERVER -t 10 -P 64"     # multiple streams (high)
+run "iperf3 -c $SERVER -t 10 --bidir"   # bidirectional test (default segment size)
+
+# UDP Throughput
+run "iperf3 -c $SERVER -u -b 512M -l 128 -t 10"  # small packet
+run "iperf3 -c $SERVER -u -b 512M -t 10"         # default packet size (~1470 bytes)
+run "iperf3 -c $SERVER -u -b 512M -t 10 --bidir" # bidirectional default packet size
+
+run "iperf3 -c $SERVER -u -b 1G -l 128 -t 10"  # small packet
+run "iperf3 -c $SERVER -u -b 1G -t 10"         # default packet size (~1470 bytes)
+run "iperf3 -c $SERVER -u -b 1G -t 10 --bidir" # bidirectional default packet size
