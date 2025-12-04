@@ -294,6 +294,7 @@ static const struct proc_ops netmem_stats_dump_proc_ops = {
 static ssize_t netmem_stats_reset_proc_write(struct file * file, const char __user * ubuf, size_t cnt, loff_t * ppos)
 {
 	netmem_stats_cleanup_counters();
+	pr_info("-------------------------\n");
 	return cnt;
 }
 
@@ -304,6 +305,7 @@ static const struct proc_ops netmem_stats_reset_proc_ops = {
 static int __netmem_stats_per_site_proc_open(struct seq_file *seq, void *v)
 {
 	netmem_stats_show_per_site(seq);
+	pr_info("-------------------------\n");
 	return 0;
 }
 
