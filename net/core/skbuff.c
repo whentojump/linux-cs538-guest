@@ -1532,10 +1532,12 @@ kfree_skb_list_reason(struct sk_buff *segs, enum skb_drop_reason reason)
 
 	if (sa.skb_count) {
 		for (int i = 0; i < sa.skb_count; i++) {
+#if ENABLE_NM_PROFILE == 1
 #if REDIRECT_TO_POOL == 1
 			size_t s = ksize2(sa.skb_array[i]);
 #else
 			size_t s = ksize(sa.skb_array[i]);
+#endif
 #endif
 
 #if ENABLE_NM_PROFILE == 1

@@ -6,7 +6,7 @@
 #include <linux/spinlock.h>
 #include <linux/seq_file.h>
 
-#define ENABLE_NM_PROFILE 1
+#define ENABLE_NM_PROFILE 0
 
 // #define NM_PRINT(...) pr_info(__VA_ARGS__)
 #define NM_PRINT(...) (void) 0
