@@ -377,10 +377,17 @@ static struct sk_buff *napi_skb_cache_get(void)
 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
 #if CHANGE_KERNEL_CACHE_BEHAVIOR == 0
 	if (unlikely(!nc->skb_count)) {
+#if REDIRECT_TO_POOL == 1
+		for (int i = 0; i < NAPI_SKB_CACHE_BULK; i++) {
+			nc->skb_cache[i] = kmem_cache_alloc2(net_hotdata.skbuff_cache, GFP_ATOMIC | __GFP_NOWARN);
+		}
+		nc->skb_count = NAPI_SKB_CACHE_BULK;
+#else
 		nc->skb_count = kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
 						      GFP_ATOMIC | __GFP_NOWARN,
 						      NAPI_SKB_CACHE_BULK,
 						      nc->skb_cache);
+#endif
 #if ENABLE_NM_PROFILE == 1
 		NM_PRINT("[STRUCT ALLOC BULK] kmem_cache_alloc_bulk <- napi_skb_cache_get %zu @ %px\n",
 			nc->skb_count * sizeof(struct sk_buff), nc->skb_cache);
@@ -1738,9 +1745,16 @@ static void napi_skb_cache_put(struct sk_buff *skb)
 			(size_t) NAPI_SKB_CACHE_HALF * sizeof(struct sk_buff), nc->skb_cache);
 		netmem_stats_free_per_site(NAPI_SKB_CACHE_HALF * sizeof(struct sk_buff), "napi_skb_cache_put (bulk)");
 #endif
+#if REDIRECT_TO_POOL == 1
+		for (i = NAPI_SKB_CACHE_HALF; i < NAPI_SKB_CACHE_SIZE; i++) {
+			kmem_cache_free2(net_hotdata.skbuff_cache, nc->skb_cache[i]);
+		}
+		nc->skb_count = NAPI_SKB_CACHE_HALF;
+#else
 		kmem_cache_free_bulk(net_hotdata.skbuff_cache, NAPI_SKB_CACHE_HALF,
 				     nc->skb_cache + NAPI_SKB_CACHE_HALF);
 		nc->skb_count = NAPI_SKB_CACHE_HALF;
+#endif
 	}
 #else
 	if (unlikely(nc->skb_count == 1)) {
