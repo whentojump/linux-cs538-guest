@@ -11,6 +11,8 @@
 #define NETMEM_FROM_POOL	0xDEADBEEF
 #define NETMEM_FROM_KMALLOC	0xCAFEBABE
 
+#define NETMEM_POOL_STATS 0
+
 struct netmem_alloc_header {
 	u32 magic;	// NETMEM_FROM_POOL or NETMEM_FROM_KMALLOC
 	u32 payload_size;

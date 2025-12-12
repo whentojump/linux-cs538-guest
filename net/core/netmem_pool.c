@@ -27,6 +27,7 @@ static struct gen_pool *netmem_pool = NULL;
 static void **netmem_pool_chunks = NULL;
 static size_t netmem_num_chunks = NETMEM_NUM_CHUNKS;
 
+#if NETMEM_POOL_STATS == 1
 static atomic64_t pool_alloc_count = ATOMIC64_INIT(0);
 static atomic64_t pool_free_count = ATOMIC64_INIT(0);
 static atomic64_t pool_fallback_alloc_count = ATOMIC64_INIT(0);
@@ -34,6 +35,7 @@ static atomic64_t pool_fallback_free_count = ATOMIC64_INIT(0);
 static atomic64_t pool_bytes_alloc_total = ATOMIC64_INIT(0);
 static atomic64_t pool_bytes_free_total = ATOMIC64_INIT(0);
 static atomic64_t pool_bytes_peak_usage = ATOMIC64_INIT(0);
+#endif
 
 int __init netmem_pool_init(void)
 {
@@ -126,6 +128,7 @@ void netmem_pool_cleanup(void)
 
 void netmem_pool_reset_stats(void)
 {
+#if NETMEM_POOL_STATS == 1
 	atomic64_set(&pool_alloc_count, 0);
 	atomic64_set(&pool_free_count, 0);
 	atomic64_set(&pool_fallback_alloc_count, 0);
@@ -133,11 +136,13 @@ void netmem_pool_reset_stats(void)
 	atomic64_set(&pool_bytes_alloc_total, 0);
 	atomic64_set(&pool_bytes_free_total, 0);
 	atomic64_set(&pool_bytes_peak_usage, 0);
+#endif
 }
 EXPORT_SYMBOL(netmem_pool_reset_stats);
 
 static inline void netmem_pool_update_peak_usage(void)
 {
+#if NETMEM_POOL_STATS == 1
 	s64 current_usage;
 	s64 peak;
 
@@ -147,6 +152,7 @@ static inline void netmem_pool_update_peak_usage(void)
 
 	if (current_usage > peak)
 		atomic64_set(&pool_bytes_peak_usage, current_usage);
+#endif
 }
 
 static inline bool netmem_pool_is_from_pool(const void *addr)
@@ -189,9 +195,11 @@ void *netmem_pool_alloc(size_t payload_size, gfp_t gfp)
 			header->payload_size = payload_size;
 			header->total_size = total_size;
 
+#if NETMEM_POOL_STATS == 1
 			atomic64_inc(&pool_alloc_count);
 			atomic64_add(payload_size, &pool_bytes_alloc_total);
 			netmem_pool_update_peak_usage();
+#endif
 
 			return ptr + sizeof(struct netmem_alloc_header);
 		}
@@ -206,7 +214,9 @@ void *netmem_pool_alloc(size_t payload_size, gfp_t gfp)
 		header->payload_size = actual_total_size - sizeof(struct netmem_alloc_header);
 		header->total_size = actual_total_size;
 
+#if NETMEM_POOL_STATS == 1
 		atomic64_inc(&pool_fallback_alloc_count);
+#endif
 
 		return ptr + sizeof(struct netmem_alloc_header);
 	}
@@ -228,9 +238,11 @@ void netmem_pool_free(void *ptr)
 
 	if (header->magic == NETMEM_FROM_POOL) {
 		if (netmem_pool) {
+#if NETMEM_POOL_STATS == 1
 			atomic64_inc(&pool_free_count);
 			atomic64_add(header->payload_size, &pool_bytes_free_total);
 			netmem_pool_update_peak_usage();
+#endif
 			gen_pool_free(netmem_pool, (unsigned long)real_ptr,
 				      header->total_size);
 		} else {
@@ -238,7 +250,9 @@ void netmem_pool_free(void *ptr)
 		}
 	} else if (header->magic == NETMEM_FROM_KMALLOC) {
 		kfree(real_ptr);
+#if NETMEM_POOL_STATS == 1
 		atomic64_inc(&pool_fallback_free_count);
+#endif
 	} else {
 		pr_err("Invalid magic in netmem_pool_free: %x at %p\n",
 		       header->magic, ptr);
@@ -266,6 +280,7 @@ EXPORT_SYMBOL(netmem_pool_size_get);
 
 static int netmem_pool_proc_show(struct seq_file *seq, void *v)
 {
+#if NETMEM_POOL_STATS == 1
 	size_t pool_size = netmem_pool_size_get();
 	size_t pool_avail = netmem_pool_available();
 	size_t pool_used = pool_size - pool_avail;
@@ -310,6 +325,7 @@ static int netmem_pool_proc_show(struct seq_file *seq, void *v)
 	seq_printf(seq, "  Total: %llu\n", fallback_allocs);
 	seq_printf(seq, "  Freed: %llu\n", fallback_frees);
 	seq_printf(seq, "  Active: %lld\n", (s64)(fallback_allocs - fallback_frees));
+#endif
 
 	return 0;
 }
