@@ -187,7 +187,7 @@ void *netmem_pool_alloc(size_t payload_size, gfp_t gfp)
 
 	if (netmem_pool) {
 		addr = gen_pool_alloc_algo(netmem_pool, total_size,
-					   gen_pool_first_fit_align, &align_data);
+					   gen_pool_first_fit, &align_data);
 		if (addr) {
 			ptr = (void *)addr;
 			header = (struct netmem_alloc_header *)ptr;
@@ -326,6 +326,8 @@ static int netmem_pool_proc_show(struct seq_file *seq, void *v)
 	seq_printf(seq, "  Freed: %llu\n", fallback_frees);
 	seq_printf(seq, "  Active: %lld\n", (s64)(fallback_allocs - fallback_frees));
 #endif
+	// A way to confirm which commit we are using
+	seq_printf(seq, "gen_pool_first_fit\n");
 
 	return 0;
 }
