@@ -77,3 +77,11 @@ run "iperf3 -c $SERVER -u -b 1G -l 128 -t 10"  # small 128B packet (VoIP)
 run "iperf3 -c $SERVER -u -b 1G -l 256 -t 10"  # small/medium 256B packet (ACK)
 run "iperf3 -c $SERVER -u -b 1G -t 10"         # default packet size (~1470 bytes)
 run "iperf3 -c $SERVER -u -b 1G -t 10 --bidir" # bidirectional default packet size
+
+run "iperf3 -c $SERVER -u -b 0 -l 16 -t 10"  # very small 16B packet (IoT sensor/heartbeat)
+run "iperf3 -c $SERVER -u -b 0 -l 32 -t 10"  # very small 32B packet (IoT sensor/heartbeat)
+run "iperf3 -c $SERVER -u -b 0 -l 64 -t 10"  # small 64B packet (VoIP)
+run "iperf3 -c $SERVER -u -b 0 -l 128 -t 10"  # small 128B packet (VoIP)
+run "iperf3 -c $SERVER -u -b 0 -l 256 -t 10"  # small/medium 256B packet (ACK)
+run "iperf3 -c $SERVER -u -b 0 -t 10"         # default packet size (~1470 bytes)
+run "iperf3 -c $SERVER -u -b 0 -t 10 --bidir" # bidirectional default packet size
