@@ -11,6 +11,9 @@ Here is a guideline to how to run four workloads: ycsb_redis, wrk, nginx_downloa
 2. Specify the server address or IP in server.txt
 
 3. ycsb_redis workload:
+    - update redis.conf file (usually at /etc/redis)
+        (i) bind 0.0.0.0 // instead of binding to localhost i.e., 127.0.0.1
+        (ii) protected-mode no
     - Check if redis-server at the server VM is running (systemctl status redis-server)
     - If not running, start it (sudo systemctl start redis-server)
     - On the client guest VM, go to linux-cs538-guest directory
