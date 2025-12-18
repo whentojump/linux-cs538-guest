@@ -5,7 +5,7 @@ Here is a guideline to how to run four workloads: ycsb_redis, wrk, nginx_downloa
 
 1. Installations:
     - At the server VM: redis-server, nginx and iperf3 on your server (you can use apt install for them)
-    - At the client (current guest VM): YCSB (https://github.com/brianfrankcooper/YCSB/tree/master), iperf3, axel
+    - At the client (current guest VM): YCSB (https://github.com/brianfrankcooper/YCSB/tree/master), iperf3, axel, mavel, redis-tools (install with apt)
         ~ For YCSB, clone it as a sibling of linux-cs538-guest directory
 
 2. Specify the server address or IP in server.txt
