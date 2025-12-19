@@ -35,20 +35,38 @@ run() {
     bash $THIS_DIR/../utils/sorted-per-site-stats.sh
 }
 
-run "axel -n 1 -o ./tmp1G http://$SERVER/1G.bin"
-rm tmp1G
+# run "axel -n 1 -o ./tmp1G http://$SERVER/1G.bin"
+# rm tmp1G
 
-run "axel -n 4 -o ./tmp1G http://$SERVER/1G.bin"
-rm tmp1G
+# run "axel -n 4 -o ./tmp1G http://$SERVER/1G.bin"
+# rm tmp1G
 
-run "axel -n 16 -o ./tmp1G http://$SERVER/1G.bin"
-rm tmp1G
+# run "axel -n 16 -o ./tmp1G http://$SERVER/1G.bin"
+# rm tmp1G
 
-run "axel -n 64 -o ./tmp1G http://$SERVER/1G.bin"
-rm tmp1G
+# run "axel -n 64 -o ./tmp1G http://$SERVER/1G.bin"
+# rm tmp1G
 
-run "axel -n 256 -o ./tmp1G http://$SERVER/1G.bin"
-rm tmp1G
+# run "axel -n 256 -o ./tmp1G http://$SERVER/1G.bin"
+# rm tmp1G
 
-run "axel -n 1024 -o ./tmp1G http://$SERVER/1G.bin"
-rm tmp1G
+# run "axel -n 1024 -o ./tmp1G http://$SERVER/1G.bin"
+# rm tmp1G
+
+run "axel -n 1 -o ./tmp10G http://$SERVER/10G.bin"
+rm tmp10G*
+
+run "axel -n 4 -o ./tmp10G http://$SERVER/10G.bin"
+rm tmp10G*
+
+run "axel -n 16 -o ./tmp10G http://$SERVER/10G.bin"
+rm tmp10G*
+
+run "axel -n 64 -o ./tmp10G http://$SERVER/10G.bin"
+rm tmp10G*
+
+run "axel -n 256 -o ./tmp10G http://$SERVER/10G.bin"
+rm tmp10G*
+
+run "axel -n 1024 -o ./tmp10G http://$SERVER/10G.bin"
+rm tmp10G*
